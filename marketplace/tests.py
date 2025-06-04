@@ -59,70 +59,6 @@ class BaseTestCase(TestCase):
         self.client = Client()
 
 
-class ViewTests(BaseTestCase):
-    """
-    Tests for Django views, covering page access, authentication, and core functionalities.
-    """
-    def test_landing_page_view(self):
-        response = self.client.get(reverse('marketplace:landing_page'))
-        self.assertEqual(response.status_code, 200)
-
-    def test_comprador_login_view_get(self):
-        response = self.client.get(reverse('marketplace:comprador_login'))
-        self.assertEqual(response.status_code, 200)
-
-    def test_comprador_login_view_post(self):
-        response = self.client.post(reverse('marketplace:comprador_login'), {
-            'username': 'comprador@test.com',
-            'password': 'comprador123'
-        })
-        self.assertRedirects(response, reverse('marketplace:pagina_inicial_comprador'))
-
-    def test_comprador_home_requires_login(self):
-        response = self.client.get(reverse('marketplace:pagina_inicial_comprador'))
-        self.assertRedirects(response, '/comprador/login/?next=/comprador/home/')
-
-    def test_comprador_home_authenticated(self):
-        self.client.login(username='comprador@test.com', password='comprador123')
-        response = self.client.get(reverse('marketplace:pagina_inicial_comprador'))
-        self.assertEqual(response.status_code, 200)
-
-    def test_detalhes_produto_view(self):
-        self.client.login(username='comprador@test.com', password='comprador123')
-        response = self.client.get(reverse('marketplace:detalhes_produto', args=[self.produto.id]))
-        self.assertEqual(response.status_code, 200)
-
-    def test_admin_dashboard_access(self):
-        self.client.login(username='admin', password='admin123')
-        response = self.client.get(reverse('marketplace:admin_dashboard'))
-        self.assertEqual(response.status_code, 200)
-
-    def test_vendedor_dashboard_access(self):
-        self.client.login(username='vendedor@test.com', password='vendedor123')
-        response = self.client.get(reverse('marketplace:vendedor_dashboard'))
-        self.assertEqual(response.status_code, 200)
-
-    def test_fazer_pedido(self):
-        self.client.login(username='comprador@test.com', password='comprador123')
-        response = self.client.post(reverse('marketplace:fazer_pedido', args=[self.produto.id]), {
-            'quantidade': 1
-        })
-        self.assertRedirects(response, reverse('marketplace:comprador_pedidos'))
-        self.assertEqual(Pedido.objects.count(), 1)
-
-    def test_comprador_logout(self):
-        self.client.login(username='comprador@test.com', password='comprador123')
-        response = self.client.get(reverse('marketplace:comprador_logout'))
-        self.assertRedirects(response, reverse('marketplace:landing_page'))
-
-    def test_adicionar_remover_desejo(self):
-        self.client.login(username='comprador@test.com', password='comprador123')
-        self.client.get(reverse('marketplace:adicionar_aos_desejos', args=[self.produto.id]))
-        self.assertIn(self.produto, self.perfil_comprador.desejos.all())
-        self.client.get(reverse('marketplace:remover_dos_desejos', args=[self.produto.id]))
-        self.assertNotIn(self.produto, self.perfil_comprador.desejos.all())
-
-
 class ModelStrTests(TestCase):
     """
     Tests for the __str__ methods of models to ensure correct string representation.
@@ -462,3 +398,67 @@ class ProfileEditFormTests(TestCase):
             'texto': 'Obrigado!'
         })
         self.assertTrue(form.is_valid())
+
+
+class ViewTests(BaseTestCase):
+    """
+    Tests for Django views, covering page access, authentication, and core functionalities.
+    """
+    def test_landing_page_view(self):
+        response = self.client.get(reverse('marketplace:landing_page'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_comprador_login_view_get(self):
+        response = self.client.get(reverse('marketplace:comprador_login'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_comprador_login_view_post(self):
+        response = self.client.post(reverse('marketplace:comprador_login'), {
+            'username': 'comprador@test.com',
+            'password': 'comprador123'
+        })
+        self.assertRedirects(response, reverse('marketplace:pagina_inicial_comprador'))
+
+    def test_comprador_home_requires_login(self):
+        response = self.client.get(reverse('marketplace:pagina_inicial_comprador'))
+        self.assertRedirects(response, '/comprador/login/?next=/comprador/home/')
+
+    def test_comprador_home_authenticated(self):
+        self.client.login(username='comprador@test.com', password='comprador123')
+        response = self.client.get(reverse('marketplace:pagina_inicial_comprador'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_detalhes_produto_view(self):
+        self.client.login(username='comprador@test.com', password='comprador123')
+        response = self.client.get(reverse('marketplace:detalhes_produto', args=[self.produto.id]))
+        self.assertEqual(response.status_code, 200)
+
+    def test_admin_dashboard_access(self):
+        self.client.login(username='admin', password='admin123')
+        response = self.client.get(reverse('marketplace:admin_dashboard'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_vendedor_dashboard_access(self):
+        self.client.login(username='vendedor@test.com', password='vendedor123')
+        response = self.client.get(reverse('marketplace:vendedor_dashboard'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_fazer_pedido(self):
+        self.client.login(username='comprador@test.com', password='comprador123')
+        response = self.client.post(reverse('marketplace:fazer_pedido', args=[self.produto.id]), {
+            'quantidade': 1
+        })
+        self.assertRedirects(response, reverse('marketplace:comprador_pedidos'))
+        self.assertEqual(Pedido.objects.count(), 1)
+
+    def test_comprador_logout(self):
+        self.client.login(username='comprador@test.com', password='comprador123')
+        response = self.client.get(reverse('marketplace:comprador_logout'))
+        self.assertRedirects(response, reverse('marketplace:landing_page'))
+
+    def test_adicionar_remover_desejo(self):
+        self.client.login(username='comprador@test.com', password='comprador123')
+        self.client.get(reverse('marketplace:adicionar_aos_desejos', args=[self.produto.id]))
+        self.assertIn(self.produto, self.perfil_comprador.desejos.all())
+        self.client.get(reverse('marketplace:remover_dos_desejos', args=[self.produto.id]))
+        self.assertNotIn(self.produto, self.perfil_comprador.desejos.all())
