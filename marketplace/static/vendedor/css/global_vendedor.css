@@ -1,0 +1,304 @@
+/* marketplace/static/vendedor/css/global_vendedor.css */
+
+/* Importação de Fontes (Exemplo: Google Fonts - Roboto) */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+/* Reset Básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Ensure html and body take full height */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f4f6f9; /* Fundo padrão para todas as páginas do vendedor */
+    color: black;
+    line-height: 1.6;
+    display: flex; /* Make body a flex container */
+    flex-direction: column; /* Stack children vertically */
+    min-height: 100vh; /* Ocupa pelo menos a altura da viewport */
+    overflow-x: hidden; /* Prevent horizontal scroll on small screens */
+}
+
+/* NEW: This wrapper will grow and push the footer down */
+.site-wrapper-vendedor {
+    display: flex; /* This itself is a flex container for navbar and main content area */
+    flex-grow: 1; /* This makes the wrapper expand vertically */
+    width: 100%; /* Make sure it takes full width */
+}
+
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Wrapper principal para o layout de dashboard (com sidebar) */
+.wrapper { /* This class is now primarily for the main content flex (navbar + content) */
+    display: flex;
+    width: 100%;
+    min-height: 100vh; /* Ocupa pelo menos a altura da viewport */
+}
+
+/* Wrapper específico para páginas de autenticação (login/cadastro) */
+.auth-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    width: 100%;
+    background-color: #e0e6ed; /* Fundo para telas de login/cadastro */
+}
+
+/* Área de Conteúdo Principal (à direita do navbar) */
+.main-content-area {
+    margin-left: 250px; /* Space for the fixed navbar */
+    flex-grow: 1; /* Allows this to expand and take remaining horizontal space */
+    display: flex; /* New: Make it a flex container for topbar and page-content */
+    flex-direction: column; /* Stack its children vertically */
+}
+
+/* Topbar */
+.topbar-vendedor {
+    background-color: #ffffff;
+    padding: 20px 30px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+    display: flex;
+    justify-content: flex-end; /* Alinha o perfil do usuário à direita */
+    align-items: center;
+    border-bottom: 1px solid #e0e0e0;
+    z-index: 999;
+    flex-shrink: 0; /* Prevent topbar from shrinking */
+}
+
+.topbar-vendedor .user-profile {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-weight: 500;
+    color: #555;
+}
+
+.topbar-vendedor .user-profile a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s ease;
+}
+
+.topbar-vendedor .user-profile a:hover {
+    color: #0056b3;
+}
+
+/* Conteúdo da Página */
+.page-content {
+    padding: 30px;
+    flex-grow: 1; /* Allow the actual page content to grow */
+    display: flex;
+    flex-direction: column; /* To make content-card stick to bottom if it's short */
+}
+
+/* Estilos de Mensagens do Django */
+.messages {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 25px;
+}
+
+.messages li {
+    padding: 15px 25px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    font-weight: 500;
+    border: 1px solid transparent;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.messages .success { background-color: #d4edda; color: #155724; border-color: #c3e6cb; }
+.messages .error { background-color: #f8d7da; color: #721c24; border-color: #f5c6cb; }
+.messages .warning { background-color: #fff3cd; color: #856404; border-color: #ffeeba; }
+
+/* Títulos de Seção Comuns */
+.section-title-vendedor {
+    font-size: 2.2em;
+    color: #34495e;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #e0e0e0;
+    font-weight: 700;
+    text-align: left;
+}
+
+/* Estilos de Formulários Comuns */
+.form-group { margin-bottom: 20px; }
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #555;
+    font-size: 0.95em;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"],
+.form-group input[type="number"],
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1em;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    background-color: #fff;
+}
+
+.form-group input[type="text"]:focus, .form-group input[type="email"]:focus,
+.form-group input[type="password"]:focus, .form-group input[type="number"]:focus,
+.form-group textarea:focus, .form-group select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    outline: none;
+}
+
+.form-group input[type="file"] {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background-color: #fff;
+    width: 100%;
+}
+
+.error-message, .errorlist {
+    color: #dc3545;
+    font-size: 0.9em;
+    margin-top: 5px;
+    list-style: none;
+    padding: 0;
+}
+
+/* Botões Genéricos */
+.btn-submit, .btn-cancel, .btn-action, .btn-primary {
+    display: inline-block;
+    padding: 12px 25px;
+    border-radius: 6px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    font-weight: 600;
+    font-size: 1em;
+    text-align: center;
+    border: none;
+}
+
+.btn-submit, .btn-primary { background-color: #28a745; color: white; }
+.btn-submit:hover, .btn-primary:hover { background-color: #218838; }
+.btn-cancel { background-color: #6c757d; color: white; }
+.btn-cancel:hover { background-color: #5a6268; }
+.btn-action { background-color: #007bff; color: white; }
+.btn-action:hover { background-color: #0056b3; }
+
+/* Estilos para o estado vazio (empty-state) */
+.empty-state {
+    text-align: center;
+    padding: 50px 30px;
+    background-color: #ffffff;
+    border: 2px dashed #e0e0e0;
+    border-radius: 12px;
+    margin-top: 40px;
+    color: #666;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    flex-grow: 1; /* Allow empty state to grow if it's the main content */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center content vertically in empty state */
+    align-items: center; /* Center content horizontally in empty state */
+}
+.empty-state .empty-icon { font-size: 3.5em; color: #ccc; margin-bottom: 20px; }
+.empty-state .empty-title { font-size: 1.8em; font-weight: 700; margin-bottom: 15px; color: #555; }
+.empty-state .empty-subtitle { font-size: 1.1em; margin-bottom: 30px; }
+.empty-state .btn-primary { margin-top: 20px; }
+
+/* Estilos para cards ou seções de conteúdo */
+.content-card {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    margin-bottom: 30px;
+    flex-grow: 1; /* Allow content cards to grow */
+    display: flex; /* Make content card a flex container */
+    flex-direction: column; /* Stack its children vertically */
+}
+
+/* NEW: Footer for seller pages */
+.main-footer-vendedor {
+    text-align: center;
+    padding: 25px;
+    background-color: #333; /* Dark background for footer */
+    color: #ccc;
+    font-size: 0.9em;
+    flex-shrink: 0; /* Prevent footer from shrinking */
+    margin-top: auto; /* Push footer to the bottom of its parent (body) */
+}
+
+
+/* Media Queries Globais */
+@media (max-width: 992px) {
+    .navbar-vendedor { width: 220px; }
+    .main-content-area { margin-left: 220px; }
+    .page-content { padding: 25px; }
+    .section-title-vendedor { font-size: 2em; }
+}
+
+@media (max-width: 768px) {
+    .site-wrapper-vendedor {
+        flex-direction: column; /* Stack navbar and main content vertically */
+    }
+    .navbar-vendedor {
+        position: relative;
+        width: 100%;
+        height: auto;
+        padding-top: 15px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        z-index: 1000; /* Ensure navbar is on top */
+    }
+    .navbar-vendedor .logo { padding-bottom: 15px; margin-bottom: 15px; }
+    .navbar-vendedor ul { display: flex; flex-wrap: wrap; justify-content: center; }
+    .navbar-vendedor ul li a { padding: 12px 18px; font-size: 0.9em; }
+    .navbar-vendedor ul li a i { margin-right: 8px; }
+
+    .main-content-area {
+        margin-left: 0; /* Remove fixed margin */
+        padding-top: 0; /* Reset padding-top */
+        width: 100%; /* Take full width */
+    }
+    .topbar-vendedor { justify-content: center; padding: 15px 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .page-content { padding: 20px; }
+    .section-title-vendedor { font-size: 1.8em; text-align: center; margin-bottom: 25px; }
+    .content-card { padding: 25px; }
+    .auth-wrapper {
+        padding: 20px;
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar-vendedor ul li a { padding: 10px 12px; font-size: 0.85em; }
+    .topbar-vendedor .user-profile { font-size: 0.9em; gap: 10px; }
+    .page-content { padding: 15px; }
+    .section-title-vendedor { font-size: 1.6em; }
+    .btn-submit, .btn-cancel, .btn-action, .btn-primary { padding: 10px 18px; font-size: 0.9em; }
+    .empty-state { padding: 30px 15px; }
+    .empty-state .empty-title { font-size: 1.4em; }
+    .empty-state .empty-icon { font-size: 3em; }
+}

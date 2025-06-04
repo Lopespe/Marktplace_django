@@ -1,0 +1,205 @@
+{% extends 'comprador/base_comprador.html' %}
+{% load static %}
+
+{% block title %}{{ produto.nome }} - UniMarket{% endblock title %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'comprador/css/detalhes_produto_comprador.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+    <div class="produto-detalhe-wrapper">
+        {% if produto %}
+            <div class="contextual-nav">
+                <a href="{{ request.META.HTTP_REFERER|default:request.build_absolute_uri }}" class="link-voltar-contextual">
+                    <span class="seta-voltar">&larr;</span> Voltar
+                </a>
+                <div class="produto-breadcrumb">
+                    <a href="{% url 'marketplace:pagina_inicial_comprador' %}">Início</a> &gt; 
+                    <span>{{ produto.nome }}</span>
+                </div>
+            </div>
+
+            <h1>{{ produto.nome }}</h1>
+            
+            <div class="produto-detalhe-layout">
+                <div class="produto-imagem-coluna">
+                    {% if produto.imagem %}
+                        <img src="{{ produto.imagem.url }}" alt="{{ produto.nome }}" class="imagem-principal-produto">
+                    {% else %}
+                        <img src="{% static 'comprador/image/placeholder_produto_grande.png' %}" alt="{{ produto.nome }}" class="imagem-principal-produto">
+                    {% endif %}
+                </div>
+
+                <div class="produto-info-coluna">
+                    <p class="detalhe-vendedor">Vendido por: <strong>{{ produto.vendedor.first_name|default:produto.vendedor.username }}</strong></p>
+                    <p class="detalhe-preco">R$ {{ produto.preco|floatformat:2 }}</p>
+                    <p class="detalhe-estoque">Estoque: {{ produto.estoque }} unidade(s)</p>
+                    
+                    {# Container principal para todas as ações de compra e desejos #}
+                    <div class="produto-acoes-bloco">
+                        <form action="{% url 'marketplace:fazer_pedido' produto_id=produto.id %}" method="POST" class="form-add-carrinho">
+                            {% csrf_token %}
+                            <div class="quantidade-grupo">
+                                <label for="quantidade-{{ produto.id }}">Qtd:</label>
+                                <input type="number" id="quantidade-{{ produto.id }}" name="quantidade" value="1" min="1" max="{{ produto.estoque }}" class="input-quantidade" {% if produto.estoque == 0 %}disabled{% endif %}>
+                            </div>
+                            <button type="submit" class="btn-comprar-detalhes" {% if produto.estoque == 0 %}disabled{% endif %}>
+                                {% if produto.estoque == 0 %}Esgotado{% else %}Fazer Pedido{% endif %}
+                            </button>
+                        </form>
+                        
+                        {# Botão de Desejos ao lado #}
+                        {% if is_favorited %}
+                            <a href="{% url 'marketplace:remover_dos_desejos' produto_id=produto.id %}" class="btn-wishlist-detalhe active" title="Remover dos Desejos">
+                                <img src="{% static 'comprador/image/bookmark_active.png' %}" alt="Favorito"> 
+                                <span>Remover dos Desejos</span>
+                            </a>
+                        {% else %}
+                            <a href="{% url 'marketplace:adicionar_aos_desejos' produto_id=produto.id %}" class="btn-wishlist-detalhe" title="Adicionar aos Desejos">
+                                <img src="{% static 'comprador/image/bookmark.png' %}" alt="Não Favorito">
+                                <span>Adicionar aos Desejos</span>
+                            </a>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="produto-descricao-detalhada">
+                        <h3>Descrição do Produto</h3>
+                        <p>{{ produto.descricao|linebreaksbr }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <section class="reviews-section">
+                <h2 class="section-title-reviews">Avaliações e Comentários</h2>
+                {% if user.is_authenticated %}
+                <div class="review-form-container">
+                    <h3>Deixe sua avaliação:</h3>
+                    {% if user_has_reviewed %}
+                        <p class="info-message">Você já avaliou este produto. Obrigado!</p>
+                    {% else %}
+                        <form method="POST" action="{% url 'marketplace:avaliar_produto' produto_id=produto.id %}" class="form-submit-review">
+                            {% csrf_token %}
+                            <div class="rating-stars">
+                                <span>Sua nota:</span>
+                                <div class="star-input">
+                                    {# Hidden input for the rating value #}
+                                    <input type="hidden" name="nota" id="id_nota" value="{{ avaliacao_form.nota.value|default:'0' }}">
+                                    
+                                    {# Star labels for visual interaction #}
+                                    <label for="star5" class="star-label" data-value="5">☆</label>
+                                    <label for="star4" class="star-label" data-value="4">☆</label>
+                                    <label for="star3" class="star-label" data-value="3">☆</label>
+                                    <label for="star2" class="star-label" data-value="2">☆</label>
+                                    <label for="star1" class="star-label" data-value="1">☆</label>
+                                </div>
+                                {% if avaliacao_form.nota.errors %}
+                                    <div class="error-message">{{ avaliacao_form.nota.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="comment-field">
+                                <label for="{{ avaliacao_form.comentario.id_for_label }}">Seu comentário:</label>
+                                {{ avaliacao_form.comentario }}
+                                {% if avaliacao_form.comentario.errors %}
+                                    <div class="error-message">{{ avaliacao_form.comentario.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <button type="submit" class="btn-submit-review">Enviar Avaliação</button>
+                        </form>
+                    {% endif %}
+                </div>
+                {% else %}
+                    <p><a href="{% url 'marketplace:comprador_login' %}?next={{ request.path }}">Faça login</a> para deixar uma avaliação.</p>
+                {% endif %}
+                <div class="existing-reviews">
+                    <h3>O que outros compradores disseram:</h3>
+                    {% if avaliacoes %} 
+                        {% for review in avaliacoes %}
+                            <div class="review-item">
+                                <p class="review-author"><strong>{{ review.cliente.first_name|default:review.cliente.username }}</strong> - 
+                                    <span class="review-rating">
+                                        {% for i in ""|ljust:review.nota %}★{% endfor %}{% for i in ""|ljust:5|add:"-"|add:review.nota %}☆{% endfor %}
+                                    </span>
+                                </p>
+                                <p class="review-text">{{ review.comentario }}</p>
+                                <p class="review-date"><small>{{ review.data_avaliacao|date:"d/m/Y H:i" }}</small></p>
+                                {% if review.resposta_do_vendedor %}
+                                    <div class="seller-response">
+                                        <p><strong>Resposta do Vendedor ({{ review.resposta_do_vendedor.vendedor.first_name|default:review.resposta_do_vendedor.vendedor.username }}):</strong></p>
+                                        <p>{{ review.resposta_do_vendedor.texto }}</p>
+                                        <p class="response-date"><small>Respondido em: {{ review.resposta_do_vendedor.data_resposta|date:"d/m/Y H:i" }}</small></p>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p>Este produto ainda não tem avaliações. Seja o primeiro!</p>
+                    {% endif %}
+                </div>
+            </section>
+        {% else %}
+             <div class="no-results-container" style="text-align:center; padding: 30px;">
+                <p class="no-results-message">Produto não encontrado.</p>
+                <div class="no-results-actions">
+                    <a href="{% url 'marketplace:pagina_inicial_comprador' %}" class="btn-voltar-busca">Voltar para Início</a>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock content %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const starLabels = document.querySelectorAll('.star-input .star-label');
+        const hiddenRatingInput = document.getElementById('id_nota');
+
+        starLabels.forEach(label => {
+            label.addEventListener('click', function() {
+                const value = this.dataset.value;
+                hiddenRatingInput.value = value;
+                updateStarDisplay(value);
+            });
+
+            label.addEventListener('mouseover', function() {
+                const value = this.dataset.value;
+                highlightStars(value);
+            });
+
+            label.addEventListener('mouseout', function() {
+                // Restore based on current hidden input value
+                updateStarDisplay(hiddenRatingInput.value);
+            });
+        });
+
+        function highlightStars(value) {
+            starLabels.forEach(label => {
+                if (parseInt(label.dataset.value) <= value) {
+                    label.classList.add('hover-highlight');
+                } else {
+                    label.classList.remove('hover-highlight');
+                }
+            });
+        }
+
+        function updateStarDisplay(selectedValue) {
+            starLabels.forEach(label => {
+                label.classList.remove('hover-highlight'); // Remove hover highlights first
+                if (parseInt(label.dataset.value) <= selectedValue) {
+                    label.textContent = '★'; // Filled star
+                } else {
+                    label.textContent = '☆'; // Empty star
+                }
+            });
+        }
+
+        // Initialize star display based on any pre-filled value (e.g., from validation error)
+        if (hiddenRatingInput.value && parseInt(hiddenRatingInput.value) > 0) {
+            updateStarDisplay(hiddenRatingInput.value);
+        } else {
+            // Set default empty state if no value or 0
+            updateStarDisplay(0); 
+        }
+    });
+</script>
+{% endblock extra_js %}

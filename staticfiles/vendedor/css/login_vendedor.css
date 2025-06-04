@@ -1,0 +1,248 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    overflow: hidden;
+    background-color: #f4f6f8;
+}
+
+.container-login-vendedor {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+.left-side-login-vendedor {
+    background-color: #c8f7b8;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 30px;
+    box-sizing: border-box;
+    overflow-y: auto;
+}
+
+.left-side-login-vendedor form {
+    width: 100%;
+    max-width: 380px;
+    background-color: #ffffff;
+    padding: 30px 35px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.login-title {
+    text-align: center;
+    color: #333;
+    margin-top: 0;
+    margin-bottom: 25px;
+    font-size: 1.8em;
+    font-weight: 600;
+}
+
+.right-side-login-vendedor {
+    background-color: #1a1d26;
+    color: white;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow-y: auto;
+}
+
+.welcome-text {
+    font-size: 2.2rem;
+    font-style: italic;
+    font-weight: bold;
+    line-height: 1.3;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.left-side-login-vendedor input[type="text"],
+.left-side-login-vendedor input[type="password"] {
+    width: 100%;
+    padding: 14px 18px;
+    border: 1px solid #dde1e6;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    color: #333;
+    font-size: 0.95em;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.left-side-login-vendedor input[type="text"]:focus,
+.left-side-login-vendedor input[type="password"]:focus {
+    outline: none;
+    border-color: #619559;
+    box-shadow: 0 0 0 2px rgba(97, 149, 89, 0.2);
+}
+
+.left-side-login-vendedor input::placeholder {
+    color: #aaa;
+    font-style: italic;
+}
+
+.btn-login {
+    width: 100%;
+    padding: 14px 20px;
+    background-color: #619559;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1.05em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-login:hover {
+    background-color: #507a48;
+}
+
+.register-link {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 0.9em;
+    color: #333;
+}
+.register-link a {
+    color: #619559;
+    text-decoration: none;
+    font-weight: 600;
+}
+.register-link a:hover {
+    text-decoration: underline;
+}
+
+.messages {
+    list-style-type: none;
+    padding: 0;
+    margin: 0 0 15px 0;
+}
+.message-error {
+    color: #D8000C;
+    background-color: #FFD2D2;
+    border: 1px solid #D8000C;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 0.9em;
+    text-align: center;
+}
+.message-success {
+    color: #155724;
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 0.9em;
+    text-align: center;
+}
+
+
+.botao-voltar-login {
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    width: 48px;
+    height: 48px;
+    background-color: rgba(230, 230, 230, 0.85);
+    color: #2c2f33;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease, color 0.3s ease;
+    z-index: 10;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+}
+
+.botao-voltar-login:hover {
+    background-color: rgba(215, 215, 215, 0.95);
+    color: #000000;
+    transform: scale(1.03);
+    box-shadow: 0 3px 6px rgba(0,0,0,0.12);
+}
+
+@media (max-width: 768px) {
+    html, body {
+        overflow: auto;
+        height: auto;
+    }
+    .container-login-vendedor {
+        flex-direction: column-reverse;
+        height: auto;
+    }
+
+    .left-side-login-vendedor, .right-side-login-vendedor {
+        flex: none;
+        width: 100%;
+        min-height: 0;
+        padding: 30px 20px;
+        overflow-y: visible;
+    }
+    .right-side-login-vendedor {
+        min-height: 200px;
+    }
+    .welcome-text {
+        font-size: 1.8rem;
+    }
+    .login-title {
+        font-size: 1.6em;
+        margin-bottom: 20px;
+    }
+    .botao-voltar-login {
+       top: 20px;
+       left: 20px;
+       width: 40px;
+       height: 40px;
+       font-size: 22px;
+   }
+}
+
+@media (max-width: 480px) {
+    .left-side-login-vendedor form {
+        padding: 20px 25px;
+    }
+    .welcome-text {
+        font-size: 1.5rem;
+    }
+    .login-title {
+        font-size: 1.4em;
+    }
+    .left-side-login-vendedor input[type="text"],
+    .left-side-login-vendedor input[type="password"] {
+        padding: 12px 15px;
+        font-size: 0.9em;
+    }
+    .btn-login {
+        padding: 12px 15px;
+        font-size: 0.95em;
+    }
+    .register-link {
+        font-size: 0.75em;
+    }
+     .botao-voltar-login {
+       top: 15px;
+       left: 15px;
+       width: 38px;
+       height: 38px;
+       font-size: 20px;
+   }
+}

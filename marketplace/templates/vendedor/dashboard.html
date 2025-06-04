@@ -1,0 +1,114 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Vendedor</title>
+    <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="{% static 'vendedor/css/global_vendedor.css' %}"> {# Global CSS #}
+    <link rel="stylesheet" href="{% static 'vendedor/css/navbar_vendedor.css' %}"> {# Navbar CSS #}
+    <link rel="stylesheet" href="{% static 'vendedor/css/dashboard_vendedor.css' %}"> {# Específico da página #}
+</head>
+<body>
+    <div class="wrapper">
+        {% include 'vendedor/navbar_vendedor.html' %}
+
+        <div class="main-content-area">
+            <header class="topbar-vendedor">
+                <div class="user-profile">
+                    <span>Olá, {{ request.user.username }}!</span>
+                    <a href="#">Minha Conta</a>
+                </div>
+            </header>
+
+            <main class="page-content">
+                {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %}
+                            <li class="message {{ message.tags }}">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                <h2 class="section-title-vendedor">Dashboard</h2>
+
+                <div class="dashboard-grid">
+                    <div class="card card-produto-ativo">
+                        <h3>Produtos Ativos</h3>
+                        <p>{{ num_produtos_ativos }}</p>
+                    </div>
+                    <div class="card card-pedidos-pendentes">
+                        <h3>Pedidos Pendentes</h3>
+                        <p>{{ num_pedidos_pendentes }}</p>
+                    </div>
+                    <div class="card card-vendas-mes">
+                        <h3>Vendas Este Mês</h3>
+                        <p>R$ {{ total_vendas_mes_atual|floatformat:2 }}</p>
+                    </div>
+                    <div class="card card-media-avaliacoes">
+                        <h3>Média de Avaliações</h3>
+                        <p>{{ media_avaliacoes_produtos|floatformat:1 }} <i class="fas fa-star"></i></p>
+                    </div>
+                </div>
+
+                <div class="chart-section content-card">
+                    <h3>Vendas nos Últimos 6 Meses</h3>
+                    <canvas id="salesChartVendedor"></canvas>
+                </div>
+
+                <div class="recent-reviews-section content-card">
+                    <h3>Avaliações Recentes</h3>
+                    {% if recent_avaliacoes %}
+                        <div class="reviews-list">
+                            {% for avaliacao in recent_avaliacoes %}
+                                <div class="review-item">
+                                    <p><strong>{{ avaliacao.cliente.username }}</strong> sobre {{ avaliacao.produto.nome }}</p>
+                                    <p>Nota: {{ avaliacao.nota }} <i class="fas fa-star"></i></p>
+                                    <p class="review-comment">{{ avaliacao.comentario }}</p>
+                                    <p class="review-date">{{ avaliacao.data_avaliacao|date:"d/m/Y H:i" }}</p>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p>Nenhuma avaliação recente para exibir.</p>
+                    {% endif %}
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="{% static 'vendedor/js/dashboard_vendedor.js' %}"></script>
+    <script type="text/javascript">
+        var chartLabels = JSON.parse(document.getElementById('vendedor-chart-labels').textContent);
+        var chartData = JSON.parse(document.getElementById('vendedor-chart-data').textContent);
+
+        var ctx = document.getElementById('salesChartVendedor').getContext('2d');
+        var salesChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: chartLabels,
+                datasets: [{
+                    label: 'Total de Vendas (R$)',
+                    data: chartData,
+                    backgroundColor: 'rgba(0, 123, 255, 0.2)',
+                    borderColor: 'rgba(0, 123, 255, 1)',
+                    borderWidth: 1,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+    <script id="vendedor-chart-labels" type="application/json">{{ chart_labels|json_script }}</script>
+    <script id="vendedor-chart-data" type="application/json">{{ chart_data|json_script }}</script>
+</body>
+</html>

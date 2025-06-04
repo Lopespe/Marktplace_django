@@ -1,0 +1,66 @@
+.container {
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.reporte-box {
+  display: flex;
+  padding: 25px;
+  border-radius: 8px;
+  gap: 25px;
+}
+
+.imagem-reporte {
+  width: 220px;
+  height: 180px;
+  background-color: #999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #000;
+  font-weight: bold;
+  overflow: hidden;
+}
+
+.imagem-reporte img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.placeholder {
+  padding: 10px;
+  text-align: center;
+}
+
+.detalhes {
+  flex: 1;
+}
+
+.detalhes p {
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+
+.detalhes .titulo {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.acoes {
+  margin-top: 20px;
+  display: flex;
+  gap: 20px;
+}
+
+.bottom-links {
+  margin-top: 10px;
+  display: flex;
+  justify-content: end;
+  padding: 0;
+  padding-right: 20px;
+}

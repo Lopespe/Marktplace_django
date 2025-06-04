@@ -1,0 +1,289 @@
+/* marketplace/static/accounts/css/cadastro_comprador.css */
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Arial", sans-serif;
+  background-color: #f4f6f8;
+  line-height: 1.6;
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+  overflow: hidden; /* Previne scroll no body se o conteúdo couber */
+}
+
+.container-cadastro {
+  display: flex;
+  height: 100%; /* Ocupa toda a altura do body */
+  width: 100%; /* Ocupa toda a largura do body */
+}
+
+.left-side-cadastro {
+  background-color: #c8e6c9; /* Um verde claro para cadastro */
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 30px 20px; /* Padding ajustado */
+  box-sizing: border-box;
+  overflow-y: auto; /* Permite rolagem se o formulário for muito grande */
+}
+
+.left-side-cadastro form {
+  width: 100%;
+  max-width: 400px; /* Formulário de cadastro pode ser um pouco mais largo */
+  background-color: #ffffff;
+  padding: 30px 35px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.cadastro-title {
+  text-align: center;
+  color: #333;
+  margin-top: 0;
+  margin-bottom: 25px;
+  font-size: 1.8em;
+  font-weight: 600;
+}
+
+.right-side-cadastro {
+  background-color: #3e6943; /* Verde escuro temático */
+  color: white;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+  box-sizing: border-box;
+  overflow-y: auto; /* Permite rolagem se o texto for muito grande */
+}
+
+.welcome-text-cadastro {
+  font-size: 2rem; /* Ajuste conforme necessário */
+  font-style: italic;
+  font-weight: bold;
+  line-height: 1.4; /* Ajustado para o novo texto */
+}
+
+.input-group-cadastro {
+  margin-bottom: 18px; /* Espaçamento entre inputs */
+}
+
+input[type="text"],
+input[type="email"], 
+input[type="number"], /* Adicionado para o campo idade */
+input[type="password"] {
+  width: 100%;
+  padding: 14px 18px;
+  border: 1px solid #dde1e6;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  color: #333;
+  font-size: 0.95em;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="number"]:focus,
+input[type="password"]:focus {
+  outline: none;
+  border-color: #4e7a53; /* Verde escuro para foco */
+  box-shadow: 0 0 0 2px rgba(78, 122, 83, 0.2);
+}
+
+input::placeholder {
+  color: #aaa;
+  font-style: italic;
+}
+
+.btn-cadastrar {
+  width: 100%;
+  padding: 14px 20px;
+  background-color: #4e7a53; /* Verde escuro consistente */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1.05em;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+}
+
+.btn-cadastrar:hover {
+  background-color: #3e6943;
+}
+
+.login-link-cadastro {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 0.9em;
+  color: #333;
+}
+.login-link-cadastro a {
+  color: #3e6943;
+  text-decoration: none;
+  font-weight: 600;
+}
+.login-link-cadastro a:hover {
+  text-decoration: underline;
+}
+
+.messages {
+  list-style-type: none;
+  padding: 0;
+  margin: 0 0 15px 0;
+  text-align: center;
+}
+.message-error {
+  color: #d8000c;
+  background-color: #ffd2d2;
+  border: 1px solid #d8000c;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 0.9em;
+}
+.message-success {
+  color: #2f855a;
+  background-color: #e6fffa;
+  border: 1px solid #38a169;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 0.9em;
+}
+
+.botao-voltar-cadastro {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  width: 48px;
+  height: 48px;
+  background-color: rgba(230, 230, 230, 0.85);
+  color: #2c2f33;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1;
+  transition: background-color 0.3s ease, transform 0.2s ease,
+    box-shadow 0.3s ease, color 0.3s ease;
+  z-index: 10;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.botao-voltar-cadastro:hover {
+  background-color: rgba(215, 215, 215, 0.95);
+  color: #000000;
+  transform: scale(1.03);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.12);
+}
+
+@media (max-width: 768px) {
+  html,
+  body {
+    overflow-y: auto;
+    height: auto;
+  }
+  .container-cadastro {
+    flex-direction: column-reverse;
+    height: auto;
+  }
+
+  .left-side-cadastro,
+  .right-side-cadastro {
+    flex: none;
+    width: 100%;
+    min-height: 0;
+    height: auto;
+  }
+  .left-side-cadastro {
+    padding: 30px 20px;
+  }
+  .right-side-cadastro {
+    padding: 40px 20px;
+    min-height: 200px;
+  }
+  .welcome-text-cadastro {
+    font-size: 1.8rem;
+  }
+  .cadastro-title {
+    font-size: 1.6em;
+    margin-bottom: 20px;
+  }
+  .botao-voltar-cadastro {
+    top: 20px;
+    left: 20px;
+    width: 40px;
+    height: 40px;
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 480px) {
+  .left-side-cadastro form {
+    padding: 20px 25px;
+  }
+  .welcome-text-cadastro {
+    font-size: 1.5rem;
+  }
+  .cadastro-title {
+    font-size: 1.4em;
+  }
+  input[type="text"],
+  input[type="email"],
+  input[type="number"],
+  input[type="password"] {
+    padding: 12px 15px;
+    font-size: 0.9em;
+  }
+  .btn-cadastrar {
+    padding: 12px 15px;
+    font-size: 0.95em;
+  }
+  .login-link-cadastro {
+    font-size: 0.85em;
+  }
+  .botao-voltar-cadastro {
+    top: 15px;
+    left: 15px;
+    width: 38px;
+    height: 38px;
+    font-size: 20px;
+  }
+}
+
+/* Estilo básico para listas de erro do formulário */
+.errorlist {
+  list-style-type: none;
+  padding: 0;
+  margin: 5px 0 0 0;
+  font-size: 0.85em;
+  color: red;
+}
+.errorlist li {
+  margin-bottom: 3px;
+}
+.form-errors {
+  /* Para erros não específicos de campo */
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 10px;
+  border: 1px solid #f5c6cb;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  list-style-type: none; /* Garante que não haja marcadores de lista */
+}
+.form-errors li {
+  margin-bottom: 3px;
+}

@@ -1,0 +1,76 @@
+/* Estilos para o formulário de Adicionar/Editar Produto */
+
+.product-form-container { /* Novo contêiner para o formulário específico */
+  max-width: 700px;
+  margin: 0 auto;
+  /* Usa a classe content-card do base_vendedor.css */
+  /* background-color, padding, border-radius, box-shadow vêm de content-card */
+}
+
+.produto-form .form-group {
+  margin-bottom: 25px;
+}
+
+.produto-form .form-group label {
+  /* Estilo do label já no base_vendedor.css */
+}
+
+.produto-form .form-group input[type="text"],
+.produto-form .form-group input[type="number"],
+.produto-form .form-group textarea,
+.produto-form .form-group input[type="file"] {
+  /* Estilo do input já no base_vendedor.css */
+}
+
+.produto-form .form-group textarea {
+  min-height: 150px;
+  resize: vertical;
+}
+
+.current-product-image {
+  max-width: 250px; /* Tamanho maior para visualização */
+  height: auto;
+  display: block;
+  margin-top: 15px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.produto-form .form-actions {
+  display: flex;
+  justify-content: flex-end; /* Alinha botões à direita */
+  gap: 15px; /* Espaço entre os botões */
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #f0f0f0; /* Separador */
+}
+
+.produto-form .btn-submit {
+  background-color: #28a745; /* Verde para salvar */
+}
+.produto-form .btn-submit:hover {
+  background-color: #218838;
+}
+
+.produto-form .btn-cancel {
+  background-color: #6c757d; /* Cinza para cancelar */
+}
+.produto-form .btn-cancel:hover {
+  background-color: #5a6268;
+}
+
+/* Media Queries */
+@media (max-width: 600px) {
+  .product-form-container {
+      padding: 20px;
+  }
+  .produto-form .form-actions {
+      flex-direction: column;
+      gap: 10px;
+  }
+  .produto-form .btn-submit,
+  .produto-form .btn-cancel {
+      width: 100%;
+  }
+}

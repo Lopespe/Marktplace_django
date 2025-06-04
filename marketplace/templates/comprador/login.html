@@ -1,0 +1,45 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Login - Comprador</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'comprador/css/login_comprador.css' %}">
+</head>
+<body>
+  <a href="{% url 'marketplace:landing_page' %}" class="botao-voltar-login" title="Voltar para a Página Inicial">
+    &lt;
+  </a>
+
+  <div class="container">
+    <div class="left-side">
+      <form method="POST" action="{% url 'marketplace:comprador_login' %}">
+        {% csrf_token %}
+        <h2 class="login-title">Faça Login</h2>
+
+        <div class="input-group">
+          <input type="text" name="username" placeholder="Insira seu Login (Email)" required>
+        </div>
+        <div class="input-group">
+          <input type="password" name="password" placeholder="Insira sua Senha" required>
+        </div>
+        
+        <div class="forgot-password-link">
+            {# LINK ATUALIZADO AQUI #}
+            <a href="{% url 'marketplace:password_reset_request' %}">Esqueci minha senha</a>
+        </div>
+        
+        <button type="submit" class="btn-login">Entrar</button>
+      </form>
+      
+      <div class="register-link">
+        <p>Não tem uma conta? <a href="{% url 'marketplace:comprador_cadastro' %}">Cadastre-se</a></p>
+      </div>
+    </div>
+    <div class="right-side">
+      <span class="welcome-text">Seja<br>Bem<br>Vindo<br>De<br>Volta<br>às<br>Compras!</span>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,47 @@
+.container {
+  padding: 20px;
+  max-width: 500px;
+  margin: auto;
+}
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+label {
+  display: block;
+}
+
+input[type="text"],
+input[type="email"] {
+  width: 100%;
+  padding: 5px;
+  background: none;
+  border: none;
+  outline: none;
+  border-bottom: 1px solid white;
+  color: white;
+  font-family: monospace;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 30px;
+}
+.buttons a,
+.buttons input[type="submit"] {
+  color: white;
+  background: none;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  text-decoration: underline;
+  font-family: monospace;
+}

@@ -1,0 +1,80 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Cadastro - Vendedor UniMarket</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'vendedor/css/cadastro_vendedor.css' %}">
+</head>
+
+<body>
+  <a href="{% url 'marketplace:landing_page' %}" class="botao-voltar-cadastro" title="Voltar para a Página Inicial">
+    &lt; </a>
+  <div class="container-cadastro-vendedor">
+    <div class="form-container-vendedor">
+      <form method="POST" action="{% url 'marketplace:vendedor_cadastro' %}">
+        {% csrf_token %}
+        <h2>Crie sua Conta de Vendedor</h2>
+
+        {% if messages %}
+        <ul class="messages">
+          {% for message in messages %}
+          <li class="{{ message.tags }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+
+        {% if form.non_field_errors %}
+        <ul class="form-errors">
+          {% for error in form.non_field_errors %}
+          <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+
+        <div class="input-group">
+          {{ form.nome }}
+          {{ form.nome.errors }}
+        </div>
+        <div class="input-group">
+          {{ form.idade }}
+          {{ form.idade.errors }}
+        </div>
+        <div class="input-group">
+          {{ form.cpf }}
+          {{ form.cpf.errors }}
+        </div>
+        <div class="input-group">
+          {{ form.curso }}
+          {{ form.curso.errors }}
+        </div>
+        <div class="input-group">
+          {{ form.ra }}
+          {{ form.ra.errors }}
+        </div>
+        <div class="input-group">
+          {{ form.email }}
+          {{ form.email.errors }}
+        </div>
+        <div class="input-group">
+          {{ form.senha }}
+          {{ form.senha.errors }}
+        </div>
+        <div class="input-group">
+          {{ form.confirmar_senha }}
+          {{ form.confirmar_senha.errors }}
+        </div>
+
+        <button type="submit">Cadastrar como Vendedor</button>
+      </form>
+      <p>Já tem uma conta? <a href="{% url 'marketplace:vendedor_login' %}">Faça Login</a></p>
+    </div>
+    <div class="decorative-side-vendedor">
+      <span>Venda<br>Seus<br>Produtos<br>na Uni!</span>
+    </div>
+  </div>
+</body>
+
+</html>

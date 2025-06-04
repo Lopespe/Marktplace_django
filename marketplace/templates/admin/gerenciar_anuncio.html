@@ -1,0 +1,221 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Gerenciar Anúncio - {{ anuncio.nome }}</title>
+  <link rel="stylesheet" href="{% static 'admin/css/default_page.css' %}">
+  <link rel="stylesheet" href="{% static 'admin/css/navbar.css' %}">
+  <link rel="stylesheet" href="{% static 'admin/css/gerenciar_usuario.css' %}"> {/* Mantido, mas considere
+  renomear/criar um específico se os estilos divergirem muito */}
+  <style>
+    .anuncio-detalhes {
+      padding: 20px;
+      background-color: #333;
+      border-radius: 8px;
+      margin-top: 20px;
+    }
+
+    .anuncio-detalhes img.preview {
+      max-width: 200px;
+      height: auto;
+      border-radius: 4px;
+      margin-bottom: 15px;
+      display: block;
+    }
+
+    .anuncio-detalhes p {
+      margin-bottom: 10px;
+    }
+
+    .form-field-container {
+      margin-bottom: 15px;
+    }
+
+    .form-field-container label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    .form-field-container input[type="text"],
+    .form-field-container input[type="number"],
+    .form-field-container input[type="file"],
+    .form-field-container textarea,
+    .form-field-container ul.errorlist+input,
+    .form-field-container ul.errorlist+select,
+    .form-field-container ul.errorlist+textarea {
+      width: calc(100% - 18px);
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background-color: #444;
+      color: #fff;
+      margin-top: 3px;
+    }
+
+    .form-field-container textarea {
+      min-height: 80px;
+    }
+
+    ul.errorlist {
+      list-style-type: none;
+      padding: 0;
+      margin: 5px 0 0 0;
+      font-size: 0.85em;
+      color: red;
+    }
+
+    ul.errorlist li {
+      margin-bottom: 3px;
+    }
+
+    .buttons input[type="submit"],
+    .buttons a {
+      padding: 10px 15px;
+      margin-right: 10px;
+      text-decoration: none;
+      border-radius: 4px;
+      font-weight: bold;
+    }
+
+    .btn-danger {
+      background-color: #dc3545;
+      color: white;
+      border: none;
+    }
+
+    .btn-secondary {
+      background-color: #6c757d;
+      color: white;
+    }
+
+    /* Estilos para as mensagens */
+    ul.messages {
+      list-style-type: none;
+      padding: 0;
+      margin: 0 0 15px 0;
+    }
+
+    .message-item {
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 4px;
+      color: white;
+      text-align: center;
+      border: 1px solid transparent;
+    }
+
+    .message-success {
+      background-color: #28a745;
+      border-color: #1e7e34;
+    }
+
+    .message-error {
+      background-color: #dc3545;
+      border-color: #b02a37;
+    }
+
+    .message-warning {
+      background-color: #ffc107;
+      color: #333;
+      border-color: #d39e00;
+    }
+
+    .message-info {
+      background-color: #17a2b8;
+      border-color: #117a8b;
+    }
+
+    .message-default {
+      background-color: #6c757d;
+      border-color: #545b62;
+    }
+  </style>
+</head>
+
+<body>
+  {% include 'admin/navbar.html' %}
+  <div class="container">
+    <h1>Gerenciar Anúncio: {{ anuncio.nome }}</h1>
+
+    {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+      {% if message.tags == 'success' %}
+      <li class="message-item message-success">{{ message }}</li>
+      {% elif message.tags == 'error' %}
+      <li class="message-item message-error">{{ message }}</li>
+      {% elif message.tags == 'warning' %}
+      <li class="message-item message-warning">{{ message }}</li>
+      {% elif message.tags == 'info' %}
+      <li class="message-item message-info">{{ message }}</li>
+      {% else %}
+      <li class="message-item message-default {{ message.tags }}">{{ message }}</li>
+      {% endif %}
+      {% endfor %}
+    </ul>
+    {% endif %}
+
+    <div class="anuncio-detalhes">
+      <p><strong>Vendedor:</strong> {{ anuncio.vendedor.username }} (ID: {{ anuncio.vendedor.id }})</p>
+      <p><strong>Criado em:</strong> {{ anuncio.criado_em|date:"d/m/Y H:i" }}</p>
+      {% if anuncio.imagem %}
+      <p><strong>Imagem Atual:</strong></p>
+      <img src="{{ anuncio.imagem.url }}" alt="{{ anuncio.nome }}" class="preview">
+      <p><small>Para alterar a imagem, selecione um novo arquivo abaixo. Se nenhum arquivo for selecionado, a imagem
+          atual será mantida.</small></p>
+      {% else %}
+      <p>Sem imagem cadastrada.</p>
+      {% endif %}
+
+      <form method="POST" enctype="multipart/form-data"
+        action="{% url 'marketplace:admin_gerenciar_anuncio' produto_id=anuncio.id %}">
+        {% csrf_token %}
+
+        {{ form.non_field_errors }}
+
+        <div class="form-field-container">
+          {{ form.nome.label_tag }}
+          {{ form.nome }}
+          {{ form.nome.errors }}
+        </div>
+        <div class="form-field-container">
+          {{ form.descricao.label_tag }}
+          {{ form.descricao }}
+          {{ form.descricao.errors }}
+        </div>
+        <div class="form-field-container">
+          {{ form.preco.label_tag }}
+          {{ form.preco }}
+          {{ form.preco.errors }}
+        </div>
+        <div class="form-field-container">
+          {{ form.estoque.label_tag }}
+          {{ form.estoque }}
+          {{ form.estoque.errors }}
+        </div>
+        <div class="form-field-container">
+          {{ form.imagem.label_tag }}
+          {{ form.imagem }}
+          {{ form.imagem.errors }}
+          {% if form.imagem.help_text %}<small>{{ form.imagem.help_text }}</small>{% endif %}
+        </div>
+
+        <div class="buttons" style="margin-top: 20px;">
+          <input type="submit" value="Salvar Alterações">
+          <a href="{% url 'marketplace:admin_anuncios' %}" class="btn-secondary">Cancelar / Voltar</a>
+        </div>
+      </form>
+    </div>
+
+    <div style="margin-top: 30px; border-top: 1px solid #444; padding-top: 20px;">
+      <a href="{% url 'marketplace:admin_excluir_anuncio' produto_id=anuncio.id %}" class="btn btn-danger">Excluir
+        Anúncio</a>
+    </div>
+
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Recuperar Senha</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'comprador/css/esquece_senha_comprador.css' %}"> {# Link para seu CSS #}
+</head>
+<body>
+  <a href="{% url 'marketplace:comprador_login' %}" class="botao-voltar-reset" title="Voltar para o Login">
+    &lt;
+  </a>
+
+  <div class="container-reset">
+    <div class="left-side-reset">
+      <form method="POST"> {# O action é gerenciado pela PasswordResetView do Django #}
+        {% csrf_token %}
+        <h2 class="reset-title">Recuperar Senha</h2>
+        
+        <p class="reset-instructions">
+          Esqueceu sua senha? Digite seu endereço de email abaixo, e nós enviaremos instruções para configurar uma nova senha.
+        </p>
+
+        {# Exibição de erros do formulário, se houver #}
+        {% if form.email.errors %}
+            {% for error in form.email.errors %}
+                <p class="form-error">{{ error }}</p>
+            {% endfor %}
+        {% endif %}
+        {% if form.non_field_errors %}
+            {% for error in form.non_field_errors %}
+                <p class="form-error">{{ error }}</p>
+            {% endfor %}
+        {% endif %}
+
+        <div class="input-group-reset">
+          <label for="{{ form.email.id_for_label }}">Seu Email:</label>
+          {{ form.email }} {# Renderiza o campo de email do formulário fornecido pelo Django #}
+        </div>
+        
+        <button type="submit" class="btn-reset">Enviar Link de Redefinição</button>
+      </form>
+    </div>
+    <div class="right-side-reset">
+      <span class="info-text-reset">
+        Fique<br>Tranquilo,<br>Vamos<br>Te Ajudar<br>a Voltar!
+      </span>
+    </div>
+  </div>
+</body>
+</html>

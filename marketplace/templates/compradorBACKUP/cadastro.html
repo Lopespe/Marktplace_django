@@ -1,0 +1,133 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Cadastro - Comprador</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'comprador/css/cadastro_comprador.css' %}">
+</head>
+
+<body>
+  <a href="{% url 'marketplace:landing_page' %}" class="botao-voltar-cadastro" title="Voltar para a Página Inicial">
+    &lt;
+  </a>
+  <div class="container-cadastro">
+    <div class="left-side-cadastro">
+      <form method="POST" action="{% url 'marketplace:comprador_cadastro' %}">
+        {% csrf_token %}
+        <h2 class="cadastro-title">Crie sua Conta</h2>
+
+        {% if messages %}
+        <ul class="messages">
+          {% for message in messages %}
+          <li{% if message.tags %} class="message-{{ message.tags }}" {% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        {% if form.non_field_errors %}
+        <ul class="form-errors">
+          {% for error in form.non_field_errors %}
+          <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+
+        <div class="input-group-cadastro">
+          {{ form.nome }}
+          {% if form.nome.errors %}
+          <ul class="errorlist">
+            {% for error in form.nome.errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+        </div>
+        <div class="input-group-cadastro">
+          {{ form.idade }}
+          {% if form.idade.errors %}
+          <ul class="errorlist">
+            {% for error in form.idade.errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+        </div>
+        <div class="input-group-cadastro">
+          {{ form.cpf }}
+          {% if form.cpf.errors %}
+          <ul class="errorlist">
+            {% for error in form.cpf.errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+        </div>
+        <div class="input-group-cadastro">
+          {{ form.curso }}
+          {% if form.curso.errors %}
+          <ul class="errorlist">
+            {% for error in form.curso.errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+        </div>
+        <div class="input-group-cadastro">
+          {{ form.ra }}
+          {% if form.ra.errors %}
+          <ul class="errorlist">
+            {% for error in form.ra.errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+        </div>
+        <div class="input-group-cadastro">
+          {{ form.email }}
+          {% if form.email.errors %}
+          <ul class="errorlist">
+            {% for error in form.email.errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+        </div>
+        <div class="input-group-cadastro">
+          {{ form.senha }}
+          {% if form.senha.errors %}
+          <ul class="errorlist">
+            {% for error in form.senha.errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+        </div>
+        <div class="input-group-cadastro">
+          {{ form.confirmar_senha }}
+          {% if form.confirmar_senha.errors %}
+          <ul class="errorlist">
+            {% for error in form.confirmar_senha.errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+        </div>
+
+        <button type="submit" class="btn-cadastrar">Cadastrar</button>
+      </form>
+      <div class="login-link-cadastro">
+        <p>Já tem uma conta? <a href="{% url 'marketplace:comprador_login' %}">Faça Login</a></p>
+      </div>
+    </div>
+    <div class="right-side-cadastro">
+      <span class="welcome-text-cadastro">
+        Ajude um Colega<br>Compre no BuzziUnimar
+      </span>
+    </div>
+  </div>
+</body>
+
+</html>

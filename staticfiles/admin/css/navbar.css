@@ -1,0 +1,36 @@
+.navbar {
+  background-color: #111;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 15px 30px;
+  border-bottom: 1px solid #333;
+}
+
+.navbar ul {
+  list-style: none;
+  display: flex;
+  gap: 35px;
+}
+
+.navbar ul li {
+  color: #ccc;
+  font-size: 14px;
+}
+
+.navbar ul li a {
+  text-decoration: none;
+  color: #ccc;
+  transition: 0.2s ease-in-out;
+}
+
+.navbar ul li a:hover,
+.navbar ul li.active {
+  color: #fff;
+  font-weight: bold;
+  border-bottom: 2px solid #fff;
+}
+
+.navbar ul li.logout a {
+  color: #f77;
+}

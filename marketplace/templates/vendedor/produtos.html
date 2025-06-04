@@ -1,0 +1,69 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meus Produtos - Vendedor</title>
+    <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'vendedor/css/global_vendedor.css' %}">
+    <link rel="stylesheet" href="{% static 'vendedor/css/navbar_vendedor.css' %}">
+    <link rel="stylesheet" href="{% static 'vendedor/css/meus_produtos.css' %}">
+</head>
+<body>
+    <div class="wrapper">
+        {% include 'vendedor/navbar_vendedor.html' %}
+
+        <div class="main-content-area">
+            
+            <main class="page-content">
+                {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %}
+                            <li class="message {{ message.tags }}">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                <div class="content-card">
+                    <h2 class="section-title-vendedor">Meus Produtos</h2>
+
+                    <div class="products-header">
+                        <a href="{% url 'marketplace:vendedor_adicionar_produto' %}" class="btn-add-product">
+                            <i class="fas fa-plus"></i> Adicionar Novo Produto
+                        </a>
+                    </div>
+
+                    {% if produtos %}
+                        <div class="products-grid">
+                            {% for produto in produtos %}
+                                <div class="product-item">
+                                    {% if produto.imagem %}
+                                        <img src="{{ produto.imagem.url }}" alt="{{ produto.nome }}" class="product-image">
+                                    {% else %}
+                                        <img src="{% static 'img/placeholder_produto.png' %}" alt="Sem Imagem" class="product-image">
+                                    {% endif %}
+                                    <h3>{{ produto.nome }}</h3>
+                                    <p>Preço: R$ {{ produto.preco|floatformat:2 }}</p>
+                                    <p>Estoque: {{ produto.estoque }}</p>
+                                    <div class="product-actions">
+                                        <a href="{% url 'marketplace:vendedor_editar_produto' produto.id %}" class="btn-action edit-btn">Editar</a>
+                                        <a href="{% url 'marketplace:vendedor_excluir_produto' produto.id %}" class="btn-action delete-btn">Excluir</a>
+                                    </div>
+                                </div>
+                            {% empty %}
+                                <div class="empty-state">
+                                    <i class="fas fa-box-open empty-icon"></i>
+                                    <div class="empty-title">Você não tem produtos cadastrados.</div>
+                                    <div class="empty-subtitle">Comece adicionando seu primeiro produto!</div>
+                                    <a href="{% url 'marketplace:vendedor_adicionar_produto' %}" class="btn-primary">Adicionar Produto Agora</a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            </main>
+        </div>
+    </div>
+</body>
+</html>

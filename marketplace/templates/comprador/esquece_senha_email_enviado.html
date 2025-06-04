@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Email de Redefinição Enviado</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'comprador/css/esquece_senha_comprador.css' %}">
+</head>
+<body>
+
+  <a href="{% url 'marketplace:comprador_login' %}" class="botao-voltar-feedback" title="Voltar para o Login">
+    &lt;
+  </a>
+
+  <div class="container-feedback"> {# Nova classe para o container geral desta página #}
+    <div class="left-side-feedback">
+      <div class="feedback-card">
+        <h2 class="feedback-title">Verifique seu Email</h2>
+        <p class="feedback-instructions">
+          Enviamos um email com as instruções para redefinir sua senha. Isso é válido caso um email correspondente ao que você digitou exista em nosso sistema.
+        </p>
+        <p class="feedback-instructions">
+          Se você não receber um email em alguns minutos, por favor, verifique sua pasta de spam ou <a href="{% url 'marketplace:password_reset_request' %}" class="link-tentar-novamente">tente novamente</a>.
+        </p>
+        <div class="actions-feedback">
+            <a href="{% url 'marketplace:landing_page' %}" class="btn-principal-feedback">Voltar para a Página Inicial</a>
+        </div>
+      </div>
+    </div>
+    <div class="right-side-feedback">
+      <span class="info-text-feedback">
+        Quase<br>Lá!
+      </span>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,285 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  font-family: "Arial", sans-serif;
+  line-height: 1.6;
+  overflow: hidden;
+  background-color: #f4f6f8;
+}
+
+.container-cadastro-vendedor {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.form-container-vendedor {
+  background-color: #c8e6c9;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 30px;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+.form-container-vendedor form {
+  width: 100%;
+  max-width: 400px;
+  background-color: #ffffff;
+  padding: 30px 35px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.form-container-vendedor h2 {
+  text-align: center;
+  color: #333;
+  margin-top: 0;
+  margin-bottom: 25px;
+  font-size: 1.8em;
+  font-weight: 600;
+}
+
+.decorative-side-vendedor {
+  background-color: #3e6943;
+  color: white;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+.decorative-side-vendedor span {
+  font-size: 2rem;
+  font-style: italic;
+  font-weight: bold;
+  line-height: 1.4;
+}
+
+.form-container-vendedor .input-group {
+  margin-bottom: 18px;
+}
+
+.form-container-vendedor input[type="text"],
+.form-container-vendedor input[type="email"],
+.form-container-vendedor input[type="number"],
+.form-container-vendedor input[type="password"] {
+  width: 100%;
+  padding: 14px 18px;
+  border: 1px solid #dde1e6;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  color: #333;
+  font-size: 0.95em;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-container-vendedor input[type="text"]:focus,
+.form-container-vendedor input[type="email"]:focus,
+.form-container-vendedor input[type="number"]:focus,
+.form-container-vendedor input[type="password"]:focus {
+  outline: none;
+  border-color: #4e7a53;
+  box-shadow: 0 0 0 2px rgba(78, 122, 83, 0.2);
+}
+
+.form-container-vendedor input::placeholder {
+  color: #aaa;
+  font-style: italic;
+}
+
+.form-container-vendedor button[type="submit"] {
+  width: 100%;
+  padding: 14px 20px;
+  background-color: #4e7a53;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1.05em;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+}
+
+.form-container-vendedor button[type="submit"]:hover {
+  background-color: #3e6943;
+}
+
+.form-container-vendedor p {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 0.9em;
+  color: #333;
+}
+.form-container-vendedor p a {
+  color: #3e6943;
+  text-decoration: none;
+  font-weight: 600;
+}
+.form-container-vendedor p a:hover {
+  text-decoration: underline;
+}
+
+.form-container-vendedor .messages {
+  list-style-type: none;
+  padding: 0;
+  margin: 0 0 15px 0;
+  text-align: center;
+}
+.form-container-vendedor .messages li {
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 0.9em;
+  margin-bottom: 10px;
+}
+.form-container-vendedor .messages .message-error {
+  color: #d8000c;
+  background-color: #ffd2d2;
+  border: 1px solid #d8000c;
+}
+.form-container-vendedor .messages .message-success {
+  color: #2f855a;
+  background-color: #e6fffa;
+  border: 1px solid #38a169;
+}
+
+.form-container-vendedor .form-errors {
+  list-style-type: none;
+  padding: 10px;
+  margin-bottom: 15px;
+  font-size: 0.9em;
+  color: #721c24;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  border-radius: 5px;
+}
+.form-container-vendedor .form-errors li {
+  margin-bottom: 3px;
+}
+
+.form-container-vendedor .errorlist {
+  list-style-type: none;
+  padding: 0;
+  margin: 5px 0 0 0;
+  font-size: 0.85em;
+  color: red;
+}
+.form-container-vendedor .errorlist li {
+  margin-bottom: 3px;
+}
+
+.botao-voltar-cadastro {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  width: 48px;
+  height: 48px;
+  background-color: rgba(230, 230, 230, 0.85);
+  color: #2c2f33;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1;
+  transition: background-color 0.3s ease, transform 0.2s ease,
+    box-shadow 0.3s ease, color 0.3s ease;
+  z-index: 10;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.botao-voltar-cadastro:hover {
+  background-color: rgba(215, 215, 215, 0.95);
+  color: #000000;
+  transform: scale(1.03);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.12);
+}
+
+@media (max-width: 768px) {
+  html,
+  body {
+    overflow-y: auto;
+    height: auto;
+  }
+  .container-cadastro-vendedor {
+    flex-direction: column-reverse;
+    height: auto;
+  }
+
+  .form-container-vendedor,
+  .decorative-side-vendedor {
+    flex: none;
+    width: 100%;
+    min-height: 0;
+    height: auto;
+  }
+  .form-container-vendedor {
+    padding: 30px 20px;
+  }
+  .decorative-side-vendedor {
+    padding: 40px 20px;
+    min-height: 200px;
+  }
+  .decorative-side-vendedor span {
+    font-size: 1.8rem;
+  }
+  .form-container-vendedor h2 {
+    font-size: 1.6em;
+    margin-bottom: 20px;
+  }
+  .botao-voltar-cadastro {
+    top: 20px;
+    left: 20px;
+    width: 40px;
+    height: 40px;
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 480px) {
+  .form-container-vendedor form {
+    padding: 20px 25px;
+  }
+  .decorative-side-vendedor span {
+    font-size: 1.5rem;
+  }
+  .form-container-vendedor h2 {
+    font-size: 1.4em;
+  }
+  .form-container-vendedor input[type="text"],
+  .form-container-vendedor input[type="email"],
+  .form-container-vendedor input[type="number"],
+  .form-container-vendedor input[type="password"] {
+    padding: 12px 15px;
+    font-size: 0.9em;
+  }
+  .form-container-vendedor button[type="submit"] {
+    padding: 12px 15px;
+    font-size: 0.95em;
+  }
+  .form-container-vendedor p {
+    font-size: 0.85em;
+  }
+  .botao-voltar-cadastro {
+    top: 15px;
+    left: 15px;
+    width: 38px;
+    height: 38px;
+    font-size: 20px;
+  }
+}

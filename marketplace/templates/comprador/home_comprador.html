@@ -1,0 +1,74 @@
+{% extends 'comprador/base_comprador.html' %}
+{% load static %}
+
+{% block title %}Início - {{ nome_usuario|default:"UniMarket" }}{% endblock title %}
+
+{% block nav_inicio_active %}{% if not selected_category_id and not search_query %}active{% endif %}{% endblock %}
+
+{% block content %}
+    {# REMOVED CATEGORY FILTER SECTION #}
+
+    <section class="produtos-section">
+        <h2 class="section-title">Produtos Disponíveis</h2>
+        <div class="produto-grid">
+            {% if page_obj %} {# Changed from product_list to page_obj #}
+                {% for produto in page_obj %} {# Changed from product_list to page_obj #}
+                <div class="produto-card">
+                    <a href="{% url 'marketplace:detalhes_produto' produto_id=produto.id %}" class="produto-link">
+                        {% if produto.imagem %}
+                            <img src="{{ produto.imagem.url }}" alt="{{ produto.nome }}" class="produto-imagem">
+                        {% else %}
+                            <img src="{% static 'comprador/image/placeholder_produto.png' %}" alt="{{ produto.nome }}" class="produto-imagem">
+                        {% endif %}
+                        <div class="produto-info">
+                            <h3 class="produto-nome">{{ produto.nome }}</h3>
+                            <p class="produto-vendedor">Por: {{ produto.vendedor.first_name|default:produto.vendedor.username }}</p>
+                            <p class="produto-preco">R$ {{ produto.preco|floatformat:2 }}</p>
+                            <p class="produto-estoque">Estoque: {{ produto.estoque }}</p>
+                        </div>
+                    </a>
+                    <div class="produto-card-actions">
+                        <form action="{% url 'marketplace:fazer_pedido' produto_id=produto.id %}" method="post" class="form-adicionar-carrinho">
+                            {% csrf_token %}
+                            <input type="hidden" name="quantidade" value="1"> {# Default to 1 for quick add #}
+                            <button type="submit" class="btn-adicionar-carrinho" {% if produto.estoque == 0 %}disabled{% endif %}>
+                                {% if produto.estoque == 0 %}Esgotado{% else %}Fazer Pedido{% endif %}
+                            </button>
+                        </form>
+                        {% if produto.is_favorited %}
+                            <a href="{% url 'marketplace:remover_dos_desejos' produto_id=produto.id %}" class="btn-wishlist card-action active" title="Remover dos Desejos">
+                                <img src="{% static 'comprador/image/bookmark_active.png' %}" alt="Favorito">
+                            </a>
+                        {% else %}
+                            <a href="{% url 'marketplace:adicionar_aos_desejos' produto_id=produto.id %}" class="btn-wishlist card-action" title="Adicionar aos Desejos">
+                                <img src="{% static 'comprador/image/bookmark.png' %}" alt="Não Favorito">
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p>Nenhum produto encontrado para esta seleção. Tente outros filtros!</p>
+            {% endif %}
+        </div>
+
+        {# Pagination Controls #}
+        <div class="pagination">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1{% if search_query %}&q_search={{ search_query }}{% endif %}">&laquo; primeira</a>
+                    <a href="?page={{ page_obj.previous_page_number }}{% if search_query %}&q_search={{ search_query }}{% endif %}">anterior</a>
+                {% endif %}
+
+                <span class="current">
+                    Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.
+                </span>
+
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}{% if search_query %}&q_search={{ search_query }}{% endif %}">próxima</a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}{% if search_query %}&q_search={{ search_query }}{% endif %}">última &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
+    </section>
+{% endblock content %}

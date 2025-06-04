@@ -1,0 +1,76 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Definir Nova Senha</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {# Usando o mesmo CSS das outras páginas de recuperação de senha #}
+  <link rel="stylesheet" href="{% static 'comprador/css/esquece_senha_comprador.css' %}">
+</head>
+<body>
+
+  <a href="{% url 'marketplace:comprador_login' %}" class="botao-voltar-reset" title="Voltar para o Login">
+    &lt;
+  </a>
+
+
+  <div class="container-reset"> {# Reutilizando classes do CSS existente #}
+    <div class="left-side-reset">
+      <form method="POST"> {# O action é gerenciado pela PasswordResetConfirmView #}
+        {% csrf_token %}
+        <h2 class="reset-title">Defina sua Nova Senha</h2>
+        
+        {% if form.errors %}
+          <div class="form-errors-summary">
+            <p>Por favor, corrija os erros abaixo:</p>
+            {# Erros não associados a campos específicos #}
+            {% if form.non_field_errors %}
+              {% for error in form.non_field_errors %}
+                <p class="form-error">{{ error }}</p>
+              {% endfor %}
+            {% endif %}
+          </div>
+        {% else %}
+            <p class="reset-instructions">
+              Por favor, insira sua nova senha duas vezes para que possamos verificar se você a digitou corretamente.
+            </p>
+        {% endif %}
+
+        {# Renderizando os campos do formulário do Django #}
+        <div class="input-group-reset">
+          <label for="{{ form.new_password1.id_for_label }}">Nova senha:</label>
+          {{ form.new_password1 }}
+          {% if form.new_password1.errors %}
+            {% for error in form.new_password1.errors %}
+              <p class="form-error field-error">{{ error }}</p>
+            {% endfor %}
+          {% endif %}
+        </div>
+
+        <div class="input-group-reset">
+          <label for="{{ form.new_password2.id_for_label }}">Confirme a nova senha:</label>
+          {{ form.new_password2 }}
+          {% if form.new_password2.errors %}
+            {% for error in form.new_password2.errors %}
+              <p class="form-error field-error">{{ error }}</p>
+            {% endfor %}
+          {% endif %}
+        </div>
+        
+        {# Exibe ajuda sobre a senha, se houver #}
+        {% if form.new_password1.help_text %}
+            <p class="form-help-text">{{ form.new_password1.help_text|safe }}</p>
+        {% endif %}
+
+        <button type="submit" class="btn-reset">Redefinir Senha</button>
+      </form>
+    </div>
+    <div class="right-side-reset">
+      <span class="info-text-reset">
+        Escolha<br>Uma Senha<br>Forte e<br>Segura!
+      </span>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Anúncios - Admin</title>
+  <link rel="stylesheet" href="{% static 'admin/css/default_page.css' %}">
+  <link rel="stylesheet" href="{% static 'admin/css/navbar.css' %}">
+  <link rel="stylesheet" href="{% static 'admin/css/anuncios.css' %}"> {# Seu CSS para esta página #}
+</head>
+
+<body>
+  {% include 'admin/navbar.html' %}
+
+  <div class="content">
+    <h1>Anúncios Postados</h1>
+    {% if anuncios %}
+    <div class="grid">
+      {% for anuncio_item in anuncios %}
+      <div class="card">
+        <div class="image-placeholder">
+          {% if anuncio_item.imagem %}
+          <img src="{{ anuncio_item.imagem.url }}" alt="{{ anuncio_item.nome }}"
+            style="width:100%; height:100%; object-fit:cover;">
+          {% else %}
+          IMG
+          {% endif %}
+        </div>
+        <div class="info">
+          <p><strong>{{ anuncio_item.nome }}</strong></p>
+          <p>ID: {{ anuncio_item.id }}</p>
+          <p>Preço: R$ {{ anuncio_item.preco }}</p>
+          <p>Estoque: {{ anuncio_item.estoque }}</p>
+          <p>Vendedor: {{ anuncio_item.vendedor.username }}</p>
+          <p>Criado em: {{ anuncio_item.criado_em|date:"d/m/Y H:i" }}</p>
+          {# O link para gerenciar/editar apontará para a view admin_gerenciar_anuncio com o ID do produto #}
+          <a href="{% url 'marketplace:admin_gerenciar_anuncio' produto_id=anuncio_item.id %}">Gerenciar Anúncio</a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p style="text-align: center;">Nenhum anúncio encontrado.</p>
+    {% endif %}
+  </div>
+</body>
+
+</html>

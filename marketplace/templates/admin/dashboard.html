@@ -1,0 +1,90 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard Admin</title>
+  <link rel="stylesheet" href="{% static 'admin/css/default_page.css' %}">
+  <link rel="stylesheet" href="{% static 'admin/css/navbar.css' %}">
+  <link rel="stylesheet" href="{% static 'admin/css/dashboard.css' %}">
+</head>
+
+<body>
+  {% include 'admin/navbar.html' %}
+
+  <main class="dashboard-container">
+    <section class="recent-section">
+      <h2 class="title_dashboard">Recentes</h2>
+
+      <div class="recent-group">
+        <h3>Últimos Usuários Cadastrados</h3>
+        {% if recent_users %}
+        {% for u in recent_users %}
+        <p>
+          <strong>{{ u.username }}</strong> ({{ u.first_name|default:"Sem nome" }})
+          - Grupos:
+          {% for group in u.groups.all %}
+          {{ group.name }}{% if not forloop.last %}, {% endif %}
+          {% empty %}
+          Nenhum
+          {% endfor %}
+          - Criado em: {{ u.date_joined|date:"d/m/Y H:i" }}
+        </p>
+        {% endfor %}
+        {% else %}
+        <p>Nenhum usuário recente.</p>
+        {% endif %}
+      </div>
+
+      <div class="recent-group">
+        <h3>Últimos Anúncios Postados</h3>
+        {% if recent_products %}
+        {% for product in recent_products %}
+        <p>
+          <strong>{{ product.nome }}</strong> (Vendedor: {{ product.vendedor.username }})
+          - Preço: R$ {{ product.preco }}
+          - Criado em: {{ product.criado_em|date:"d/m/Y H:i" }}
+        </p>
+        {% endfor %}
+        {% else %}
+        <p>Nenhum anúncio recente.</p>
+        {% endif %}
+      </div>
+
+      <div class="recent-group">
+        <h3>Últimos Reportes Postados</h3>
+        {% if recent_reports %}
+        {% for report in recent_reports %}
+        <p><strong>{{ report.titulo_ou_id }}</strong> - {{ report.data_criacao|date:"d/m/Y H:i" }}</p>
+        {% endfor %}
+        {% else %}
+        <p>Nenhum reporte recente (funcionalidade pendente de modelo Reporte).</p>
+        {% endif %}
+      </div>
+
+      <div class="recent-group">
+        <h3>Dados do Marketplace</h3>
+        <p>Total de Compradores: {{ total_compradores }}</p>
+        <p>Total de Vendedores: {{ total_vendedores }}</p>
+        <p>Total de Reportes: {{ total_reportes }} (funcionalidade pendente)</p>
+      </div>
+    </section>
+
+    <aside class="stats-section">
+      <div class="chart-box">
+        <h3>Cadastros de Usuários (Últimos 6 Meses)</h3> {# Título do gráfico atualizado #}
+        <canvas id="chart" width="300" height="200"></canvas>
+      </div>
+    </aside>
+  </main>
+
+  {# Passando dados do Django para JavaScript de forma segura #}
+  {{ chart_labels|json_script:"chart-labels-data" }}
+  {{ chart_data|json_script:"chart-values-data" }}
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="{% static 'admin/js/dashboard_admin.js' %}"></script>
+</body>
+
+</html>

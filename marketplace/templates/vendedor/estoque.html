@@ -1,0 +1,88 @@
+{% extends 'vendedor/base_vendedor.html' %}
+{% load static %}
+
+{% block title %}Gerenciar Estoque - Vendedor{% endblock title %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'vendedor/css/estoque_vendedor.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+    <div class="content-card">
+        <h2 class="section-title-vendedor">Gerenciar Estoque</h2>
+
+        <form method="POST" id="estoque-form">
+            {% csrf_token %}
+            <div class="produtos-container" id="produtos-container">
+                {% for produto in produtos %}
+                <div class="produto" data-nome="{{ produto.nome|lower }}">
+                    <div class="produto-header">
+                        <div class="produto-nome">{{ produto.nome }}</div>
+                        <div class="status-badge" id="status-{{ produto.id }}">Status</div>
+                    </div>
+                    <div class="produto-controls">
+                        <div class="quantidade-control">
+                            <button type="button" class="btn-quantidade" onclick="decrementarEstoque(this)">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <input type="number" name="estoque_{{ produto.id }}" value="{{ produto.estoque }}" min="0" class="input-estoque" onchange="atualizarStatus(this)">
+                            <button type="button" class="btn-quantidade" onclick="incrementarEstoque(this)">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="empty-state">
+                    <i class="fas fa-box-open empty-icon"></i>
+                    <div class="empty-title">Nenhum produto cadastrado</div>
+                    <div class="empty-subtitle">Adicione produtos para começar a gerenciar seu estoque</div>
+                    <a href="{% url 'marketplace:vendedor_adicionar_produto' %}" class="btn-primary">Adicionar Produto Agora</a>
+                </div>
+                {% endfor %}
+            </div>
+            <button type="submit" class="btn-salvar-estoque">Salvar Alterações</button>
+        </form>
+    </div>
+{% endblock content %}
+
+{% block extra_js %}
+    <script src="{% static 'vendedor/js/estoque_vendedor.js' %}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.input-estoque').forEach(input => {
+                atualizarStatus(input);
+            });
+        });
+
+        function atualizarStatus(inputElement) {
+            const estoqueAtual = parseInt(inputElement.value);
+            const statusBadge = inputElement.closest('.produto').querySelector('.status-badge');
+
+            if (estoqueAtual === 0) {
+                statusBadge.textContent = 'Esgotado';
+                statusBadge.className = 'status-badge status-esgotado';
+            } else if (estoqueAtual > 0 && estoqueAtual <= 5) {
+                statusBadge.textContent = 'Baixo Estoque';
+                statusBadge.className = 'status-badge status-baixo-estoque';
+            } else {
+                statusBadge.textContent = 'Em Estoque';
+                statusBadge.className = 'status-badge status-em-estoque';
+            }
+        }
+
+        function decrementarEstoque(button) {
+            const input = button.nextElementSibling;
+            if (parseInt(input.value) > 0) {
+                input.value = parseInt(input.value) - 1;
+                atualizarStatus(input);
+            }
+        }
+
+        function incrementarEstoque(button) {
+            const input = button.previousElementSibling;
+            input.value = parseInt(input.value) + 1;
+            atualizarStatus(input);
+        }
+    </script>
+{% endblock extra_js %}

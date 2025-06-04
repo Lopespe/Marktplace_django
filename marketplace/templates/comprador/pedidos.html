@@ -1,0 +1,76 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meus Pedidos - UniMarket</title>
+    <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'comprador/css/tela_home_comprador.css' %}">
+    <link rel="stylesheet" href="{% static 'comprador/css/pedidos_comprador.css' %}">
+</head>
+
+<body>
+    <div class="wrapper">
+        {% include 'comprador/base_comprador.html' %}
+
+        <main class="page-content">
+            {% if messages %}
+            <ul class="messages-global">
+                {% for message in messages %}
+                <li class="message-{{ message.tags }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+
+            <div class="pedidos-comprador-container">
+                <h1 class="section-title">Meus Pedidos</h1>
+
+                {% if pedidos %}
+                <div class="pedidos-list">
+                    {% for pedido in pedidos %}
+                    <div class="pedido-item">
+                        <div class="pedido-header">
+                            <h3>Pedido #{{ pedido.id }}</h3>
+                            <span class="status-badge status-{{ pedido.status|lower|cut:' ' }}">
+                                {{ pedido.get_status_display }}
+                            </span>
+                        </div>
+                        <div class="pedido-details">
+                            <p><strong>Produto:</strong> <a
+                                    href="{% url 'marketplace:detalhes_produto' produto_id=pedido.produto.id %}">{{ pedido.produto.nome }}</a>
+                            </p>
+                            <p><strong>Vendedor:</strong>
+                                {{ pedido.vendedor.first_name|default:pedido.vendedor.username }}</p>
+                            <p><strong>Quantidade:</strong> {{ pedido.quantidade }}</p>
+                            <p><strong>Preço Unitário:</strong> R$ {{ pedido.produto.preco|floatformat:2 }}</p>
+                            <p class="pedido-total"><strong>Total:</strong> R$ {{ pedido.total_pedido|floatformat:2 }}
+                            </p>
+                            <p class="pedido-date">Data do Pedido: {{ pedido.data_pedido|date:"d/m/Y H:i" }}</p>
+                        </div>
+                        <div class="pedido-actions">
+                            {% if pedido.status == 'entregue' and not pedido.has_been_reviewed_by_user %}
+                            <a href="{% url 'marketplace:detalhes_produto' produto_id=pedido.produto.id %}"
+                                class="btn-review">Avaliar Produto</a>
+                            {% endif %}
+                            {# Adicione mais ações aqui, como 'Ver Detalhes do Pedido', 'Cancelar Pedido' (com lógica de status) #}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="empty-state">
+                    <i class="fas fa-box-open empty-icon"></i>
+                    <div class="empty-title">Você não fez nenhum pedido ainda.</div>
+                    <div class="empty-subtitle">Explore nossos produtos e faça sua primeira compra!</div>
+                    <a href="{% url 'marketplace:pagina_inicial_comprador' %}" class="btn-primary">Explorar Produtos</a>
+                </div>
+                {% endif %}
+            </div>
+        </main>
+    </div>
+</body>
+
+</html>

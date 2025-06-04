@@ -1,0 +1,77 @@
+/* Estilos para a página de Confirmação de Exclusão */
+
+.confirm-delete-container { /* Novo contêiner para a página */
+  max-width: 550px;
+  margin: 50px auto;
+  /* Usa a classe content-card do base_vendedor.css */
+}
+
+.confirmation-box {
+  text-align: center;
+  padding: 30px 20px;
+}
+
+.confirmation-box h2 { /* Se o h2 estiver dentro da box, ajustar */
+  font-size: 2em;
+  color: #dc3545;
+  margin-bottom: 20px;
+}
+
+.confirmation-box p {
+  font-size: 1.2em;
+  margin-bottom: 30px;
+  color: #444;
+  line-height: 1.5;
+}
+
+.confirmation-box p strong {
+  color: #dc3545;
+  font-weight: 700;
+}
+
+.confirmation-actions {
+  display: flex;
+  justify-content: center;
+  gap: 20px; /* Espaço entre os botões */
+  margin-top: 30px;
+}
+
+.confirmation-box .btn-confirm-delete {
+  background-color: #dc3545; /* Vermelho */
+  color: white;
+  padding: 12px 30px;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.confirmation-box .btn-confirm-delete:hover {
+  background-color: #c82333;
+}
+
+.confirmation-box .btn-cancel {
+  background-color: #6c757d; /* Cinza */
+  color: white;
+  padding: 12px 30px;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.confirmation-box .btn-cancel:hover {
+  background-color: #5a6268;
+}
+
+/* Media Queries */
+@media (max-width: 600px) {
+  .confirm-delete-container {
+      padding: 20px;
+      margin: 30px auto;
+  }
+  .confirmation-actions {
+      flex-direction: column;
+      gap: 10px;
+  }
+  .confirmation-actions .btn-confirm-delete,
+  .confirmation-actions .btn-cancel {
+      width: 100%;
+  }
+}

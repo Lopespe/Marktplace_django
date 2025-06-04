@@ -1,0 +1,66 @@
+/* marketplace/static/comprador/css/perfil_comprador.css */
+
+/* Override any overflow:hidden from other imported CSS */
+html, body {
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 100%;
+  min-height: 100vh; /* Ensure it still takes full viewport height */
+}
+
+/* Ensure the main content card can scroll if its internal content overflows */
+.perfil-form-container {
+  /* Existing styles */
+  max-width: 700px;
+  margin: 25px auto;
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+
+  /* NEW: Allow internal scrolling if the form is very long */
+  max-height: calc(100vh); /* Adjust based on header/footer height */
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch; /* For smoother scrolling on iOS */
+}
+
+/* Ensure form elements that might be very long can expand vertically */
+.form-group-perfil {
+  margin-bottom: 20px;
+}
+.form-group-perfil label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #444;
+  font-size: 0.9em;
+}
+.form-group-perfil input[type="text"],
+.form-group-perfil input[type="email"],
+.form-group-perfil input[type="number"] {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #dde1e6;
+  border-radius: 6px;
+  background-color: #f9f9f9;
+  color: #333;
+  font-size: 0.95em;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.btn-update-perfil {
+  width: 100%;
+  padding: 14px 20px;
+  background-color: #4E7A53;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1.05em;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 20px;
+}
+.btn-update-perfil:hover {
+  background-color: #3E6943;
+}

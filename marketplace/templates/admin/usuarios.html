@@ -1,0 +1,62 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Usuários - Admin</title>
+  <link rel="stylesheet" href="{% static 'admin/css/default_page.css' %}">
+  <link rel="stylesheet" href="{% static 'admin/css/navbar.css' %}">
+  <link rel="stylesheet" href="{% static 'admin/css/usuarios.css' %}">
+</head>
+
+<body>
+  {% include 'admin/navbar.html' %}
+
+  <div class="container">
+    <h1>Usuários Cadastrados</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Username (Email)</th>
+          <th>Nome</th>
+          <th>Grupos</th>
+          <th>Ativo?</th>
+          <th>Admin?</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if usuarios %}
+        {% for usuario_item in usuarios %} {# Renomeado para evitar conflito com 'usuario' do request #}
+        <tr>
+          <td>{{ usuario_item.id }}</td>
+          <td>{{ usuario_item.username }}</td>
+          <td>{{ usuario_item.first_name }} {{ usuario_item.last_name }}</td>
+          <td>
+            {% for group in usuario_item.groups.all %}
+            {{ group.name }}{% if not forloop.last %}, {% endif %}
+            {% empty %}
+            Nenhum
+            {% endfor %}
+          </td>
+          <td>{% if usuario_item.is_active %}Sim{% else %}Não{% endif %}</td>
+          <td>{% if usuario_item.is_staff %}Sim{% else %}Não{% endif %}</td>
+          <td>
+            <a class="editar"
+              href="{% url 'marketplace:admin_gerenciar_usuario' user_id=usuario_item.id %}">Gerenciar</a>
+          </td>
+        </tr>
+        {% endfor %}
+        {% else %}
+        <tr>
+          <td colspan="7" style="text-align: center;">Nenhum usuário encontrado.</td>
+        </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+</body>
+
+</html>

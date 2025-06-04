@@ -1,0 +1,64 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Pedidos - Admin</title>
+  <link rel="stylesheet" href="{% static 'admin/css/default_page.css' %}">
+  <link rel="stylesheet" href="{% static 'admin/css/navbar.css' %}">
+  <link rel="stylesheet" href="{% static 'admin/css/reportes.css' %}">
+</head>
+
+<body>
+  {% include 'admin/navbar.html' %}
+
+  <div class="content">
+    <h1>Todos os Pedidos</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>ID Pedido</th>
+          <th>Produto</th>
+          <th>Comprador</th>
+          <th>Vendedor</th>
+          <th>Qtde</th>
+          <th>Preço Unit.</th>
+          <th>Total Pedido</th>
+          <th>Status</th>
+          <th>Data do Pedido</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if pedidos %}
+        {% for pedido_item in pedidos %}
+        <tr>
+          <td>{{ pedido_item.id }}</td>
+          <td>{{ pedido_item.produto.nome }} (ID: {{ pedido_item.produto.id }})</td>
+          <td>{{ pedido_item.cliente.username }}</td>
+          <td>{{ pedido_item.vendedor.username }}</td>
+          <td>{{ pedido_item.quantidade }}</td>
+          <td>R$ {{ pedido_item.produto.preco }}</td>
+          <td>R$ {% widthratio pedido_item.produto.preco 1 pedido_item.quantidade %}</td> {# Calcula Preço * Qtde #}
+          <td>{{ pedido_item.get_status_display }}</td> {# Mostra o valor amigável do status #}
+          <td>{{ pedido_item.data_pedido|date:"d/m/Y H:i" }}</td>
+          <td>
+            <a href="{% url 'marketplace:admin_gerenciar_pedido' pedido_id=pedido_item.id %}">Gerenciar</a>
+          </td>
+        </tr>
+        {% endfor %}
+        {% else %}
+        <tr>
+          <td colspan="10" style="text-align: center;">Nenhum pedido encontrado.</td>
+        </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+  <div class="bottom-links">
+    <a href="{% url 'marketplace:admin_pedidos_finalizados' %}">Ver Pedidos Finalizados</a>
+  </div>
+</body>
+
+</html>

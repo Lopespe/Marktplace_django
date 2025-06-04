@@ -1,0 +1,49 @@
+.content {
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px;
+}
+
+.card {
+  display: flex;
+  background-color: #2a2a2a;
+  padding: 20px;
+  align-items: center;
+}
+
+.image-placeholder {
+  width: 120px;
+  height: 100px;
+  background-color: #999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 20px;
+  color: #000;
+  font-weight: bold;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+}
+
+.info p {
+  margin: 4px 0;
+}
+
+.info a {
+  margin-top: 5px;
+  color: #55aaff;
+  text-decoration: underline;
+  width: fit-content;
+}

@@ -1,0 +1,67 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Reportes Ativos - Admin</title>
+  <link rel="stylesheet" href="{% static 'admin/css/default_page.css' %}">
+  <link rel="stylesheet" href="{% static 'admin/css/navbar.css' %}">
+  <link rel="stylesheet" href="{% static 'admin/css/reportes.css' %}">
+</head>
+
+<body>
+  {% include 'admin/navbar.html' %}
+
+  <div class="content">
+    <h1>Reportes Ativos</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>ID Reporte (Chamado)</th>
+          <th>Título</th>
+          <th>Reportado por</th>
+          <th>Item Reportado</th>
+          <th>Data</th>
+          <th>Status</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if reportes %}
+        {% for reporte_item in reportes %}
+        <tr>
+          <td>#{{ reporte_item.id }}</td>
+          <td>{{ reporte_item.titulo|truncatewords:10 }}</td>
+          <td>{{ reporte_item.usuario_reportou.username|default:"N/A" }}</td>
+          <td>
+            {% if reporte_item.produto_reportado %}
+            Produto: {{ reporte_item.produto_reportado.nome|truncatewords:5 }} (ID: {{ reporte_item.produto_reportado.id
+            }})
+            {% elif reporte_item.usuario_alvo_reporte %}
+            Usuário: {{ reporte_item.usuario_alvo_reporte.username }}
+            {% else %}
+            Geral/Outro
+            {% endif %}
+          </td>
+          <td>{{ reporte_item.data_criacao|date:"d/m/Y H:i" }}</td>
+          <td>{{ reporte_item.get_status_display }}</td>
+          <td>
+            <a href="{% url 'marketplace:admin_gerenciar_reporte' reporte_id=reporte_item.id %}">Gerenciar</a>
+          </td>
+        </tr>
+        {% endfor %}
+        {% else %}
+        <tr>
+          <td colspan="7" style="text-align: center;">Nenhum reporte ativo encontrado.</td>
+        </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+  <div class="bottom-links">
+    <a href="{% url 'marketplace:admin_reportes_arquivados' %}">Ver Reportes Arquivados</a>
+  </div>
+</body>
+
+</html>

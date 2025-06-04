@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Pedidos Finalizados - Admin</title>
+  <link rel="stylesheet" href="{% static 'admin/css/default_page.css' %}">
+  <link rel="stylesheet" href="{% static 'admin/css/navbar.css' %}">
+  <link rel="stylesheet" href="{% static 'admin/css/reportes.css' %}"> {# Reutilizando o CSS, ajuste se necessário #}
+</head>
+
+<body>
+  {% include 'admin/navbar.html' %}
+
+  <div class="content">
+    <h1>Pedidos Finalizados</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>ID Pedido</th>
+          <th>Produto</th>
+          <th>Comprador</th>
+          <th>Vendedor</th>
+          <th>Qtde</th>
+          <th>Total Pedido</th>
+          <th>Status</th>
+          <th>Data do Pedido</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if pedidos_finalizados %}
+        {% for pedido_item in pedidos_finalizados %}
+        <tr>
+          <td>{{ pedido_item.id }}</td>
+          <td>{{ pedido_item.produto.nome }} (ID: {{ pedido_item.produto.id }})</td>
+          <td>{{ pedido_item.cliente.username }}</td>
+          <td>{{ pedido_item.vendedor.username }}</td>
+          <td>{{ pedido_item.quantidade }}</td>
+          <td>R$ {% widthratio pedido_item.produto.preco 1 pedido_item.quantidade %}</td>
+          <td>{{ pedido_item.get_status_display }}</td>
+          <td>{{ pedido_item.data_pedido|date:"d/m/Y H:i" }}</td>
+          <td>
+            {# Link aponta para a view principal de gerenciar pedido #}
+            <a href="{% url 'marketplace:admin_gerenciar_pedido' pedido_id=pedido_item.id %}">Ver Detalhes</a>
+          </td>
+        </tr>
+        {% endfor %}
+        {% else %}
+        <tr>
+          <td colspan="9" style="text-align: center;">Nenhum pedido finalizado encontrado.</td>
+        </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+  <div class="bottom-links">
+    <a href="{% url 'marketplace:admin_pedidos' %}">Ver Todos os Pedidos</a>
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,51 @@
+{% extends 'vendedor/base_vendedor.html' %}
+{% load static %}
+
+{% block title %}Minhas Avaliações - Vendedor{% endblock title %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'vendedor/css/avaliacoes_vendedor.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+    <div class="content-card">
+        <h2 class="section-title-vendedor">Avaliações Recebidas</h2>
+
+        {% if avaliacoes %}
+            <div class="reviews-list">
+                {% for avaliacao in avaliacoes %}
+                    <div class="review-item">
+                        <div class="review-header">
+                            <h3>Produto: <strong>{{ avaliacao.produto.nome }}</strong></h3>
+                            <span class="review-rating">Nota: {{ avaliacao.nota }} <i class="fas fa-star"></i></span>
+                        </div>
+                        <p>Cliente: <strong>{{ avaliacao.cliente.username }}</strong></p>
+                        <p class="review-comment">{{ avaliacao.comentario }}</p>
+                        <p class="review-date">Avaliado em: {{ avaliacao.data_avaliacao|date:"d/m/Y H:i" }}</p>
+
+                        {% if avaliacao.resposta_do_vendedor %}
+                            <div class="seller-response">
+                                <p><strong>Sua Resposta:</strong></p>
+                                <p>{{ avaliacao.resposta_do_vendedor.texto }}</p>
+                                <p class="response-date">Respondido em: {{ avaliacao.resposta_do_vendedor.data_resposta|date:"d/m/Y H:i" }}</p>
+                                <a href="{% url 'marketplace:vendedor_responder_avaliacao' avaliacao.id %}" class="btn-edit-response">Editar Resposta</a>
+                            </div>
+                        {% else %}
+                            <a href="{% url 'marketplace:vendedor_responder_avaliacao' avaliacao.id %}" class="btn-respond-review">Responder Avaliação</a>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <i class="fas fa-comment-dots empty-icon"></i>
+                <div class="empty-title">Nenhuma avaliação recebida ainda.</div>
+                <div class="empty-subtitle">As avaliações de seus produtos aparecerão aqui.</div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock content %}
+
+{% block extra_js %}
+    <script src="{% static 'vendedor/js/avaliacoes_vendedor.js' %}"></script>
+{% endblock extra_js %}

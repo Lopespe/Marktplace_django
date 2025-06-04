@@ -1,0 +1,73 @@
+{% extends 'vendedor/base_vendedor.html' %}
+{% load static %}
+
+{% block title %}Pedidos Recebidos - Vendedor{% endblock title %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'vendedor/css/pedidos_vendedor.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+    <div class="content-card">
+        <h2 class="section-title-vendedor">Pedidos Recebidos</h2>
+
+        {% if pedidos %}
+            <div class="orders-list">
+                {% for pedido in pedidos %}
+                    <div class="order-item">
+                        <div class="order-header">
+                            <h3>Pedido #{{ pedido.id }}</h3>
+                            <span class="status-badge status-{{ pedido.status|lower|cut:" " }}">
+                                {{ pedido.get_status_display }}
+                            </span>
+                        </div>
+                        <p>Cliente: <strong>{{ pedido.cliente.username }}</strong></p>
+                        <p>Produto: <strong>{{ pedido.produto.nome }}</strong></p>
+                        <p>Quantidade: {{ pedido.quantidade }}</p>
+                        <p>Preço Unitário: R$ {{ pedido.produto.preco|floatformat:2 }}</p>
+                        <p class="order-total">Total do Pedido: R$ {{ pedido.total_pedido|floatformat:2 }}</p>
+                        <p class="order-date">Data do Pedido: {{ pedido.data_pedido|date:"d/m/Y H:i" }}</p>
+
+                        <div class="order-actions">
+                            {% if pedido.status != 'entregue' and pedido.status != 'cancelado' %}
+                                <form action="{% url 'marketplace:vendedor_update_order_status' pedido_id=pedido.id %}" method="post" class="status-update-form">
+                                    {% csrf_token %}
+                                    <label for="status-{{ pedido.id }}">Atualizar Status:</label>
+                                    <select name="status" id="status-{{ pedido.id }}" class="status-select">
+                                        {% for value, display_name in pedido.STATUS_CHOICES %}
+                                            {# Always show current status option #}
+                                            {% if pedido.status == value %}
+                                                <option value="{{ value }}" selected>{{ display_name }}</option>
+                                            {# Only show other non-terminal states if not already selected #}
+                                            {% elif value != 'entregue' and value != 'cancelado' %}
+                                                <option value="{{ value }}">{{ display_name }}</option>
+                                            {# Only show 'entregue' or 'cancelado' if the current status is not already a terminal state #}
+                                            {% elif pedido.status != 'entregue' and pedido.status != 'cancelado' %}
+                                                {% if value == 'entregue' or value == 'cancelado' %}
+                                                    <option value="{{ value }}">{{ display_name }}</option>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                    <button type="submit" class="btn-update-status">Atualizar</button>
+                                </form>
+                            {% else %}
+                                <p class="order-finalized-message">Status finalizado ({{ pedido.get_status_display }}).</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <i class="fas fa-box-open empty-icon"></i>
+                <div class="empty-title">Nenhum pedido recebido.</div>
+                <div class="empty-subtitle">Seus pedidos aparecerão aqui quando os compradores fizerem compras.</div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock content %}
+
+{% block extra_js %}
+    <script src="{% static 'vendedor/js/pedidos_vendedor.js' %}"></script>
+{% endblock extra_js %}

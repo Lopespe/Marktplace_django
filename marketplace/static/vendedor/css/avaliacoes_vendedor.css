@@ -1,0 +1,153 @@
+/* Estilos para Avaliações Recebidas e Responder Avaliação */
+
+.reviews-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 30px;
+}
+
+.review-item {
+  background-color: #ffffff;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+  border-left: 6px solid #17a2b8; /* Borda lateral azul ciano */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.review-item:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #eee;
+}
+
+.review-header h3 {
+  font-size: 1.3em;
+  color: #34495e;
+  margin: 0;
+  font-weight: 600;
+}
+
+.review-rating {
+  font-size: 1.1em;
+  font-weight: bold;
+  color: #ffc107; /* Cor da estrela */
+}
+
+.review-item p {
+  margin-bottom: 8px;
+  font-size: 1em;
+  color: #555;
+}
+
+.review-item p strong {
+  color: #007bff;
+  font-weight: 600;
+}
+
+.review-comment {
+  font-style: italic;
+  color: #666;
+  margin-top: 10px;
+  margin-bottom: 15px;
+  line-height: 1.6;
+}
+
+.review-date {
+  font-size: 0.88em;
+  color: #999;
+  text-align: right;
+  margin-top: 10px;
+}
+
+.seller-response {
+  background-color: #eaf8f1; /* Fundo suave para a resposta do vendedor */
+  border: 1px solid #c8e6c9;
+  border-radius: 8px;
+  padding: 18px;
+  margin-top: 25px;
+  color: #155724;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.seller-response p {
+  margin-bottom: 5px;
+}
+
+.seller-response .response-date {
+  font-size: 0.8em;
+  color: #555;
+  text-align: right;
+  margin-top: 10px;
+}
+
+.btn-respond-review, .btn-edit-response {
+  display: inline-block;
+  background-color: #28a745; /* Verde */
+  color: white;
+  padding: 10px 18px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 0.95em;
+  margin-top: 20px;
+  transition: background-color 0.3s ease;
+  font-weight: 500;
+}
+
+.btn-respond-review:hover, .btn-edit-response:hover {
+  background-color: #218838;
+}
+
+/* Estilos para a página de Responder Avaliação */
+.review-to-respond {
+  /* Usa a classe content-card do base_vendedor.css */
+  margin-bottom: 30px;
+  text-align: left;
+}
+
+.review-to-respond h3 {
+  font-size: 1.5em;
+  color: #34495e;
+  margin-bottom: 15px;
+}
+
+.response-form textarea {
+  min-height: 180px;
+  resize: vertical;
+  /* Estilos de input do base_vendedor.css já aplicam */
+}
+
+.response-form .form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.response-form .btn-submit {
+  background-color: #007bff;
+}
+
+.response-form .btn-submit:hover {
+  background-color: #0056b3;
+}
+
+/* Media Queries */
+@media (max-width: 600px) {
+  .reviews-list {
+      grid-template-columns: 1fr;
+  }
+}

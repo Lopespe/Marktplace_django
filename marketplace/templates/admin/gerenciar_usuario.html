@@ -1,0 +1,198 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Gerenciar Usuário - {{ usuario_a_gerenciar.username }}</title>
+  <link rel="stylesheet" href="{% static 'admin/css/default_page.css' %}">
+  <link rel="stylesheet" href="{% static 'admin/css/navbar.css' %}">
+  <link rel="stylesheet" href="{% static 'admin/css/gerenciar_usuario.css' %}">
+  <style>
+    .errorlist {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+      color: red;
+      font-size: 0.9em;
+    }
+
+    .errorlist li {
+      margin-bottom: 3px;
+    }
+
+    .form-field-container {
+      margin-bottom: 15px;
+    }
+
+    .form-field-container label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    .form-field-container input[type="text"],
+    .form-field-container input[type="email"],
+    .form-field-container input[type="number"] {
+      width: 100%;
+      /* Ou um tamanho adequado */
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background-color: #333;
+      /* Estilo escuro para inputs */
+      color: #fff;
+    }
+
+    .form-field-container input[readonly] {
+      background-color: #444;
+      cursor: not-allowed;
+    }
+
+    .form-field-container small {
+      display: block;
+      font-size: 0.8em;
+      color: #aaa;
+    }
+
+    .checkbox-multiple-groups ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .checkbox-multiple-groups li {
+      margin-bottom: 5px;
+    }
+  </style>
+</head>
+
+<body>
+  {% include 'admin/navbar.html' %}
+
+  <div class="container">
+    <h1>Informações da Conta: {{ usuario_a_gerenciar.username }}</h1>
+
+    {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+      <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    <form method="POST" action="{% url 'marketplace:admin_gerenciar_usuario' user_id=usuario_a_gerenciar.id %}">
+      {% csrf_token %}
+
+      <h2>Dados Principais do Usuário</h2>
+      {# Renderiza erros não específicos de campo para user_form #}
+      {% if user_form.non_field_errors %}
+      <div class="form-errors">{{ user_form.non_field_errors }}</div>
+      {% endif %}
+
+      <div class="form-field-container">
+        <label for="{{ user_form.first_name.id_for_label }}">Nome:</label>
+        {{ user_form.first_name }}
+        {{ user_form.first_name.errors }}
+      </div>
+
+      <div class="form-field-container">
+        <label for="{{ user_form.last_name.id_for_label }}">Sobrenome:</label>
+        {{ user_form.last_name }}
+        {{ user_form.last_name.errors }}
+      </div>
+
+      <div class="form-field-container">
+        <label for="{{ user_form.email.id_for_label }}">Email (para contato):</label>
+        {{ user_form.email }}
+        {{ user_form.email.errors }}
+      </div>
+
+      <div class="form-field-container">
+        {{ user_form.is_active }}
+        <label for="{{ user_form.is_active.id_for_label }}">Usuário Ativo</label>
+        {{ user_form.is_active.errors }}
+      </div>
+
+      <div class="form-field-container">
+        {{ user_form.is_staff }}
+        <label for="{{ user_form.is_staff.id_for_label }}">Permissão de Admin</label>
+        {{ user_form.is_staff.errors }}
+      </div>
+
+      <div class="form-field-container checkbox-multiple-groups">
+        <label>Grupos:</label>
+        {{ user_form.groups }}
+        {{ user_form.groups.errors }}
+      </div>
+
+      <hr>
+
+      {% if perfil_comprador_form %}
+      <h2>Perfil Comprador</h2>
+      {% if perfil_comprador_form.non_field_errors %}
+      <div class="form-errors">{{ perfil_comprador_form.non_field_errors }}</div>
+      {% endif %}
+      <div class="form-field-container">
+        <label for="{{ perfil_comprador_form.idade.id_for_label }}">Idade (Comprador):</label>
+        {{ perfil_comprador_form.idade }}
+        {{ perfil_comprador_form.idade.errors }}
+      </div>
+      <div class="form-field-container">
+        <label for="{{ perfil_comprador_form.cpf.id_for_label }}">CPF (Comprador):</label>
+        {{ perfil_comprador_form.cpf }}
+        {{ perfil_comprador_form.cpf.errors }}
+      </div>
+      <div class="form-field-container">
+        <label for="{{ perfil_comprador_form.curso.id_for_label }}">Curso (Comprador):</label>
+        {{ perfil_comprador_form.curso }}
+        {{ perfil_comprador_form.curso.errors }}
+      </div>
+      <div class="form-field-container">
+        <label for="{{ perfil_comprador_form.ra.id_for_label }}">RA (Comprador):</label>
+        {{ perfil_comprador_form.ra }}
+        {{ perfil_comprador_form.ra.errors }}
+      </div>
+      <hr>
+      {% endif %}
+
+      {% if perfil_vendedor_form %}
+      <h2>Perfil Vendedor</h2>
+      {% if perfil_vendedor_form.non_field_errors %}
+      <div class="form-errors">{{ perfil_vendedor_form.non_field_errors }}</div>
+      {% endif %}
+      <div class="form-field-container">
+        <label for="{{ perfil_vendedor_form.idade.id_for_label }}">Idade (Vendedor):</label>
+        {{ perfil_vendedor_form.idade }}
+        {{ perfil_vendedor_form.idade.errors }}
+      </div>
+      <div class="form-field-container">
+        <label for="{{ perfil_vendedor_form.cpf.id_for_label }}">CPF (Vendedor):</label>
+        {{ perfil_vendedor_form.cpf }}
+        {{ perfil_vendedor_form.cpf.errors }}
+      </div>
+      <div class="form-field-container">
+        <label for="{{ perfil_vendedor_form.curso.id_for_label }}">Curso (Vendedor):</label>
+        {{ perfil_vendedor_form.curso }}
+        {{ perfil_vendedor_form.curso.errors }}
+      </div>
+      <div class="form-field-container">
+        <label for="{{ perfil_vendedor_form.ra.id_for_label }}">RA (Vendedor):</label>
+        {{ perfil_vendedor_form.ra }}
+        {{ perfil_vendedor_form.ra.errors }}
+      </div>
+      <hr>
+      {% endif %}
+
+      <p><strong>Username (para login):</strong> {{ usuario_a_gerenciar.username }} (Não pode ser alterado aqui)</p>
+
+      <div class="buttons">
+        <input type="submit" value="Atualizar Usuário">
+        <a href="{% url 'marketplace:admin_usuarios' %}">Voltar para Lista</a>
+        <a href="{% url 'marketplace:admin_excluir_usuario' user_id=usuario_a_gerenciar.id %}"
+          style="color: #ff6b6b; margin-left: 20px;">Excluir Usuário</a>
+      </div>
+    </form>
+  </div>
+</body>
+
+</html>

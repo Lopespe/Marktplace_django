@@ -1,0 +1,512 @@
+/* Reset e configurações globais */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Body e Background */
+body {
+  background: linear-gradient(135deg, #0f0f23 0%, #1a1a3a 50%, #0f0f23 100%);
+  color: #fff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  min-height: 100vh;
+  padding: 2rem;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Efeito de background animado */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 20% 20%, rgba(102, 126, 234, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(118, 75, 162, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 40% 70%, rgba(67, 233, 123, 0.05) 0%, transparent 50%);
+  pointer-events: none;
+  animation: backgroundFloat 15s ease-in-out infinite;
+}
+
+@keyframes backgroundFloat {
+  0%, 100% { 
+    transform: translateY(0px) rotate(0deg); 
+  }
+  50% { 
+    transform: translateY(-20px) rotate(1deg); 
+  }
+}
+
+/* Container principal */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* Título principal */
+h1 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 3rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #43e97b 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 30px rgba(102, 126, 234, 0.3);
+  animation: titleGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes titleGlow {
+  from { 
+    filter: drop-shadow(0 0 10px rgba(102, 126, 234, 0.3)); 
+  }
+  to { 
+    filter: drop-shadow(0 0 20px rgba(118, 75, 162, 0.5)); 
+  }
+}
+
+/* Botão Novo Produto */
+.novo-produto {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin: 0 auto 3rem;
+  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #000;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 
+    0 4px 20px rgba(67, 233, 123, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+  width: max-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.novo-produto::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left 0.5s;
+}
+
+.novo-produto:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 
+    0 8px 30px rgba(67, 233, 123, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.2);
+}
+
+.novo-produto:hover::before {
+  left: 100%;
+}
+
+.novo-produto:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* Grid de produtos */
+.produtos-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+}
+
+/* Cards dos produtos */
+.produto-card {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  padding: 1.5rem;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  animation: cardSlideIn 0.6s ease-out;
+  animation-delay: calc(var(--index, 0) * 0.1s);
+}
+
+@keyframes cardSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.produto-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #667eea, #764ba2, #43e97b);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.produto-card:hover {
+  transform: translateY(-8px);
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+.produto-card:hover::before {
+  transform: scaleX(1);
+}
+
+/* Conteúdo do produto */
+.produto-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.produto-info {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  flex: 1;
+}
+
+.produto-imagem {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.produto-info img {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.produto-card:hover .produto-info img {
+  border-color: rgba(102, 126, 234, 0.5);
+  transform: scale(1.05);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+}
+
+.produto-detalhes {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.produto-nome {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 0.3rem;
+  line-height: 1.3;
+}
+
+.produto-preco {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #43e97b;
+  text-shadow: 0 0 10px rgba(67, 233, 123, 0.3);
+}
+
+.produto-estoque {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.estoque-badge {
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  background: rgba(67, 233, 123, 0.2);
+  color: #43e97b;
+  border: 1px solid rgba(67, 233, 123, 0.3);
+}
+
+/* Ações (botões) */
+.actions {
+  display: flex;
+  gap: 0.8rem;
+  align-items: center;
+}
+
+.btn {
+  padding: 0.7rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 45px;
+  height: 45px;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+  transform: translate(-50%, -50%);
+}
+
+.btn:hover::before {
+  width: 100px;
+  height: 100px;
+}
+
+.btn i {
+  transition: transform 0.2s ease;
+}
+
+.btn:hover i {
+  transform: scale(1.2);
+}
+
+/* Botão Editar */
+.editar {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  color: #000;
+  box-shadow: 0 4px 15px rgba(79, 172, 254, 0.3);
+}
+
+.editar:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 8px 25px rgba(79, 172, 254, 0.4);
+}
+
+/* Botão Excluir */
+.excluir {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+}
+
+.excluir:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+}
+
+/* Estado vazio */
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: rgba(255, 255, 255, 0.7);
+  animation: fadeIn 1s ease-out;
+}
+
+.empty-state i {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+.empty-state h3 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+@keyframes fadeIn {
+  from { 
+    opacity: 0; 
+    transform: translateY(20px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+/* Responsividade para tablets */
+@media (max-width: 768px) {
+  body {
+    padding: 1rem;
+  }
+
+  .produto-content {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  .produto-info {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+  }
+
+  .actions {
+    justify-content: center;
+  }
+
+  .produtos-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .novo-produto {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Responsividade para smartphones */
+@media (max-width: 480px) {
+  .produto-info {
+    flex-direction: row;
+    text-align: left;
+  }
+
+  .produto-content {
+    flex-direction: column;
+  }
+
+  h1 {
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+  }
+
+  .novo-produto {
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+  }
+
+  .produto-card {
+    padding: 1rem;
+  }
+
+  .produto-info img {
+    width: 70px;
+    height: 70px;
+  }
+
+  .btn {
+    min-width: 40px;
+    height: 40px;
+    padding: 0.5rem;
+  }
+}
+
+/* Melhorias de acessibilidade */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Modo escuro aprimorado */
+@media (prefers-color-scheme: dark) {
+  body {
+    background: linear-gradient(135deg, #0a0a15 0%, #151530 50%, #0a0a15 100%);
+  }
+  
+  .produto-card {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+  
+  .produto-card:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.15);
+  }
+}
+
+/* Estados de foco para acessibilidade */
+.btn:focus,
+.novo-produto:focus {
+  outline: 2px solid #43e97b;
+  outline-offset: 2px;
+}
+
+/* Animações de loading */
+.loading {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.loading::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* Melhorias de performance */
+.produto-card,
+.btn,
+.novo-produto {
+  will-change: transform;
+}
+
+/* Scrollbar personalizada */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #764ba2, #43e97b);
+}

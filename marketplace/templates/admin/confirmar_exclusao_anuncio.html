@@ -1,0 +1,70 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Confirmar Exclusão de Anúncio</title>
+  <link rel="stylesheet" href="{% static 'admin/css/default_page.css' %}">
+  <link rel="stylesheet" href="{% static 'admin/css/navbar.css' %}">
+  <style>
+    .confirmation-box {
+      padding: 20px;
+      background-color: #333;
+      border-radius: 8px;
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .confirmation-box h1 {
+      color: #ff6b6b;
+    }
+
+    .buttons {
+      margin-top: 20px;
+    }
+
+    .buttons button,
+    .buttons a {
+      padding: 10px 20px;
+      margin: 0 10px;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .btn-danger {
+      background-color: #dc3545;
+      color: white;
+      border: none;
+    }
+
+    .btn-secondary {
+      background-color: #6c757d;
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+  {% include 'admin/navbar.html' %}
+  <div class="container">
+    <div class="confirmation-box">
+      <h1>Confirmar Exclusão de Anúncio</h1>
+      <p>Você tem certeza que deseja excluir permanentemente o anúncio "<strong>{{ anuncio_a_excluir.nome }}</strong>"
+        (ID: {{ anuncio_a_excluir.id }})?</p>
+      <p>Esta ação não pode ser desfeita.</p>
+      <form method="POST" action="{% url 'marketplace:admin_excluir_anuncio' produto_id=anuncio_a_excluir.id %}">
+        {% csrf_token %}
+        <div class="buttons">
+          <a href="{% url 'marketplace:admin_gerenciar_anuncio' produto_id=anuncio_a_excluir.id %}"
+            class="btn btn-secondary">Cancelar</a>
+          <button type="submit" class="btn btn-danger">Sim, Excluir</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+
+</html>

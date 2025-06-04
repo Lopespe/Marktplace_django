@@ -1,0 +1,66 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Reportes Arquivados - Admin</title>
+  <link rel="stylesheet" href="{% static 'admin/css/default_page.css' %}">
+  <link rel="stylesheet" href="{% static 'admin/css/navbar.css' %}">
+  <link rel="stylesheet" href="{% static 'admin/css/reportes.css' %}"> {# Reutilizando o CSS, ajuste se necessário #}
+</head>
+
+<body>
+  {% include 'admin/navbar.html' %}
+  <div class="content">
+    <h1>Reportes Arquivados/Finalizados</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>ID Reporte</th>
+          <th>Título</th>
+          <th>Reportado por</th>
+          <th>Item Reportado</th>
+          <th>Data</th>
+          <th>Status</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if reportes_arquivados %}
+        {% for reporte_item in reportes_arquivados %}
+        <tr>
+          <td>#{{ reporte_item.id }}</td>
+          <td>{{ reporte_item.titulo|truncatewords:10 }}</td>
+          <td>{{ reporte_item.usuario_reportou.username|default:"N/A" }}</td>
+          <td>
+            {% if reporte_item.produto_reportado %}
+            Produto: {{ reporte_item.produto_reportado.nome|truncatewords:5 }}
+            {% elif reporte_item.usuario_alvo_reporte %}
+            Usuário: {{ reporte_item.usuario_alvo_reporte.username }}
+            {% else %}
+            Geral/Outro
+            {% endif %}
+          </td>
+          <td>{{ reporte_item.data_criacao|date:"d/m/Y H:i" }}</td>
+          <td>{{ reporte_item.get_status_display }}</td>
+          <td>
+            {# Link aponta para a view principal de gerenciar reporte #}
+            <a href="{% url 'marketplace:admin_gerenciar_reporte' reporte_id=reporte_item.id %}">Ver Detalhes</a>
+          </td>
+        </tr>
+        {% endfor %}
+        {% else %}
+        <tr>
+          <td colspan="7" style="text-align: center;">Nenhum reporte arquivado ou finalizado encontrado.</td>
+        </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+  <div class="bottom-links">
+    <a href="{% url 'marketplace:admin_reportes' %}">Voltar para Reportes Ativos</a>
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,51 @@
+{% extends 'comprador/base_comprador.html' %}
+{% load static %}
+
+{% block title %}Minha Lista de Desejos - UniMarket{% endblock title %}
+
+{# {% block nav_perfil_active %}active{% endblock %} <- REMOVIDO para não ativar a aba Perfil #}
+
+{% block extra_css %}
+{% endblock extra_css %}
+
+{% block content %}
+<div class="wishlist-page-container">
+    <section class="wishlist-header-section">
+        <h1 class="section-title">Minha Lista de Desejos</h1>
+    </section>
+
+    <section class="produtos-section">
+        {% if produtos_favoritados %}
+            <div class="produto-grid">
+                {% for produto in produtos_favoritados %}
+                <div class="produto-card">
+                    <a href="{% url 'marketplace:detalhes_produto' produto_id=produto.id %}" class="produto-link">
+                        {% if produto.imagem %}
+                            <img src="{{ produto.imagem.url }}" alt="{{ produto.nome }}" class="produto-imagem">
+                        {% else %}
+                            <img src="{% static 'comprador/image/placeholder_produto.png' %}" alt="{{ produto.nome }}" class="produto-imagem">
+                        {% endif %}
+                        <div class="produto-info">
+                            <h3 class="produto-nome">{{ produto.nome }}</h3>
+                            <p class="produto-vendedor">Por: {{ produto.vendedor.first_name|default:produto.vendedor.username }}</p>
+                            <p class="produto-preco">R$ {{ produto.preco|floatformat:2 }}</p>
+                        </div>
+                    </a>
+                    <div class="produto-card-actions">
+                        <a href="{% url 'marketplace:remover_dos_desejos' produto_id=produto.id %}" class="btn-remover-desejo full-width" title="Remover dos Desejos">
+                            <img src="{% static 'comprador/image/bookmark_active.png' %}" alt="Remover"> Remover
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-wishlist-message">
+                <p>Sua lista de desejos está vazia!</p>
+                <p>Explore nossos produtos e adicione seus favoritos.</p>
+                <a href="{% url 'marketplace:pagina_inicial_comprador' %}" class="btn-explorar-produtos">Explorar Produtos</a>
+            </div>
+        {% endif %}
+    </section>
+</div>
+{% endblock content %}

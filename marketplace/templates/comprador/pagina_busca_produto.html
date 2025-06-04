@@ -1,0 +1,107 @@
+{% extends 'comprador/base_comprador.html' %}
+{% load static %}
+
+{% block title %}
+    {% if search_query %}
+        Resultados para "{{ search_query }}"
+    {% else %}
+        Busca de Produtos
+    {% endif %}
+    - UniMarket
+{% endblock title %}
+
+{% block nav_inicio_active %}{% endblock %}
+
+{% block content %}
+<div class="search-results-page-container">
+    <section class="search-info-section">
+        {% if search_query %}
+            <h1 class="section-title">Resultados da busca por: "<strong>{{ search_query }}</strong>"</h1>
+        {% else %}
+            <h1 class="section-title">Busca de Produtos</h1>
+        {% endif %}
+    </section>
+
+    {# REMOVED CATEGORY FILTER SECTION FROM HERE #}
+
+    <section class="produtos-list-section">
+        {% if page_obj %} {# Changed from product_list to page_obj #}
+            <div class="produto-lista">
+                {% for produto in page_obj %} {# Changed from product_list to page_obj #}
+                <div class="produto-list-item">
+                    <a href="{% url 'marketplace:detalhes_produto' produto_id=produto.id %}" class="produto-list-item-link">
+                        <div class="produto-list-imagem-container">
+                            {% if produto.imagem %}
+                                <img src="{{ produto.imagem.url }}" alt="{{ produto.nome }}" class="produto-list-imagem">
+                            {% else %}
+                                <img src="{% static 'comprador/image/placeholder_produto.png' %}" alt="{{ produto.nome }}" class="produto-list-imagem">
+                            {% endif %}
+                        </div>
+                        <div class="produto-list-info">
+                            <h3 class="produto-list-nome">{{ produto.nome }}</h3>
+                            <p class="produto-list-vendedor">Por: {{ produto.vendedor.first_name|default:produto.vendedor.username }}</p>
+                            <p class="produto-list-preco">R$ {{ produto.preco|floatformat:2 }}</p>
+                            <p class="produto-list-estoque">Estoque: {{ produto.estoque }}</p>
+                        </div>
+                    </a>
+                    <div class="produto-list-actions">
+                         <form action="{% url 'marketplace:fazer_pedido' produto_id=produto.id %}" method="post" class="form-add-carrinho-lista">
+                            {% csrf_token %}
+                            <input type="hidden" name="quantidade" value="1"> {# Default to 1 for quick add #}
+                            <button type="submit" class="btn-adicionar-carrinho-lista" {% if produto.estoque == 0 %}disabled{% endif %}>
+                                {% if produto.estoque == 0 %}Esgotado{% else %}Fazer Pedido{% endif %}
+                            </button>
+                        </form>
+                        {% if produto.is_favorited %}
+                            <a href="{% url 'marketplace:remover_dos_desejos' produto_id=produto.id %}" class="btn-wishlist list-action active" title="Remover dos Desejos">
+                                <img src="{% static 'comprador/image/bookmark_active.png' %}" alt="Favorito">
+                            </a>
+                        {% else %}
+                            <a href="{% url 'marketplace:adicionar_aos_desejos' produto_id=produto.id %}" class="btn-wishlist list-action" title="Adicionar aos Desejos">
+                                <img src="{% static 'comprador/image/bookmark.png' %}" alt="Não Favorito">
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {# Pagination Controls #}
+            <div class="pagination">
+                <span class="step-links">
+                    {% if page_obj.has_previous %}
+                        <a href="?page=1{% if search_query %}&q_search={{ search_query }}{% endif %}{% if selected_category_id %}&categoria={{ selected_category_id }}{% endif %}">&laquo; primeira</a>
+                        <a href="?page={{ page_obj.previous_page_number }}{% if search_query %}&q_search={{ search_query }}{% endif %}{% if selected_category_id %}&categoria={{ selected_category_id }}{% endif %}">anterior</a>
+                    {% endif %}
+
+                    <span class="current">
+                        Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.
+                    </span>
+
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}{% if search_query %}&q_search={{ search_query }}{% endif %}{% if selected_category_id %}&categoria={{ selected_category_id }}{% endif %}">próxima</a>
+                        <a href="?page={{ page_obj.paginator.num_pages }}{% if search_query %}&q_search={{ search_query }}{% endif %}{% if selected_category_id %}&categoria={{ selected_category_id }}{% endif %}">última &raquo;</a>
+                    {% endif %}
+                </span>
+            </div>
+        {% elif search_query %}
+            <div class="no-results-container">
+                <p class="no-results-message">Nenhum produto encontrado para "<strong>{{ search_query }}</strong>"{% if selected_category_id and selected_category_name %} na categoria <strong>{{ selected_category_name }}</strong>{% endif %}.</p>
+                <div class="no-results-actions">
+                    <a href="{% url 'marketplace:pagina_inicial_comprador' %}" class="btn-voltar-busca">Voltar para Início</a>
+                    {% if selected_category_id and selected_category_name %}
+                        <a href="{% url 'marketplace:pagina_busca_produto' %}?q_search={{ search_query|urlencode }}" class="btn-voltar-busca btn-ver-todos">
+                            Ver todos os resultados para "{{ search_query }}"
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+        {% if not search_query and not page_obj and not messages %} {# Changed product_list to page_obj #}
+            <p class="search-prompt">Digite um termo na barra de pesquisa acima para encontrar produtos.</p>
+        {% endif %}
+    </section>
+{% endblock content %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'comprador/css/pagina_busca.css' %}">
+{% endblock extra_css %}

@@ -1,0 +1,62 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responder Avaliação - Vendedor</title>
+    <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'vendedor/css/global_vendedor.css' %}">
+    <link rel="stylesheet" href="{% static 'vendedor/css/navbar_vendedor.css' %}">
+    <link rel="stylesheet" href="{% static 'vendedor/css/avaliacoes_vendedor.css' %}"> {# Usar o mesmo CSS de avaliações #}
+</head>
+<body>
+    <div class="wrapper">
+        {% include 'vendedor/navbar_vendedor.html' %}
+
+        <div class="main-content-area">
+            <header class="topbar-vendedor">
+                <div class="user-profile">
+                    <span>Olá, {{ request.user.username }}!</span>
+                    <a href="#">Minha Conta</a>
+                </div>
+            </header>
+
+            <main class="page-content">
+                {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %}
+                            <li class="message {{ message.tags }}">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                <div class="content-card">
+                    <h2 class="section-title-vendedor">Responder Avaliação</h2>
+
+                    <div class="review-to-respond">
+                        <h3>Produto: <strong>{{ avaliacao.produto.nome }}</strong></h3>
+                        <p>Cliente: <strong>{{ avaliacao.cliente.username }}</strong></p>
+                        <p>Nota: {{ avaliacao.nota }} <i class="fas fa-star"></i></p>
+                        <p class="review-comment">{{ avaliacao.comentario }}</p>
+                        <p class="review-date">Avaliado em: {{ avaliacao.data_avaliacao|date:"d/m/Y H:i" }}</p>
+                    </div>
+
+                    <form method="post" class="response-form">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="{{ form.texto.id_for_label }}">Sua Resposta:</label>
+                            {{ form.texto }}
+                            {% if form.texto.errors %}<div class="error-message">{{ form.texto.errors }}</div>{% endif %}
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn-submit">Enviar Resposta</button>
+                            <a href="{% url 'marketplace:vendedor_avaliacoes' %}" class="btn-cancel">Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+            </main>
+        </div>
+    </div>
+</body>
+</html>

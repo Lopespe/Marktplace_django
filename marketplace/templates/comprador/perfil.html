@@ -1,0 +1,72 @@
+{% extends 'comprador/base_comprador.html' %}
+{% load static %}
+
+{% block title %}Meu Perfil - UniMarket{% endblock title %}
+
+{% block nav_perfil_active %}active{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'comprador/css/perfil_comprador.css' %}"> {# NEW: Specific overrides for profile page #}
+{% endblock extra_css %}
+
+{% block content %}
+    <div class="perfil-form-container">
+        <h2>Meu Perfil</h2>
+        
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="message-{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+            
+            <h3>Dados da Conta</h3>
+            <div class="form-group-perfil">
+                <label for="{{ user_form.first_name.id_for_label }}">Nome:</label>
+                {{ user_form.first_name }}
+                {% if user_form.first_name.errors %}<ul class="errorlist">{% for error in user_form.first_name.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+            </div>
+            <div class="form-group-perfil">
+                <label for="{{ user_form.last_name.id_for_label }}">Sobrenome:</label>
+                {{ user_form.last_name }}
+                {% if user_form.last_name.errors %}<ul class="errorlist">{% for error in user_form.last_name.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+            </div>
+            <div class="form-group-perfil">
+                <label for="{{ user_form.email.id_for_label }}">Email:</label>
+                {{ user_form.email }}
+                {% if user_form.email.errors %}<ul class="errorlist">{% for error in user_form.email.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+            </div>
+
+            <h3>Informações Pessoais</h3>
+            <div class="form-group-perfil">
+                <label for="{{ perfil_form.idade.id_for_label }}">Idade:</label>
+                {{ perfil_form.idade }}
+                {% if perfil_form.idade.errors %}<ul class="errorlist">{% for error in perfil_form.idade.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+            </div>
+            <div class="form-group-perfil">
+                <label for="{{ perfil_form.cpf.id_for_label }}">CPF:</label>
+                {{ perfil_form.cpf }}
+                {% if perfil_form.cpf.errors %}<ul class="errorlist">{% for error in perfil_form.cpf.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+            </div>
+            <div class="form-group-perfil">
+                <label for="{{ perfil_form.curso.id_for_label }}">Curso:</label>
+                {{ perfil_form.curso }}
+                {% if perfil_form.curso.errors %}<ul class="errorlist">{% for error in perfil_form.curso.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+            </div>
+            <div class="form-group-perfil">
+                <label for="{{ perfil_form.ra.id_for_label }}">RA:</label>
+                {{ perfil_form.ra }}
+                {% if perfil_form.ra.errors %}<ul class="errorlist">{% for error in perfil_form.ra.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-update-perfil">Atualizar Perfil</button>
+                <a href="{% url 'marketplace:pagina_inicial_comprador' %}" class="btn-cancel-perfil">Voltar</a>
+            </div>
+        </form>
+    </div>
+{% endblock content %}

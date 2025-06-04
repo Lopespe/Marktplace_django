@@ -1,0 +1,111 @@
+/* Estilos para a página de Pedidos Recebidos */
+
+.orders-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 30px;
+}
+
+.order-item {
+    background-color: #ffffff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+    border-left: 6px solid #007bff; /* Borda lateral azul */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.order-item:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #eee;
+}
+
+.order-header h3 {
+    font-size: 1.4em;
+    color: #34495e;
+    margin: 0;
+    font-weight: 600;
+}
+
+.order-item p {
+    margin-bottom: 8px;
+    font-size: 1em;
+    color: #555;
+}
+
+.order-item p strong {
+    color: #007bff;
+    font-weight: 600;
+}
+
+.order-item .order-total {
+    font-size: 1.2em;
+    font-weight: 700;
+    color: #28a745; /* Verde para o total */
+    margin-top: 20px;
+    border-top: 1px solid #eee;
+    padding-top: 15px;
+}
+
+.order-item .order-date {
+    font-size: 0.88em;
+    color: #999;
+    text-align: right;
+    margin-top: 10px;
+}
+
+/* Estilos para o status do pedido */
+.status-badge {
+    padding: 8px 15px;
+    border-radius: 25px;
+    font-size: 0.85em;
+    font-weight: bold;
+    color: white;
+    text-transform: uppercase;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+}
+
+.status-pendente {
+    background-color: #ffc107; /* Amarelo */
+}
+
+.status-em_processamento {
+    background-color: #17a2b8; /* Azul claro */
+}
+
+.status-enviado {
+    background-color: #007bff; /* Azul */
+}
+
+.status-entregue {
+    background-color: #28a745; /* Verde */
+}
+
+.status-cancelado {
+    background-color: #dc3545; /* Vermelho */
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+  .dashboard-grid {
+      grid-template-columns: 1fr;
+  }
+  .reviews-list {
+      grid-template-columns: 1fr;
+  }
+  .card {
+      padding: 20px;
+  }
+}

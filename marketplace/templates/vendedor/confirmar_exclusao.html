@@ -1,0 +1,28 @@
+{% extends 'vendedor/base_vendedor.html' %}
+{% load static %}
+
+{% block title %}Confirmar Exclusão{% endblock title %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'vendedor/css/confirmar_exclusao.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+    <div class="content-card confirm-delete-container">
+        <h2 class="section-title-vendedor">Confirmar Exclusão</h2>
+        <div class="confirmation-box">
+            <p>Você tem certeza que deseja excluir o produto "<strong>{{ produto.nome }}</strong>"?</p>
+            <form method="post">
+                {% csrf_token %}
+                <div class="confirmation-actions">
+                    <button type="submit" class="btn-confirm-delete">Sim, Excluir</button>
+                    <a href="{% url 'marketplace:vendedor_produtos' %}" class="btn-cancel">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block extra_js %}
+    {# Adicione JS específico aqui se houver #}
+{% endblock extra_js %}

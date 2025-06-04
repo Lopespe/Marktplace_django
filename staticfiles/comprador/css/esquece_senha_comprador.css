@@ -1,0 +1,297 @@
+/* marketplace/static/accounts/css/esquece_senha_comprador.css */
+
+/* ========= ESTILOS GLOBAIS E BODY ========= */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Arial', sans-serif; /* CONSIDERE USAR A FONTE DO SEU FIGMA */
+  background-color: #f4f6f8; /* Fundo geral claro */
+  line-height: 1.6;
+  color: #333; /* Cor de texto padrão */
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+    overflow: hidden; /* Previne scroll no body em telas de desktop */
+}
+
+/* ========= CONTAINER PRINCIPAL PARA PÁGINAS DE FEEDBACK/RESET ========= */
+.container-reset,
+.container-feedback { /* Usado pela página esquece_senha_email_enviado.html */
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+
+/* ========= LADO ESQUERDO (CONTEÚDO PRINCIPAL: FORMULÁRIO OU MENSAGEM) ========= */
+.left-side-reset,
+.left-side-feedback {
+  background-color: #c8f7b8; /* Mesmo verde claro da sua página de login */
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 30px 20px;
+  box-sizing: border-box;
+  overflow-y: auto; /* Permite rolagem se o conteúdo for extenso */
+}
+
+/* Card branco central no lado esquerdo para formulários ou mensagens de feedback */
+.left-side-reset form,
+.feedback-card { /* Usado pela página esquece_senha_email_enviado.html */
+  width: 100%;
+  max-width: 450px; /* Largura do card/formulário */
+  background-color: #ffffff;
+  padding: 35px 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.reset-title,
+.feedback-title {
+  color: #333;
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 1.7em;
+  font-weight: 600;
+}
+
+.reset-instructions,
+.feedback-instructions {
+  font-size: 0.95em;
+  color: #555;
+  margin-bottom: 15px;
+}
+.feedback-instructions:last-of-type {
+    margin-bottom: 25px;
+}
+
+/* ========= GRUPO DE INPUTS E LABELS ========= */
+.input-group-reset {
+  margin-bottom: 20px;
+  text-align: left; /* Alinha labels e inputs à esquerda */
+}
+.input-group-reset label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #444;
+    font-size: 0.9em;
+}
+
+/* Estilizando os inputs renderizados por {{ form.email }}, {{form.new_password1}}, etc. */
+.input-group-reset input[type="email"],
+.input-group-reset input[type="password"] {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #dde1e6;
+  border-radius: 6px;
+  background-color: #f9f9f9;
+  color: #333;
+  font-size: 0.95em;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.input-group-reset input[type="email"]:focus,
+.input-group-reset input[type="password"]:focus {
+  outline: none;
+  border-color: #619559; /* Verde do seu tema para foco */
+  box-shadow: 0 0 0 3px rgba(97, 149, 89, 0.25);
+}
+
+/* ========= ESTILOS PARA ERROS DE FORMULÁRIO ========= */
+.form-error { /* Erros gerais ou de campo não específico, dentro de .messages ou .form-errors-summary */
+    color: #D8000C;
+    background-color: #FFD2D2;
+    border: 1px solid #D8000C;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 0.9em;
+    margin-bottom: 15px;
+    text-align: left;
+}
+.form-error.field-error { /* Erros abaixo de campos específicos */
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    margin-top: 4px;
+    font-size: 0.8em;
+}
+
+.form-errors-summary { /* Container para non_field_errors */
+    background-color: #FFD2D2;
+    border: 1px solid #D8000C;
+    color: #A94442; /* Cor de texto mais escura para o sumário */
+    padding: 10px 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    text-align: left;
+}
+.form-errors-summary p {
+    margin: 0;
+    font-size: 0.9em;
+}
+.form-errors-summary .form-error { /* Remove estilo duplicado para erros dentro do sumário */
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    margin-top: 5px;
+}
+
+/* Estilo para o texto de ajuda do formulário (regras de senha) */
+.form-help-text {
+    font-size: 0.8em;
+    color: #666;
+    margin-top: -10px;
+    margin-bottom: 15px;
+    text-align: left;
+}
+.form-help-text ul {
+    padding-left: 20px;
+    margin: 5px 0 0 0;
+    list-style-type: disc; /* Garante que os marcadores apareçam */
+}
+.form-help-text li {
+    margin-bottom: 3px;
+}
+
+/* ========= BOTÕES PRINCIPAIS ========= */
+.btn-reset,
+.btn-principal-feedback {
+  display: inline-block;
+  width: auto; /* Permite que o botão se ajuste ao texto, com min-width */
+  min-width: 200px;
+  padding: 12px 25px;
+  background-color: #619559; /* Verde dos seus botões principais */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1em;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 15px;
+}
+.btn-reset:hover,
+.btn-principal-feedback:hover {
+  background-color: #507a48;
+}
+
+.link-tentar-novamente { /* Link na página "email enviado" */
+    color: #619559;
+    font-weight: 500;
+    text-decoration: none;
+}
+.link-tentar-novamente:hover {
+    text-decoration: underline;
+}
+
+/* ========= LADO DIREITO (INFORMATIVO/DECORATIVO) ========= */
+.right-side-reset,
+.right-side-feedback {
+  background-color: #1a1d26; /* Mesmo fundo escuro da sua página de login */
+  color: white;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.info-text-reset,
+.info-text-feedback {
+  font-size: 2rem;
+  font-style: italic;
+  font-weight: bold;
+  line-height: 1.4;
+}
+
+/* ========= BOTÃO DE VOLTAR (CANTO SUPERIOR ESQUERDO) ========= */
+.botao-voltar-reset,
+.botao-voltar-feedback {
+    position: absolute; top: 30px; left: 30px; width: 48px; height: 48px;
+    background-color: rgba(230, 230, 230, 0.85); /* Cinza claro com opacidade */
+    color: #2c2f33; /* Seta escura */
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    text-decoration: none; font-size: 26px; font-weight: 700; line-height: 1;
+    transition: all 0.3s ease; z-index: 10; box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+}
+.botao-voltar-reset:hover,
+.botao-voltar-feedback:hover {
+    background-color: rgba(215, 215, 215, 0.95); color: #000; transform: scale(1.03);
+}
+
+/* ========= AJUSTES RESPONSIVOS ========= */
+@media (max-width: 768px) {
+    html, body {
+        overflow-y: auto; /* Permite scroll vertical em telas pequenas */
+        height: auto; /* Altura se ajusta ao conteúdo */
+    }
+    .container-reset, .container-feedback {
+        flex-direction: column-reverse; /* Formulário/conteúdo em cima */
+        height: auto;
+    }
+
+    .left-side-reset, .left-side-feedback,
+    .right-side-reset, .right-side-feedback {
+        flex: none; /* Remove flex-grow/shrink para controle manual */
+        width: 100%;
+        min-height: 0; /* Reseta min-height */
+        height: auto;
+    }
+    .left-side-reset, .left-side-feedback {
+        padding: 30px 20px;
+    }
+    .right-side-reset, .right-side-feedback {
+        padding: 40px 20px;
+        min-height: 150px; /* Uma altura mínima para o texto informativo em mobile */
+    }
+    .info-text-reset, .info-text-feedback {
+        font-size: 1.5rem;
+    }
+    .reset-title, .feedback-title {
+        font-size: 1.5em;
+    }
+    .botao-voltar-reset, .botao-voltar-feedback {
+       top: 20px;
+       left: 20px;
+       width: 40px;
+       height: 40px;
+       font-size: 22px;
+   }
+}
+
+@media (max-width: 480px) {
+    .left-side-reset form, .feedback-card {
+        padding: 20px 25px;
+    }
+    .info-text-reset, .info-text-feedback {
+        font-size: 1.3rem;
+    }
+    .reset-title, .feedback-title {
+        font-size: 1.3em;
+    }
+     .input-group-reset input[type="email"],
+    .input-group-reset input[type="password"] {
+        padding: 10px 12px;
+        font-size: 0.9em;
+    }
+    .btn-reset, .btn-principal-feedback {
+        padding: 10px 20px;
+        font-size: 0.95em;
+    }
+    .botao-voltar-reset, .botao-voltar-feedback {
+       top: 15px;
+       left: 15px;
+       width: 38px;
+       height: 38px;
+       font-size: 20px;
+   }
+}

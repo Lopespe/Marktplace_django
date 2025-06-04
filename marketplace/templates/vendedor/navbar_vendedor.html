@@ -1,0 +1,17 @@
+{% load static %}
+<nav class="navbar-vendedor">
+    <div class="logo">
+        <a href="{% url 'marketplace:vendedor_dashboard' %}">
+            <span class="logo-text">Painel Vendedor</span>
+        </a>
+    </div>
+    <ul class="nav-links">
+        <li><a href="{% url 'marketplace:vendedor_dashboard' %}" class="{% if request.resolver_match.url_name == 'vendedor_dashboard' %}active{% endif %}"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+        <li><a href="{% url 'marketplace:vendedor_produtos' %}" class="{% if request.resolver_match.url_name == 'vendedor_produtos' %}active{% endif %}"><i class="fas fa-boxes"></i> Meus Produtos</a></li>
+        <li><a href="{% url 'marketplace:vendedor_pedidos' %}" class="{% if request.resolver_match.url_name == 'vendedor_pedidos' %}active{% endif %}"><i class="fas fa-shopping-basket"></i> Pedidos</a></li>
+        <li><a href="{% url 'marketplace:vendedor_estoque' %}" class="{% if request.resolver_match.url_name == 'vendedor_estoque' %}active{% endif %}"><i class="fas fa-warehouse"></i> Estoque</a></li>
+        <li><a href="{% url 'marketplace:vendedor_avaliacoes' %}" class="{% if request.resolver_match.url_name == 'vendedor_avaliacoes' %}active{% endif %}"><i class="fas fa-comments"></i> Avaliações</a></li>
+        <li><a href="{% url 'marketplace:vendedor_relatorios' %}" class="{% if request.resolver_match.url_name == 'vendedor_relatorios' %}active{% endif %}"><i class="fas fa-chart-line"></i> Relatórios</a></li>
+        <li><a href="{% url 'marketplace:vendedor_logout' %}" class="logout-link"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
+    </ul>
+</nav>

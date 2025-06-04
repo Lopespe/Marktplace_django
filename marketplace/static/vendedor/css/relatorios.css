@@ -1,0 +1,103 @@
+/* Estilos para a página de Relatórios de Vendas */
+
+.summary-cards-grid { /* Usado em vez de dashboard-grid para relatórios */
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+.summary-cards-grid .card {
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  border-bottom: 5px solid;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.summary-cards-grid .card h3 {
+  font-size: 1.3em;
+  margin-bottom: 15px;
+  color: #555;
+  font-weight: 500;
+}
+
+.summary-cards-grid .card p {
+  font-size: 2.8em;
+  font-weight: 700;
+  color: #2c3e50;
+  line-height: 1;
+}
+
+/* Cores específicas para cards de resumo */
+.card-total-faturamento { border-bottom-color: #28a745; }
+.card-itens-vendidos { border-bottom-color: #ffc107; }
+.card-pedidos-concluidos { border-bottom-color: #17a2b8; }
+
+
+.chart-section {
+  /* Usa a classe content-card do base_vendedor.css */
+  margin-bottom: 40px;
+}
+
+.chart-section h3 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #34495e;
+  font-size: 1.8em;
+}
+
+.top-products-section {
+  /* Usa a classe content-card do base_vendedor.css */
+  margin-bottom: 30px;
+}
+
+.top-products-section h3 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #34495e;
+  font-size: 1.8em;
+}
+
+.products-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.product-item-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background-color: #fcfcfc;
+  border-radius: 8px;
+  border: 1px solid #eee;
+  font-size: 1em;
+  color: #444;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  font-weight: 500;
+}
+
+.product-item-summary span:first-child {
+  font-weight: 600;
+  color: #007bff;
+}
+
+.product-item-summary .fas {
+  color: #ffc107;
+  margin-left: 8px;
+  font-size: 0.9em;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+  .summary-cards-grid {
+      grid-template-columns: 1fr;
+  }
+}

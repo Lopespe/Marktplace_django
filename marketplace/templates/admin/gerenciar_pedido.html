@@ -1,0 +1,143 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Gerenciar Pedido #{{ pedido.id }}</title>
+  <link rel="stylesheet" href="{% static 'admin/css/default_page.css' %}">
+  <link rel="stylesheet" href="{% static 'admin/css/navbar.css' %}">
+  <style>
+    .pedido-detalhes {
+      padding: 20px;
+      background-color: #333;
+      border-radius: 8px;
+      margin-top: 20px;
+    }
+
+    .pedido-detalhes p {
+      margin-bottom: 10px;
+    }
+
+    .pedido-detalhes strong {
+      min-width: 150px;
+      display: inline-block;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .form-group select,
+    .form-group button {
+      padding: 8px;
+      border-radius: 4px;
+      border: 1px solid #555;
+      background-color: #444;
+      color: white;
+    }
+
+    .form-group button[disabled] {
+      background-color: #555;
+      cursor: not-allowed;
+    }
+
+    .buttons {
+      margin-top: 20px;
+    }
+
+    .messages {
+      list-style-type: none;
+      padding: 0;
+      margin-bottom: 15px;
+    }
+
+    .messages li.success {
+      background-color: #28a745;
+      color: white;
+      padding: 10px;
+      border-radius: 4px;
+    }
+
+    .messages li.error {
+      background-color: #dc3545;
+      color: white;
+      padding: 10px;
+      border-radius: 4px;
+    }
+
+    .info-finalizado {
+      background-color: #17a2b8;
+      color: white;
+      padding: 10px;
+      border-radius: 4px;
+      margin-top: 10px;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  {% include 'admin/navbar.html' %}
+  <div class="container">
+    <h1>Gerenciar Pedido #{{ pedido.id }}</h1>
+
+    {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+      <li class="{{ message.tags }}">{{ message }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+
+    <div class="pedido-detalhes">
+      <p><strong>Data do Pedido:</strong> {{ pedido.data_pedido|date:"d/m/Y H:i:s" }}</p>
+      <p><strong>Comprador (Cliente):</strong> {{ pedido.cliente.username }} ({{ pedido.cliente.first_name }})</p>
+      <p><strong>Vendedor:</strong> {{ pedido.vendedor.username }} ({{ pedido.vendedor.first_name }})</p>
+      <hr>
+      <h3>Produto</h3>
+      <p><strong>Nome:</strong> {{ pedido.produto.nome }}</p>
+      <p><strong>Descrição:</strong> {{ pedido.produto.descricao|truncatewords:30 }}</p>
+      <p><strong>Preço Unitário:</strong> R$ {{ pedido.produto.preco }}</p>
+      <p><strong>Quantidade Pedida:</strong> {{ pedido.quantidade }}</p>
+      <p><strong>Subtotal do Produto:</strong> R$ {% widthratio pedido.produto.preco 1 pedido.quantidade %}</p>
+      <hr>
+      <h3>Status Atual: {{ pedido.get_status_display }}</h3>
+
+      {% if pedido.status != 'entregue' %} {# Verifica se o pedido NÃO está entregue #}
+      <form method="POST" action="{% url 'marketplace:admin_gerenciar_pedido' pedido_id=pedido.id %}">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="status">Alterar Status para:</label>
+          <div class="form-group">
+            <label for="status">Alterar Status para:</label>
+            <select name="status" id="status">
+                {% for value, display_name in status_choices %}
+                    <option value="{{ value }}" {% if pedido.status == value %}selected="selected"{% endif %}>{{ display_name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        </div>
+        <div class="buttons">
+          <button type="submit">Atualizar Status</button>
+        </div>
+      </form>
+      {% else %}
+      <p class="info-finalizado">Este pedido já foi finalizado e seu status não pode ser alterado.</p>
+      {% endif %}
+    </div>
+
+    <div style="margin-top: 20px;">
+      <a href="{% url 'marketplace:admin_pedidos' %}" class="btn">Voltar para Todos os Pedidos</a> |
+      <a href="{% url 'marketplace:admin_pedidos_finalizados' %}" class="btn">Voltar para Pedidos Finalizados</a>
+    </div>
+
+  </div>
+</body>
+
+</html>

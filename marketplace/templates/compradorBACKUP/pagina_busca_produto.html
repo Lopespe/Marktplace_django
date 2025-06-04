@@ -1,0 +1,131 @@
+{% extends 'comprador/base_comprador.html' %}
+{% load static %}
+
+{% block title %}
+{% if search_query %}
+Resultados para "{{ search_query }}"
+{% else %}
+Busca de Produtos
+{% endif %}
+- UniMarket
+{% endblock title %}
+
+{% block nav_inicio_active %}{% endblock %}
+
+{% block content %}
+<div class="search-results-page-container">
+    <section class="search-info-section">
+        {% if search_query %}
+        <h1 class="section-title">Resultados da busca por: "<strong>{{ search_query }}</strong>"</h1>
+        {% else %}
+        <h1 class="section-title">Busca de Produtos</h1>
+        {% endif %}
+    </section>
+
+    {% if search_query or selected_category_id and selected_category_id != 'todos' %}
+    <section class="filtros-section">
+        <h2 class="section-title-minor">Filtrar resultados por Categoria:</h2>
+        <div class="filtros-categorias">
+            <a href="{% url 'marketplace:comprador_busca_produto' %}?q_search={{ search_query|urlencode }}"
+                class="filtro-item {% if not selected_category_id or selected_category_id == 'todos' %}filtro-ativo{% endif %}">
+                <div class="filtro-visual-container">
+                    <span class="filtro-icon-fallback" style="display:flex;">✨</span>
+                </div>
+                <span class="filtro-nome-texto">Todas</span>
+            </a>
+            {% if filter_categorias %}
+            {% for categoria in filter_categorias %}
+            {% with image_filename=categoria.id|add:".png" %}
+            {# MODIFICADO o caminho do static #}
+            {% with image_full_path="comprador/image/"|add:image_filename %}
+            <a href="{% url 'marketplace:comprador_busca_produto' %}?q_search={{ search_query|urlencode }}&categoria={{ categoria.id }}"
+                class="filtro-item {% if categoria.id|stringformat:" s"==selected_category_id|stringformat:"s"
+                %}filtro-ativo{% endif %}" data-filter-id="{{ categoria.id }}">
+                <div class="filtro-visual-container">
+                    <img src="{% static image_full_path %}" alt="{{ categoria.nome_exibicao }}" class="filtro-imagem"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <span class="filtro-icon-fallback" style="display:none;">{{ categoria.icone|default:"🛍️" }}</span>
+                </div>
+                <span class="filtro-nome-texto">{{ categoria.nome_exibicao }}</span>
+            </a>
+            {% endwith %}
+            {% endwith %}
+            {% endfor %}
+            {% endif %}
+        </div>
+    </section>
+    {% endif %}
+
+    <section class="produtos-list-section">
+        {% if product_list %}
+        <div class="produto-lista">
+            {% for produto in product_list %}
+            <div class="produto-list-item">
+                {# MODIFICADO nome da URL para comprador_produto_detalhes #}
+                <a href="{% url 'marketplace:comprador_produto_detalhes' produto_id=produto.id %}"
+                    class="produto-list-item-link">
+                    <div class="produto-list-imagem-container">
+                        {% if produto.imagem %}
+                        {# MODIFICADO o caminho do static e usando produto.imagem.url #}
+                        <img src="{{ produto.imagem.url }}" alt="{{ produto.nome }}" class="produto-list-imagem">
+                        {% else %}
+                        {# MODIFICADO o caminho do static #}
+                        <img src="{% static 'comprador/image/placeholder_produto.png' %}" alt="{{ produto.nome }}"
+                            class="produto-list-imagem">
+                        {% endif %}
+                    </div>
+                    <div class="produto-list-info">
+                        <h3 class="produto-list-nome">{{ produto.nome }}</h3>
+                        <p class="produto-list-vendedor">Por: {{
+                            produto.vendedor.first_name|default:produto.vendedor.username }}</p>
+                        <p class="produto-list-preco">R$ {{ produto.preco }}</p>
+                    </div>
+                </a>
+                <div class="produto-list-actions">
+                    <button class="btn-adicionar-carrinho-lista">Adicionar ao Carrinho</button>
+                    {% if produto.is_favorited %} {# Assumindo que is_favorited é passado no contexto #}
+                    {# MODIFICADO nome URL e caminho do static #}
+                    <a href="{% url 'marketplace:comprador_desejos_remover' produto_id=produto.id %}"
+                        class="btn-wishlist list-action active" title="Remover dos Desejos">
+                        <img src="{% static 'comprador/image/bookmark_active.png' %}" alt="Favorito">
+                    </a>
+                    {% else %}
+                    {# MODIFICADO nome URL e caminho do static #}
+                    <a href="{% url 'marketplace:comprador_desejos_adicionar' produto_id=produto.id %}"
+                        class="btn-wishlist list-action" title="Adicionar aos Desejos">
+                        <img src="{% static 'comprador/image/bookmark.png' %}" alt="Não Favorito">
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% elif search_query %}
+        <div class="no-results-container">
+            <p class="no-results-message">Nenhum produto encontrado para "<strong>{{ search_query }}</strong>"{% if
+                selected_category_id and selected_category_id != 'todos' and selected_category_name %} na categoria
+                <strong>{{ selected_category_name }}</strong>{% endif %}.</p>
+            <div class="no-results-actions">
+                {# MODIFICADO para pagina_inicial_comprador #}
+                <a href="{% url 'marketplace:pagina_inicial_comprador' %}" class="btn-voltar-busca">Voltar para
+                    Início</a>
+                {% if selected_category_id and selected_category_id != 'todos' %}
+                <a href="{% url 'marketplace:comprador_busca_produto' %}?q_search={{ search_query|urlencode }}"
+                    class="btn-voltar-busca btn-ver-todos">
+                    Ver todos os resultados para "{{ search_query }}"
+                </a>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+        {% if not search_query and not product_list and not messages %}
+        <p class="search-prompt">Digite um termo na barra de pesquisa acima para encontrar produtos.</p>
+        {% endif %}
+    </section>
+</div>
+{% endblock content %}
+
+{% block extra_css %}
+{# MODIFICADO o caminho do static #}
+<link rel="stylesheet" href="{% static 'comprador/css/pagina_busca.css' %}">
+{% endblock extra_css %}

@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Painel Vendedor - UniMarket{% endblock title %}</title>
+    <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'vendedor/css/global_vendedor.css' %}">
+    <link rel="stylesheet" href="{% static 'vendedor/css/navbar_vendedor.css' %}">
+    {% block extra_css %}{% endblock extra_css %}
+</head>
+<body>
+    {# site-wrapper-vendedor for sticky footer pattern #}
+    <div class="site-wrapper-vendedor">
+        {# Seller Navbar (fixed to left) #}
+        {% include 'vendedor/navbar_vendedor.html' %}
+
+        {# Main content area, wraps topbar and page content #}
+        <div class="main-content-area">
+            {# Topbar for seller profile/logout etc. #}
+
+            {# Main content of the page #}
+            <main class="page-content">
+                {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %}
+                            <li class="message {{ message.tags }}">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                {% block content %}
+                    {# Content from child templates will go here #}
+                {% endblock content %}
+            </main>
+        </div>
+    </div> {# END: site-wrapper-vendedor #}
+
+    {# Footer for seller pages #}
+    <footer class="main-footer-vendedor">
+        <p>&copy; {% now "Y" %} UniMarket. Todos os direitos reservados. Painel Vendedor.</p>
+    </footer>
+
+    {# Specific page JavaScript can be added here #}
+    {% block extra_js %}{% endblock extra_js %}
+</body>
+</html>

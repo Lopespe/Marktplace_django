@@ -1,0 +1,72 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}UniMarket{% endblock title %}</title>
+    <link rel="stylesheet" href="{% static 'comprador/css/tela_home_comprador.css' %}">
+    {% block extra_css %}{% endblock extra_css %}
+</head>
+<body>
+    {# NEW: This wrapper will stretch to push the footer down #}
+    <div class="site-content-wrapper">
+        <header class="topbar">
+            <div class="logo-area">
+                <a href="{% url 'marketplace:pagina_inicial_comprador' %}" class="logo-text"> </a>
+            </div>
+            <div class="search-area">
+                <form method="GET" action="{% url 'marketplace:pagina_busca_produto' %}" class="search-form">
+                    <input type="search" name="q_search" placeholder="Pesquisar em UniMarket..." class="search-bar" value="{{ request.GET.q_search }}">
+                    <button type="submit" class="search-button">
+                        <img src="{% static 'comprador/image/search-icon.png' %}" alt="Buscar" class="search-icon-img">
+                    </button>
+                </form>
+            </div>
+            <div class="header-actions">
+                <a href="{% url 'marketplace:lista_desejos' %}" 
+                   class="header-action-btn {% if request.resolver_match.url_name == 'lista_desejos' %}active-icon{% endif %}" 
+                   title="Lista de Desejos">
+                    <img src="{% static 'comprador/image/bookmark.png' %}" alt="Desejos">
+                </a>
+                <a href="{% url 'marketplace:comprador_pedidos' %}" class="header-action-btn {% if request.resolver_match.url_name == 'comprador_pedidos' %}active-icon{% endif %}" title="Meus Pedidos"> 
+                    <img src="{% static 'comprador/image/cart.png' %}" alt="Pedidos">
+                </a>
+                <div class="profile-action">
+                     <a href="{% url 'marketplace:comprador_perfil' %}" class="header-action-btn profile-btn" title="Minha Conta"> 
+                        <img src="{% static 'comprador/image/user.png' %}" alt="Perfil">
+                    </a>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'marketplace:comprador_logout' %}" class="logout-text-link">Sair</a>
+                    {% endif %}
+                </div>
+            </div>
+        </header>
+
+        <nav class="main-navigation-tabs">
+            <a href="{% url 'marketplace:pagina_inicial_comprador' %}" class="nav-tab {% block nav_inicio_active %}{% if request.resolver_match.url_name == 'pagina_inicial_comprador' and not request.GET.categoria and not request.GET.q_search %}active{% endif %}{% endblock %}">Início</a>
+            <a href="{% url 'marketplace:comprador_pedidos' %}" class="nav-tab {% block nav_pedidos_active %}{% if request.resolver_match.url_name == 'comprador_pedidos' %}active{% endif %}{% endblock %}">Pedidos</a> 
+            <a href="{% url 'marketplace:comprador_perfil' %}" class="nav-tab {% block nav_perfil_active %}{% if request.resolver_match.url_name == 'comprador_perfil' %}active{% endif %}{% endblock %}">Perfil</a>
+        </nav>
+
+        <main class="container-principal-home">
+            {% if messages %}
+                <ul class="messages-global">
+                    {% for message in messages %}
+                        <li{% if message.tags %} class="message-{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            {% block content %}
+            {# Content from child templates like home_comprador.html or pedidos.html will go here #}
+            {% endblock content %}
+        </main>
+    </div> {# END: site-content-wrapper #}
+
+    <footer class="main-footer-home">
+        <p>&copy; {% now "Y" %} UniMarket. Todos os direitos reservados.</p>
+    </footer>
+
+    {% block extra_js %}{% endblock extra_js %}
+</body>
+</html>

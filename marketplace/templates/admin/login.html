@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <title>BazaarUni - Login</title>
+  <link rel="stylesheet" href="{% static 'admin/css/default_page.css' %}">
+  <link rel="stylesheet" href="{% static 'admin/css/login.css' %}">
+  <script defer src="{% static 'admin/js/login.js' %}"></script>
+</head>
+
+<body>
+  <div class="container">
+    <div class="login-box">
+      <h1>BazaarUni</h1>
+      <form method="POST" action="{% url 'marketplace:admin_login' %}">
+        {% csrf_token %}
+
+        <div class="input-group">
+          <input type="text" name="username" required placeholder="Username">
+        </div>
+
+        <div class="input-group password-group">
+          <input type="password" name="password" id="password" required placeholder="Password">
+          <img id="togglePassword" src="{% static 'admin/image/eye-close.png' %}" alt="Mostrar senha" />
+        </div>
+
+        <button type="submit" class="btn">Confirmar</button>
+      </form>
+    </div>
+  </div>
+</body>
+
+</html>

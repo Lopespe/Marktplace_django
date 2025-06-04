@@ -1,0 +1,199 @@
+/* marketplace/static/accounts/css/pagina_busca.css */
+
+.search-results-page-container .section-title {
+    margin-top: 10px;
+    margin-bottom: 15px;
+    font-size: 1.8em;
+}
+
+.search-results-page-container .section-title-minor {
+    font-size: 1.2em;
+    color: #555;
+    text-align: left;
+    margin-bottom: 15px;
+    font-weight: 500;
+}
+
+.search-prompt {
+    text-align: center;
+    font-size: 1.1em;
+    color: #777;
+    margin: 30px 0; /* Ajustada a margem */
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.no-results-container {
+    text-align: center;
+    padding: 30px 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    margin-top: 20px;
+}
+.no-results-message {
+    font-size: 1.1em;
+    color: #555;
+    margin-bottom: 20px;
+}
+.no-results-actions {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+.btn-voltar-busca { /* Estilo genérico para os botões de voltar/ver todos */
+    display: inline-block;
+    padding: 10px 20px; /* Reduzido um pouco o padding */
+    background-color: #619559;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 500;
+    font-size: 0.95em; /* Reduzido um pouco */
+    transition: background-color 0.2s ease;
+    border: none;
+}
+.btn-voltar-busca:hover {
+    background-color: #507a48;
+}
+.btn-voltar-busca.btn-ver-todos { /* Estilo específico para o botão "Ver todos os resultados" */
+    background-color: #f0f2f5;
+    color: #4E7A53;
+    border: 1px solid #4E7A53;
+}
+.btn-voltar-busca.btn-ver-todos:hover {
+    background-color: #e2e6ea;
+}
+
+/* Estilos para a lista de produtos na página de busca */
+.produtos-list-section {
+    margin-top: 30px;
+}
+
+.produto-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.produto-list-item {
+    display: flex;
+    background-color: #FFFFFF;
+    border-radius: 8px;
+    box-shadow: 0 3px 7px rgba(0,0,0,0.08);
+    padding: 15px;
+    gap: 20px; /* Aumentado o gap entre imagem e info */
+    align-items: flex-start; /* Alinhado ao topo, mas pode ser 'center' */
+    transition: box-shadow 0.2s ease;
+}
+.produto-list-item:hover {
+    box-shadow: 0 5px 12px rgba(0,0,0,0.12);
+}
+
+.produto-list-item-link {
+    display: flex;
+    flex-grow: 1;
+    text-decoration: none;
+    color: inherit;
+    gap: 20px; /* Mesmo gap */
+}
+.produto-list-item-link:hover .produto-list-nome {
+    color: #4E7A53;
+}
+
+.produto-list-imagem-container {
+    flex-shrink: 0;
+    width: 120px;  /* Largura da imagem na lista */
+    height: 120px; /* Altura da imagem na lista */
+}
+.produto-list-imagem {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid #eee; /* Borda sutil na imagem */
+}
+
+.produto-list-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Tenta centralizar o texto verticalmente se a imagem for alta */
+    flex-grow: 1;
+}
+
+.produto-list-nome {
+    font-size: 1.1em; /* Reduzido um pouco para lista */
+    font-weight: 600;
+    color: #333;
+    margin: 0 0 5px 0;
+}
+.produto-list-vendedor {
+    font-size: 0.85em;
+    color: #777;
+    margin-bottom: 8px;
+}
+.produto-list-preco {
+    font-size: 1.1em; /* Reduzido um pouco */
+    font-weight: bold;
+    color: #4E7A53;
+    /* margin-top: auto; /* Removido para texto fluir melhor */
+}
+
+.produto-list-actions {
+    display: flex;
+    align-items: center; /* Para alinhar com o centro das infos se estas fossem mais altas */
+    justify-content: center; /* Centraliza o botão */
+    margin-left: 15px;
+    flex-shrink: 0;
+}
+.btn-adicionar-carrinho-lista {
+    padding: 8px 15px;
+    background-color: #4E7A53;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.9em;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background-color 0.2s ease;
+}
+.btn-adicionar-carrinho-lista:hover {
+    background-color: #3E6943;
+}
+
+/* Responsividade para a página de busca */
+@media (max-width: 768px) {
+    .produto-list-item, .produto-list-item-link {
+        /* Mantém flex-direction: row; para itens de lista, mas pode ajustar se necessário */
+        gap: 15px; /* Reduz gap */
+    }
+    .produto-list-imagem-container {
+        width: 90px;
+        height: 90px;
+    }
+    .produto-list-nome { font-size: 1em; }
+    .produto-list-preco { font-size: 1em; }
+    .btn-adicionar-carrinho-lista { font-size: 0.85em; padding: 6px 10px; }
+}
+
+@media (max-width: 480px) {
+    .produto-list-item, .produto-list-item-link {
+        flex-direction: column; /* Empilha em telas muito pequenas */
+        align-items: center;
+        text-align: center;
+    }
+    .produto-list-imagem-container {
+        width: 120px; /* Imagem pode ser maior quando empilhada */
+        height: 120px;
+        margin-bottom: 10px;
+    }
+    .produto-list-info {
+        align-items: center;
+    }
+    .produto-list-preco { margin-top: 8px; margin-bottom: 8px; }
+    .produto-list-actions { margin-left: 0; margin-top: 10px; width: 100%; justify-content: center; }
+}

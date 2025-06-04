@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Bem-vindo ao E-commerce Universitário!</title>
+    <link rel="stylesheet" href="{% static 'comprador/css/tela_inicial.css' %}">
+</head>
+
+<body>
+    <div class="container-inicial">
+        <div class="texto-descricao-inicial">
+            <p>
+                Sua faculdade, seu point de delícias!<br>
+                Aqui, alunos vendem para alunos: de lanches rápidos a doces incríveis.<br>
+                Crie sua vitrine virtual, mostre seus produtos e combine a entrega direto com o comprador.<br>
+                Para quem compra, é a chance de saborear o talento dos colegas e descobrir opções únicas no
+                campus.<br><br>
+                Participe da nossa comunidade!
+            </p>
+        </div>
+        <div class="botoes-acao-inicial">
+            <a href="{% url 'marketplace:comprador_cadastro' %}" class="btn-inicial">Cadastrar Comprador</a>
+            <a href="{% url 'marketplace:vendedor_cadastro' %}" class="btn-inicial">Cadastrar Vendedor</a>
+            <a href="{% url 'marketplace:comprador_login' %}" class="btn-inicial">Login Comprador</a>
+            <a href="{% url 'marketplace:vendedor_login' %}" class="btn-inicial">Login Vendedor</a>
+        </div>
+    </div>
+</body>
+
+</html>

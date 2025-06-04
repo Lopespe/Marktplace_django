@@ -1,0 +1,81 @@
+{% extends 'vendedor/base_vendedor.html' %}
+{% load static %}
+
+{% block title %}{{ acao }} Produto - Vendedor{% endblock title %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'vendedor/css/produto_form.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+    <div class="content-card product-form-container">
+        <h2 class="section-title-vendedor">{{ acao }} Produto</h2>
+
+        <form method="POST" enctype="multipart/form-data" class="produto-form" id="productForm">
+            {% csrf_token %}
+
+            {% for field in form %}
+            <div class="form-group">
+                <label for="{{ field.id_for_label }}">
+                    {{ field.label }}
+                    {% if field.field.required %}
+                    <span class="required">*</span>
+                    {% endif %}
+                </label>
+
+                {% if field.field.widget.input_type == 'file' %}
+                <div class="file-input-wrapper">
+                    {{ field }}
+                    <label for="{{ field.id_for_label }}" class="file-input-label">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <span class="file-text">Clique para selecionar arquivo ou arraste aqui</span>
+                        <span class="file-hint">Formatos: JPG, PNG, JPEG. Tamanho máximo: 5MB</span>
+                    </label>
+                </div>
+                {% elif field.field.widget.input_type == 'textarea' %}
+                {{ field }}
+                {% else %}
+                <div class="input-wrapper">
+                    {{ field }}
+                </div>
+                {% endif %}
+
+                {% if field.errors %}
+                {% for error in field.errors %}
+                <div class="error-message">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    {{ error }}
+                </div>
+                {% endfor %}
+                {% endif %}
+
+                {% if field.help_text %}
+                <small class="help-text">{{ field.help_text }}</small>
+                {% endif %}
+            </div>
+            {% endfor %}
+            
+            {% if produto.imagem and acao == 'Editar' %}
+                <div class="form-group">
+                    <label>Imagem Atual:</label>
+                    <img src="{{ produto.imagem.url }}" alt="Imagem do Produto" class="current-product-image">
+                </div>
+            {% endif %}
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary" id="submitBtn">
+                    <i class="fas fa-save"></i>
+                    <span>Salvar Produto</span>
+                    <div class="loading">
+                        <div class="spinner"></div>
+                    </div>
+                </button>
+                <a href="{% url 'marketplace:vendedor_produtos' %}" class="btn-cancel">Cancelar</a>
+            </div>
+        </form>
+    </div>
+{% endblock content %}
+
+{% block extra_js %}
+    <script src="{% static 'vendedor/js/produto_form.js' %}"></script>
+{% endblock extra_js %}

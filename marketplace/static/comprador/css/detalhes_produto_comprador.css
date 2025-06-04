@@ -1,0 +1,205 @@
+/* marketplace/static/accounts/css/detalhes_produto_comprador.css */
+body {
+    font-family: Arial, sans-serif; margin: 0; background-color: #f4f8fa;
+    color: #333; line-height: 1.6;
+}
+
+.produto-detalhe-wrapper { /* Conteúdo principal da página de detalhes */
+    max-width: 1100px; margin: 20px auto; padding: 25px;
+    background-color: #fff; border-radius: 8px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+}
+
+.contextual-nav {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-bottom: 15px; margin-bottom: 20px; border-bottom: 1px solid #eaeaea;
+}
+.link-voltar-contextual {
+    display: inline-flex; align-items: center; gap: 6px; padding: 8px 12px;
+    background-color: #f0f2f5; color: #4E7A53; text-decoration: none;
+    border-radius: 6px; font-weight: 500; font-size: 0.9em;
+    border: 1px solid #d7dce1; transition: background-color 0.2s ease, color 0.2s ease;
+}
+.link-voltar-contextual:hover { background-color: #e1e5ea; color: #3E6943; }
+.seta-voltar { font-size: 1.2em; line-height: 1; }
+
+.produto-breadcrumb { font-size: 0.85em; color: #777; }
+.produto-breadcrumb a { color: #4E7A53; text-decoration: none; }
+.produto-breadcrumb a:hover { text-decoration: underline; }
+
+.produto-detalhe-wrapper h1 { font-size: 2em; margin-top: 10px; margin-bottom: 15px; color: #3E6943; line-height: 1.3; }
+.produto-detalhe-layout { display: flex; gap: 35px; margin-top: 20px; }
+.produto-imagem-coluna { flex: 0 0 40%; max-width: 450px; }
+.imagem-principal-produto { width: 100%; border-radius: 8px; border: 1px solid #eee; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+.produto-info-coluna { flex: 1 1 55%; }
+.detalhe-vendedor { font-size: 0.95em; color: #555; margin-bottom: 10px; }
+.detalhe-vendedor strong { color: #333; }
+.detalhe-preco { font-size: 1.9em; font-weight: bold; color: #4CAF50; margin-bottom: 5px; } /* Ajuste margem-bottom */
+.detalhe-estoque { font-size: 0.95em; color: #666; margin-bottom: 20px; } /* Novo estilo para estoque */
+
+
+/* === BLOCO DE AÇÕES PRINCIPAIS - QUANTIDADE, CARRINHO, DESEJOS === */
+.produto-acoes-bloco {
+    display: flex; /* Coloca form de carrinho e botão de desejos na mesma linha */
+    flex-wrap: wrap; /* Permite quebrar linha em telas menores */
+    align-items: center; /* Alinha verticalmente ao centro */
+    justify-content: flex-start; /* Alinha o grupo de ações à esquerda por padrão */
+    /* Para centralizar o grupo TODO, o pai de .produto-acoes-bloco precisaria de text-align:center ou ser flex e justify-content:center */
+    /* Se quiser centralizar os itens DENTRO deste bloco: */
+    /* justify-content: center; */ 
+    gap: 20px; /* Espaço entre o form de compra e o botão de desejos */
+    margin-top: 20px;
+    margin-bottom: 25px;
+    padding: 15px 0; /* Adiciona um pouco de padding vertical */
+    border-top: 1px solid #f0f0f0; /* Linha separadora opcional */
+    border-bottom: 1px solid #f0f0f0; /* Linha separadora opcional */
+}
+
+.form-add-carrinho { /* O formulário que contém quantidade e botão "Adicionar ao Carrinho" */
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Espaço entre o input de quantidade e o botão de carrinho */
+    flex-wrap: nowrap; /* Impede que quantidade e botão de carrinho quebrem linha entre si */
+}
+
+.quantidade-grupo { display: flex; align-items: center; }
+.quantidade-grupo label { margin-right: 8px; font-size: 0.9em; color: #444; font-weight: 500; white-space: nowrap; }
+.input-quantidade {
+    width: 60px; padding: 10px; border-radius: 6px;
+    border: 1px solid #ccc; text-align: center; font-size: 1em; box-sizing: border-box;
+}
+
+.btn-comprar-detalhes { /* Botão "Adicionar ao Carrinho" */
+    padding: 10px 18px; font-size: 0.95em; border-radius: 6px; border: none;
+    cursor: pointer; transition: background-color 0.2s ease; font-weight: 500;
+    background-color: #4E7A53; color: white; white-space: nowrap; /* Para não quebrar o texto */
+}
+.btn-comprar-detalhes:hover { background-color: #3E6943; }
+.btn-comprar-detalhes:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+    opacity: 0.8;
+}
+
+
+.btn-wishlist-detalhe { /* Botão "Adicionar/Remover dos Desejos" */
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 10px 15px; font-size: 0.9em; border-radius: 6px;
+    border: 1px solid #ddd; background-color: #f7f7f7;
+    color: #e74c3c; cursor: pointer;
+    transition: all 0.2s ease; text-decoration: none; font-weight: 500;
+    white-space: nowrap; /* Para não quebrar o texto */
+}
+.btn-wishlist-detalhe img { width: 16px; height: 16px; filter: none; }
+.btn-wishlist-detalhe:hover { background-color: #e74c3c; color: white; border-color: #e74c3c; }
+.btn-wishlist-detalhe.active { background-color: #e74c3c; color: white; border-color: #e74c3c; }
+.btn-wishlist-detalhe.active img { filter: brightness(0) invert(1); }
+/* === FIM DO BLOCO DE AÇÕES PRINCIPAIS === */
+
+.produto-descricao-detalhada { margin-top: 25px; border-top: 1px solid #f0f0f0; padding-top: 25px; }
+.produto-descricao-detalhada h3 { font-size: 1.3em; margin-top: 0; margin-bottom: 12px; color: #333; }
+.produto-descricao-detalhada p { font-size: 0.95em; color: #555; line-height: 1.7; }
+
+/* Estilos para Seção de Avaliações e Comentários (como estavam) */
+.reviews-section { margin-top: 40px; padding-top: 30px; border-top: 1px solid #eee; }
+.section-title-reviews { font-size: 1.6em; color: #333; margin-bottom: 25px; text-align: left; }
+.review-form-container { background-color: #f9f9f9; padding: 20px; border-radius: 8px; margin-bottom: 30px; border: 1px solid #e0e0e0; }
+.review-form-container h3 { margin-top: 0; font-size: 1.3em; color: #444; }
+.rating-stars { margin-bottom: 15px; }
+.rating-stars > span { margin-right: 10px; font-weight: 500; }
+.star-input { display: inline-block; direction: rtl; }
+.star-input input[type="radio"] { display: none; } /* Hidden radio buttons */
+.star-input .star-label { 
+    font-size: 2em; color: #ddd; cursor: pointer; padding: 0 2px; transition: color 0.2s ease;
+    display: inline-block; /* Ensure labels are side-by-side */
+}
+.star-input .star-label:hover,
+.star-input .star-label:hover ~ .star-label { color: #ffc107; } /* Highlight on hover */
+
+/* Highlight selected stars and previous ones */
+.star-input .star-label.hover-highlight,
+.star-input .star-label[data-value]:hover ~ .star-label[data-value] { /* Fallback for older browsers not supporting :has() */
+    color: #ffc107;
+}
+
+/* This is the most effective way to style selected stars and previous ones. */
+.star-input:not(:hover) .star-label[data-value="1"].selected ~ .star-label,
+.star-input:not(:hover) .star-label[data-value="2"].selected ~ .star-label,
+.star-input:not(:hover) .star-label[data-value="3"].selected ~ .star-label,
+.star-input:not(:hover) .star-label[data-value="4"].selected ~ .star-label,
+.star-input:not(:hover) .star-label[data-value="5"].selected ~ .star-label {
+    color: #FFD700;
+}
+.star-input .star-label[data-value="1"].selected,
+.star-input .star-label[data-value="2"].selected,
+.star-input .star-label[data-value="3"].selected,
+.star-input .star-label[data-value="4"].selected,
+.star-input .star-label[data-value="5"].selected {
+    color: #FFD700; /* Color for the actual selected star */
+}
+
+/* Base styles for the star character (empty) */
+.star-input .star-label {
+    content: '☆'; /* Empty star by default */
+}
+/* Styles for filled stars (when active or on hover) */
+.star-input .star-label.hover-highlight,
+.star-input .star-label[data-value]:hover,
+.star-input .star-label[data-value]:hover ~ .star-label {
+    content: '★'; /* Filled star on hover */
+}
+.star-input .star-label[data-value].selected,
+.star-input .star-label[data-value].selected ~ .star-label {
+    content: '★'; /* Filled star when selected */
+}
+
+.comment-field { margin-bottom: 15px; }
+.comment-field label { display: block; margin-bottom: 5px; font-weight: 500; }
+.comment-field textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; min-height: 80px; font-family: inherit; font-size: 0.95em; }
+.btn-submit-review { padding: 10px 20px; font-size: 1em; border-radius: 5px; border: none; cursor: pointer; background-color: #5cb85c; color: white; font-weight: 500; }
+.btn-submit-review:hover { background-color: #4cae4c; }
+.existing-reviews h3 { font-size: 1.3em; color: #444; margin-bottom: 15px; }
+.review-item { border-bottom: 1px solid #f0f0f0; padding: 15px 0; }
+.review-item:last-child { border-bottom: none; }
+.review-author { font-weight: bold; margin-bottom: 5px; color: #333; }
+.review-author .review-rating { color: #FFD700; margin-left: 8px; font-size: 1.1em; }
+.review-text { margin-bottom: 5px; font-size: 0.95em; color: #454545; }
+.review-date { font-size: 0.8em; color: #888; }
+.seller-response {
+    background-color: #eaf8f1; /* Light green background */
+    border-left: 4px solid #5cb85c; /* Green border */
+    padding: 10px 15px;
+    margin-top: 15px;
+    border-radius: 0 5px 5px 0;
+    font-size: 0.9em;
+    color: #155724;
+}
+.seller-response p { margin-bottom: 5px; }
+.seller-response p:last-child { margin-bottom: 0; }
+.seller-response strong { color: #0f3d20; }
+.seller-response .response-date { font-size: 0.75em; color: #6a6a6a; text-align: right; }
+
+
+@media (max-width: 768px) {
+    .produto-detalhe-layout { flex-direction: column; }
+    .produto-imagem-coluna, .produto-info-coluna { flex-basis: auto; max-width: 100%; }
+    .produto-imagem-coluna { margin-bottom: 25px; }
+    .produto-detalhe-wrapper h1 { font-size: 1.6em; }
+    .detalhe-preco { font-size: 1.5em; }
+    
+    .produto-acoes-bloco {
+        flex-direction: column; /* Empilha form e botão de desejos em telas menores */
+        align-items: stretch; /* Fazem ocupar a largura */
+    }
+    .form-add-carrinho {
+        width: 100%; /* Form de carrinho ocupa largura total */
+        justify-content: space-between; /* Espaçar qtd e botão */
+    }
+    .btn-comprar-detalhes {
+         flex-grow: 0; /* Não cresce tanto, deixa espaço para qtd */
+    }
+    .btn-wishlist-detalhe {
+        width: 100%; /* Botão de desejos ocupa largura total */
+        justify-content: center; /* Centraliza seu conteúdo (ícone + texto) */
+    }
+}

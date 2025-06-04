@@ -1,0 +1,99 @@
+{% extends 'vendedor/base_vendedor.html' %}
+{% load static %}
+
+{% block title %}Relatórios de Vendas - Vendedor{% endblock title %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'vendedor/css/relatorios.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+    <div class="content-card">
+        <h2 class="section-title-vendedor">Relatórios de Vendas</h2>
+
+        <div class="summary-cards-grid">
+            <div class="card card-total-faturamento">
+                <h3>Faturamento Total</h3>
+                <p>R$ {{ total_vendas_valor|floatformat:2 }}</p>
+            </div>
+            <div class="card card-itens-vendidos">
+                <h3>Itens Vendidos</h3>
+                <p>{{ total_itens_vendidos }}</p>
+            </div>
+            <div class="card card-pedidos-concluidos">
+                <h3>Pedidos Concluídos</h3>
+                <p>{{ total_pedidos_concluidos }}</p>
+            </div>
+        </div>
+
+        <div class="chart-section content-card">
+            <h3>Vendas por Mês</h3>
+            <canvas id="salesByMonthChart"></canvas>
+        </div>
+
+        <div class="top-products-section content-card">
+            <h3>Produtos Mais Vendidos</h3>
+            {% if produtos_mais_vendidos %}
+                <div class="products-list">
+                    {% for produto in produtos_mais_vendidos %}
+                        <div class="product-item-summary">
+                            <span>{{ produto.nome }}</span>
+                            <span>Vendidos: {{ produto.total_vendido }}</span>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>Nenhum produto vendido ainda.</p>
+            {% endif %}
+        </div>
+
+        <div class="top-products-section content-card">
+            <h3>Produtos Mais Bem Avaliados</h3>
+            {% if produtos_mais_avaliados %}
+                <div class="products-list">
+                    {% for produto in produtos_mais_avaliados %}
+                        <div class="product-item-summary">
+                            <span>{{ produto.nome }}</span>
+                            <span>Média: {{ produto.media_nota|floatformat:1 }} <i class="fas fa-star"></i></span>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>Nenhum produto avaliado ainda.</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock content %}
+
+{% block extra_js %}
+    <script src="{% static 'vendedor/js/relatorios.js' %}"></script>
+    <script type="text/javascript">
+        var salesByMonthLabels = JSON.parse(document.getElementById('sales-by-month-labels').textContent);
+        var salesByMonthData = JSON.parse(document.getElementById('sales-by-month-data').textContent);
+
+        var ctxSalesByMonth = document.getElementById('salesByMonthChart').getContext('2d');
+        new Chart(ctxSalesByMonth, {
+            type: 'bar',
+            data: {
+                labels: salesByMonthLabels,
+                datasets: [{
+                    label: 'Faturamento (R$)',
+                    data: salesByMonthData,
+                    backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+    <script id="sales-by-month-labels" type="application/json">{{ vendas_por_mes_labels|json_script }}</script>
+    <script id="sales-by-month-data" type="application/json">{{ vendas_por_mes_data|json_script }}</script>
+{% endblock extra_js %}

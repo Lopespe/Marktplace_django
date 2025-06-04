@@ -1,0 +1,59 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <title>BazaarUni - Login Comprador</title>
+  <link rel="stylesheet" href="{% static 'comprador/css/default_page.css' %}">
+  <link rel="stylesheet" href="{% static 'comprador/css/login_comprador.css' %}">
+  <script defer src="{% static 'comprador/js/login.js' %}"></script>
+</head>
+
+<body>
+  <a href="{% url 'marketplace:landing_page' %}" class="botao-voltar-login" title="Voltar para a Página Inicial">
+    &lt;
+  </a>
+  <div class="container">
+    <div class="left-side">
+      <form method="POST" action="{% url 'marketplace:comprador_login' %}">
+        {% csrf_token %}
+        <h2 class="login-title">Login Comprador</h2>
+
+        {% if messages %}
+        <ul class="messages">
+          {% for message in messages %}
+          <li class="message-{{ message.tags }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+
+        <div class="input-group">
+          <input type="text" name="username" required placeholder="Email">
+        </div>
+
+        <div class="input-group">
+          <input type="password" name="password" id="password" required placeholder="Senha">
+          {# Se você tiver o togglePassword, certifique-se que a imagem e JS existem no caminho 'comprador/' #}
+          {# <img id="togglePassword" src="{% static 'comprador/image/eye-close.png' %}" alt="Mostrar senha" /> #}
+        </div>
+
+        <div class="forgot-password-link">
+          <a href="{% url 'marketplace:password_reset_request' %}">Esqueceu sua senha?</a>
+        </div>
+
+        <button type="submit" class="btn-login">Entrar</button>
+      </form>
+      <div class="register-link">
+        <p>Não tem uma conta? <a href="{% url 'marketplace:comprador_cadastro' %}">Cadastre-se</a></p>
+      </div>
+    </div>
+    <div class="right-side">
+      <span class="welcome-text">
+        Bem-Vindo<br>de Volta!
+      </span>
+    </div>
+  </div>
+</body>
+
+</html>
