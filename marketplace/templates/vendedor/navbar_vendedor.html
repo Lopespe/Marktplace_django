@@ -12,6 +12,7 @@
         <li><a href="{% url 'marketplace:vendedor_estoque' %}" class="{% if request.resolver_match.url_name == 'vendedor_estoque' %}active{% endif %}"><i class="fas fa-warehouse"></i> Estoque</a></li>
         <li><a href="{% url 'marketplace:vendedor_avaliacoes' %}" class="{% if request.resolver_match.url_name == 'vendedor_avaliacoes' %}active{% endif %}"><i class="fas fa-comments"></i> Avaliações</a></li>
         <li><a href="{% url 'marketplace:vendedor_relatorios' %}" class="{% if request.resolver_match.url_name == 'vendedor_relatorios' %}active{% endif %}"><i class="fas fa-chart-line"></i> Relatórios</a></li>
+        <li><a href="{% url 'marketplace:editar_perfil_vendedor' %}" class="{% if request.resolver_match.url_name == 'editar_perfil_vendedor' %}active{% endif %}">Editar Perfil</a></li>
         <li><a href="{% url 'marketplace:vendedor_logout' %}" class="logout-link"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
     </ul>
 </nav>

@@ -88,30 +88,3 @@ class RespostaVendedorAvaliacao(models.Model):
     def __str__(self):
         return f"Resposta de {self.vendedor.username} para avaliação #{self.avaliacao.id}"
 
-class Reporte(models.Model):
-    STATUS_CHOICES = [
-        ('aberto', 'Aberto'),
-        ('em_analise', 'Em Análise'),
-        ('resolvido_aprovado', 'Resolvido (Ação Tomada)'),
-        ('resolvido_rejeitado', 'Resolvido (Rejeitado)'),
-        ('arquivado', 'Arquivado'),
-    ]
-
-    usuario_reportou = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='reportes_feitos')
-    produto_reportado = models.ForeignKey(Produto, on_delete=models.SET_NULL, null=True, blank=True, related_name='reportes_sobre_este_produto')
-    usuario_alvo_reporte = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='reportes_recebidos_como_alvo')
-    titulo = models.CharField(max_length=255, help_text="Um breve título para o reporte.")
-    descricao = models.TextField(help_text="Descreva detalhadamente o motivo do reporte.")
-    imagem_evidencia = models.ImageField(upload_to='reportes_evidencias/', null=True, blank=True)
-    data_criacao = models.DateTimeField(auto_now_add=True)
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='aberto')
-    notas_admin = models.TextField(blank=True, null=True, help_text="Notas internas do administrador sobre este reporte.")
-    data_ultima_atualizacao_admin = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return f"Reporte #{self.id} - {self.titulo} (Status: {self.get_status_display()})"
-
-    class Meta:
-        ordering = ['-data_criacao']
-        verbose_name = "Reporte"
-        verbose_name_plural = "Reportes"

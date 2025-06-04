@@ -6,6 +6,7 @@
   <title>Login - Comprador</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="{% static 'comprador/css/login_comprador.css' %}">
+  <link rel="stylesheet" href="{% static 'comprador/css/message.css' %}" />
 </head>
 <body>
   <a href="{% url 'marketplace:landing_page' %}" class="botao-voltar-login" title="Voltar para a Página Inicial">
@@ -19,6 +20,13 @@
         <h2 class="login-title">Faça Login</h2>
 
         <div class="input-group">
+          {% if messages %}
+            <ul class="messages">
+              {% for message in messages %}
+                <li class="message {{ message.tags }}">{{ message }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
           <input type="text" name="username" placeholder="Insira seu Login (Email)" required>
         </div>
         <div class="input-group">

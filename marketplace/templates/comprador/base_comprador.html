@@ -9,7 +9,6 @@
     {% block extra_css %}{% endblock extra_css %}
 </head>
 <body>
-    {# NEW: This wrapper will stretch to push the footer down #}
     <div class="site-content-wrapper">
         <header class="topbar">
             <div class="logo-area">
@@ -50,13 +49,6 @@
         </nav>
 
         <main class="container-principal-home">
-            {% if messages %}
-                <ul class="messages-global">
-                    {% for message in messages %}
-                        <li{% if message.tags %} class="message-{{ message.tags }}"{% endif %}>{{ message }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
             {% block content %}
             {# Content from child templates like home_comprador.html or pedidos.html will go here #}
             {% endblock content %}

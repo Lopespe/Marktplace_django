@@ -1,7 +1,7 @@
 # marketplace/forms.py
 from django import forms
 from django.contrib.auth.models import User, Group
-from .models import Produto, PerfilComprador, PerfilVendedor, Avaliacao, RespostaVendedorAvaliacao, Category, Reporte # Import Reporte
+from .models import Produto, PerfilComprador, PerfilVendedor, Avaliacao, RespostaVendedorAvaliacao, Category
 
 class ProdutoForm(forms.ModelForm):
     class Meta:
@@ -157,41 +157,3 @@ class RespostaVendedorAvaliacaoForm(forms.ModelForm):
             'texto': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Digite sua resposta aqui...'}),
         }
 
-# NEW: Form for creating a Reporte
-class ReporteForm(forms.ModelForm):
-    class Meta:
-        model = Reporte
-        # Exclude fields that are auto-set or admin-only
-        fields = ['titulo', 'descricao', 'imagem_evidencia', 'produto_reportado', 'usuario_alvo_reporte']
-        widgets = {
-            'titulo': forms.TextInput(attrs={'placeholder': 'Título breve do problema/sugestão'}),
-            'descricao': forms.Textarea(attrs={'rows': 5, 'placeholder': 'Descreva o problema ou sugestão em detalhes...'}),
-            # product_reportado and usuario_alvo_reporte will be ModelChoiceFields and might not need explicit widget here
-        }
-    
-    # Custom fields for optional selection
-    produto_reportado = forms.ModelChoiceField(
-        queryset=Produto.objects.all().order_by('nome'), # Populate with all products
-        required=False,
-        label="Produto Relacionado (Opcional)",
-        help_text="Se o reporte for sobre um produto específico."
-    )
-    usuario_alvo_reporte = forms.ModelChoiceField(
-        queryset=User.objects.all().order_by('username'), # Populate with all users
-        required=False,
-        label="Usuário Relacionado (Opcional)",
-        help_text="Se o reporte for sobre o comportamento de outro usuário."
-    )
-
-    def __init__(self, *args, **kwargs):
-        # Pop the 'user' if passed, to exclude current user from usuario_alvo_reporte queryset
-        current_user = kwargs.pop('user', None) 
-        super().__init__(*args, **kwargs)
-        
-        if current_user:
-            # Exclude the current user from the list of users they can report
-            self.fields['usuario_alvo_reporte'].queryset = User.objects.exclude(pk=current_user.pk).order_by('username')
-        
-        # Ensure initial value for select widgets
-        self.fields['produto_reportado'].empty_label = "Selecione um produto (opcional)"
-        self.fields['usuario_alvo_reporte'].empty_label = "Selecione um usuário (opcional)"

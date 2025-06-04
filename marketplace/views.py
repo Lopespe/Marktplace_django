@@ -7,15 +7,15 @@ from django.contrib.auth.models import User, Group
 from django.core.paginator import Paginator # Import Paginator
 from .models import (
     Produto, Pedido, Avaliacao, PerfilComprador, PerfilVendedor,
-    Reporte, RespostaVendedorAvaliacao, Category # Import Category
+    RespostaVendedorAvaliacao, Category # Import Category
 )
 from .forms import (
     FormCadastroComprador, FormCadastroVendedor,
     UserAdminEditForm, UserBuyerProfileEditForm, UserSellerProfileEditForm, # Updated and new User forms
     PerfilCompradorEditForm, PerfilVendedorEditForm,
     ProdutoForm, AvaliacaoForm, RespostaVendedorAvaliacaoForm,
-    ReporteForm # Import ReporteForm
 )
+
 from django.db.models import Sum, Count, Avg, F # F para referenciar campos do modelo em anotações
 from django.urls import reverse_lazy
 from django.http import Http404, JsonResponse
@@ -25,6 +25,15 @@ from django.db.models import Q # Import Q for complex lookups
 # Imports para o gráfico do admin_dashboard e vendedor_reports
 from django.utils import timezone
 import calendar
+
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.views import View
+from django.db import transaction
+from django.contrib import messages
+
+from .forms import UserSellerProfileEditForm, PerfilVendedorEditForm
+from .models import PerfilVendedor
 
 # --- FUNÇÕES DE TESTE DE PAPEL ---
 def is_admin(user):
@@ -56,9 +65,6 @@ def admin_dashboard(request):
         total_vendedores = vendedores_group.user_set.count()
     except Group.DoesNotExist:
         total_vendedores = 0
-    
-    recent_reports = Reporte.objects.all().order_by('-data_criacao')[:5]
-    total_reportes = Reporte.objects.count()
 
     chart_labels = []
     chart_data = []
@@ -76,9 +82,9 @@ def admin_dashboard(request):
         chart_data.append(registrations_in_month)
 
     context = {
-        'recent_users': recent_users, 'recent_products': recent_products, 'recent_reports': recent_reports,
+        'recent_users': recent_users, 'recent_products': recent_products,
         'total_compradores': total_compradores, 'total_vendedores': total_vendedores,
-        'total_reportes': total_reportes, 'chart_labels': chart_labels, 'chart_data': chart_data,
+        'chart_labels': chart_labels, 'chart_data': chart_data,
     }
     return render(request, 'admin/dashboard.html', context)
 
@@ -200,38 +206,6 @@ def admin_excluir_usuario(request, user_id):
         return redirect('marketplace:admin_usuarios')
     context = {'usuario_a_excluir': usuario_a_excluir}
     return render(request, 'admin/confirmar_exclusao_usuario.html', context)
-
-@login_required(login_url=reverse_lazy('marketplace:admin_login'))
-@user_passes_test(is_admin, login_url=reverse_lazy('marketplace:admin_login'))
-def admin_reportes(request):
-    reportes_ativos = Reporte.objects.exclude(status__in=['arquivado', 'resolvido_aprovado', 'resolvido_rejeitado']).order_by('-data_criacao')
-    context = {'reportes': reportes_ativos}
-    return render(request, 'admin/reportes.html', context)
-
-@login_required(login_url=reverse_lazy('marketplace:admin_login'))
-@user_passes_test(is_admin, login_url=reverse_lazy('marketplace:admin_login'))
-def admin_gerenciar_reporte(request, reporte_id):
-    reporte = get_object_or_404(Reporte, pk=reporte_id)
-    if request.method == 'POST':
-        novo_status = request.POST.get('status')
-        notas_admin_text = request.POST.get('notas_admin', '')
-        if novo_status in [choice[0] for choice in Reporte.STATUS_CHOICES]:
-            reporte.status = novo_status
-            reporte.notas_admin = notas_admin_text
-            reporte.save()
-            messages.success(request, f"Reporte #{reporte.id} atualizado para '{reporte.get_status_display()}'.")
-            return redirect('marketplace:admin_gerenciar_reporte', reporte_id=reporte.id)
-        else:
-            messages.error(request, "Status inválido.")
-    context = {'reporte': reporte, 'status_choices': Reporte.STATUS_CHOICES}
-    return render(request, 'admin/gerenciar_reporte.html', context)
-
-@login_required(login_url=reverse_lazy('marketplace:admin_login'))
-@user_passes_test(is_admin, login_url=reverse_lazy('marketplace:admin_login'))
-def admin_reportes_arquivados(request):
-    reportes_arquivados = Reporte.objects.filter(status__in=['arquivado', 'resolvido_aprovado', 'resolvido_rejeitado']).order_by('-data_criacao')
-    context = {'reportes_arquivados': reportes_arquivados}
-    return render(request, 'admin/reportes_arquivados.html', context)
 
 @login_required(login_url=reverse_lazy('marketplace:admin_login'))
 @user_passes_test(is_admin, login_url=reverse_lazy('marketplace:admin_login'))
@@ -589,31 +563,6 @@ def comprador_perfil(request):
     }
     return render(request, 'comprador/perfil.html', context)
 
-@login_required
-@user_passes_test(is_comprador, login_url=reverse_lazy('marketplace:comprador_login'))
-def comprador_criar_reporte(request):
-    if request.method == 'POST':
-        # Pass request.user to the form's __init__ to exclude self from user_alvo_reporte queryset
-        form = ReporteForm(request.POST, request.FILES, user=request.user) 
-        if form.is_valid():
-            reporte = form.save(commit=False)
-            reporte.usuario_reportou = request.user # Set the reporter as the current user
-            reporte.save()
-            messages.success(request, "Seu problema foi reportado com sucesso! A equipe irá analisar.")
-            return redirect('marketplace:pagina_inicial_comprador') # Redirect after successful submission
-        else:
-            messages.error(request, "Erro ao enviar o reporte. Por favor, corrija os campos.")
-            # Render the form again with errors
-            context = {'form': form, 'page_title': 'Reportar um Problema'}
-            return render(request, 'comprador/criar_reporte.html', context)
-    else:
-        # Pass request.user to the form's __init__ for GET requests too
-        form = ReporteForm(user=request.user) 
-    
-    context = {'form': form, 'page_title': 'Reportar um Problema'}
-    return render(request, 'comprador/criar_reporte.html', context)
-
-
 # --- VIEWS PARA LISTA DE DESEJOS ---
 @login_required
 @user_passes_test(is_comprador, login_url=reverse_lazy('marketplace:comprador_login'))
@@ -667,6 +616,65 @@ def comprador_logout(request):
     return redirect('marketplace:landing_page')
 
 # --- VIEWS DO VENDEDOR ---
+class EditarPerfilVendedorView(LoginRequiredMixin, UserPassesTestMixin, View):
+    template_name = 'vendedor/editar_perfil_vendedor.html'
+
+    def test_func(self):
+        # Garante que o usuário esteja logado E que ele tenha um perfil de vendedor.
+        if not self.request.user.is_authenticated:
+            return False
+        try:
+            # Tenta acessar o perfil de vendedor usando o related_name CORRETO.
+            self.request.user.perfil_vendedor # CORRIGIDO: de perfilvendedor para perfil_vendedor
+            return True
+        except PerfilVendedor.DoesNotExist:
+            return False
+
+    def get(self, request, *args, **kwargs):
+        user_form = UserSellerProfileEditForm(instance=request.user)
+        try:
+            # Acessa o perfil do vendedor usando o related_name CORRETO.
+            perfil_vendedor = request.user.perfil_vendedor # CORRIGIDO: de perfilvendedor para perfil_vendedor
+            perfil_form = PerfilVendedorEditForm(instance=perfil_vendedor)
+        except PerfilVendedor.DoesNotExist:
+            # Se por algum motivo o perfil não existir, cria um novo formulário de perfil vazio.
+            # Embora test_func deva impedir isso, é uma segurança.
+            perfil_form = PerfilVendedorEditForm()
+
+        context = {
+            'user_form': user_form,
+            'perfil_form': perfil_form
+        }
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        user_form = UserSellerProfileEditForm(request.POST, instance=request.user)
+        try:
+            # Acessa o perfil do vendedor usando o related_name CORRETO.
+            perfil_vendedor = request.user.perfil_vendedor # CORRIGIDO: de perfilvendedor para perfil_vendedor
+            perfil_form = PerfilVendedorEditForm(request.POST, instance=perfil_vendedor)
+        except PerfilVendedor.DoesNotExist:
+            # Se o perfil não existir durante o POST (o que é improvável se test_func funcionar),
+            # cria uma nova instância de PerfilVendedor.
+            perfil_form = PerfilVendedorEditForm(request.POST)
+
+        if user_form.is_valid() and perfil_form.is_valid():
+            with transaction.atomic():
+                user_form.save()
+                perfil = perfil_form.save(commit=False)
+                perfil.user = request.user
+                perfil.save()
+            messages.success(request, 'Seu perfil foi atualizado com sucesso!')
+            # Assumindo que 'marketplace:perfil_vendedor' existe e leva à visualização do perfil.
+            return redirect('marketplace:vendedor_dashboard') # Redireciona para o dashboard do vendedor ou para uma página de perfil
+        else:
+            messages.error(request, 'Erro ao atualizar o perfil. Por favor, verifique os dados informados.')
+            context = {
+                'user_form': user_form,
+                'perfil_form': perfil_form
+            }
+            return render(request, self.template_name, context)
+
 @login_required(login_url=reverse_lazy('marketplace:vendedor_login'))
 @user_passes_test(is_vendedor, login_url=reverse_lazy('marketplace:vendedor_login'))
 def vendedor_dashboard(request):
@@ -945,31 +953,6 @@ def vendedor_perfil(request):
         'nome_usuario': request.user.first_name or request.user.username,
     }
     return render(request, 'vendedor/perfil.html', context)
-
-@login_required(login_url=reverse_lazy('marketplace:vendedor_login'))
-@user_passes_test(is_vendedor, login_url=reverse_lazy('marketplace:vendedor_login'))
-def vendedor_criar_reporte(request):
-    if request.method == 'POST':
-        # Pass request.user to the form's __init__ to exclude self from user_alvo_reporte queryset
-        form = ReporteForm(request.POST, request.FILES, user=request.user) 
-        if form.is_valid():
-            reporte = form.save(commit=False)
-            reporte.usuario_reportou = request.user # Set the reporter as the current user
-            reporte.save()
-            messages.success(request, "Seu problema foi reportado com sucesso! A equipe irá analisar.")
-            return redirect('marketplace:vendedor_dashboard') # Redirect after successful submission
-        else:
-            messages.error(request, "Erro ao enviar o reporte. Por favor, corrija os campos.")
-            # Render the form again with errors
-            context = {'form': form, 'page_title': 'Reportar um Problema'}
-            return render(request, 'vendedor/criar_reporte.html', context)
-    else:
-        # Pass request.user to the form's __init__ for GET requests too
-        form = ReporteForm(user=request.user) 
-    
-    context = {'form': form, 'page_title': 'Reportar um Problema'}
-    return render(request, 'vendedor/criar_reporte.html', context)
-
 
 @login_required(login_url=reverse_lazy('marketplace:vendedor_login'))
 @user_passes_test(is_vendedor, login_url=reverse_lazy('marketplace:vendedor_login'))

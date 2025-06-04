@@ -17,7 +17,6 @@ urlpatterns = [
     path('comprador/produto/<int:produto_id>/', views.detalhes_produto, name='detalhes_produto'),
     path('comprador/busca/', views.pagina_busca_produto, name='pagina_busca_produto'),
     path('comprador/perfil/', views.comprador_perfil, name='comprador_perfil'),
-    path('comprador/reportar-problema/', views.comprador_criar_reporte, name='comprador_criar_reporte'), # NEW URL for reporting
 
     # Lista de Desejos URLs
     path('comprador/lista-desejos/', views.lista_desejos, name='lista_desejos'),
@@ -72,7 +71,8 @@ urlpatterns = [
     path('vendedor/relatorios/', views.vendedor_reports, name='vendedor_relatorios'),
     path('vendedor/pedidos/atualizar_status/<int:pedido_id>/', views.vendedor_update_order_status, name='vendedor_update_order_status'),
     path('vendedor/perfil/', views.vendedor_perfil, name='vendedor_perfil'),
-    path('vendedor/reportar-problema/', views.vendedor_criar_reporte, name='vendedor_criar_reporte'), # NEW URL for reporting
+    path('vendedor/editar_perfil/', views.EditarPerfilVendedorView.as_view(), name='editar_perfil_vendedor'),
+
 
     # Administrador URLs
     path('admin/login/', views.admin_login, name='admin_login'),
@@ -84,9 +84,6 @@ urlpatterns = [
     path('admin/usuarios/', views.admin_usuarios, name='admin_usuarios'),
     path('admin/usuarios/gerenciar/<int:user_id>/', views.admin_gerenciar_usuario, name='admin_gerenciar_usuario'),
     path('admin/usuarios/excluir/<int:user_id>/', views.admin_excluir_usuario, name='admin_excluir_usuario'),
-    path('admin/reportes/', views.admin_reportes, name='admin_reportes'),
-    path('admin/reportes/gerenciar/<int:reporte_id>/', views.admin_gerenciar_reporte, name='admin_gerenciar_reporte'),
-    path('admin/reportes/arquivados/', views.admin_reportes_arquivados, name='admin_reportes_arquivados'),
     path('admin/pedidos/', views.admin_pedidos, name='admin_pedidos'),
     path('admin/pedidos/gerenciar/<int:pedido_id>/', views.admin_gerenciar_pedido, name='admin_gerenciar_pedido'),
     path('admin/pedidos/finalizados/', views.admin_pedidos_finalizados, name='admin_pedidos_finalizados'),

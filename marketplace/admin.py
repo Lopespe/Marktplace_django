@@ -1,6 +1,6 @@
 # marketplace/admin.py
 from django.contrib import admin
-from .models import Produto, Pedido, Avaliacao, PerfilComprador, PerfilVendedor, Reporte # Adicione Reporte
+from .models import Produto, Pedido, Avaliacao, PerfilComprador, PerfilVendedor
 
 @admin.register(Produto)
 class ProdutoAdmin(admin.ModelAdmin):
@@ -30,17 +30,3 @@ class PerfilVendedorAdmin(admin.ModelAdmin):
     list_display = ('user', 'idade', 'cpf', 'curso', 'ra')
     search_fields = ('user__username', 'cpf', 'ra')
 
-@admin.register(Reporte)
-class ReporteAdmin(admin.ModelAdmin):
-    list_display = ('id', 'titulo', 'usuario_reportou', 'produto_reportado', 'usuario_alvo_reporte', 'status', 'data_criacao')
-    list_filter = ('status', 'data_criacao', 'usuario_reportou')
-    search_fields = ('titulo', 'descricao', 'usuario_reportou__username', 'produto_reportado__nome', 'usuario_alvo_reporte__username')
-    readonly_fields = ('data_criacao', 'data_ultima_atualizacao_admin')
-    fieldsets = (
-        (None, {
-            'fields': ('titulo', 'descricao', 'usuario_reportou', 'produto_reportado', 'usuario_alvo_reporte', 'imagem_evidencia')
-        }),
-        ('Status e Acompanhamento (Admin)', {
-            'fields': ('status', 'notas_admin', 'data_criacao', 'data_ultima_atualizacao_admin')
-        }),
-    )

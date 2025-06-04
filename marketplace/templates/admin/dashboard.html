@@ -53,21 +53,9 @@
       </div>
 
       <div class="recent-group">
-        <h3>Últimos Reportes Postados</h3>
-        {% if recent_reports %}
-        {% for report in recent_reports %}
-        <p><strong>{{ report.titulo_ou_id }}</strong> - {{ report.data_criacao|date:"d/m/Y H:i" }}</p>
-        {% endfor %}
-        {% else %}
-        <p>Nenhum reporte recente (funcionalidade pendente de modelo Reporte).</p>
-        {% endif %}
-      </div>
-
-      <div class="recent-group">
         <h3>Dados do Marketplace</h3>
         <p>Total de Compradores: {{ total_compradores }}</p>
         <p>Total de Vendedores: {{ total_vendedores }}</p>
-        <p>Total de Reportes: {{ total_reportes }} (funcionalidade pendente)</p>
       </div>
     </section>
 

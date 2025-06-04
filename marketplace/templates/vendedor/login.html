@@ -7,6 +7,8 @@
   <title>Login - Vendedor UniMarket</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="{% static 'vendedor/css/login_vendedor.css' %}">
+  <link rel="stylesheet" href="{% static 'vendedor/css/message.css' %}" />
+
 </head>
 
 <body>
@@ -20,6 +22,13 @@
         <h2 class="login-title">Login Vendedor</h2>
 
         <div class="input-group">
+          {% if messages %}
+            <ul class="messages">
+              {% for message in messages %}
+                <li class="message {{ message.tags }}">{{ message }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
           <input type="text" name="username" required placeholder="Seu Email de Vendedor">
         </div>
 
