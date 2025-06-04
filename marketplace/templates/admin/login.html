@@ -19,13 +19,6 @@
         {% csrf_token %}
 
         <div class="input-group">
-          {% if messages %}
-            <ul class="messages">
-              {% for message in messages %}
-                <li class="message {{ message.tags }}">{{ message }}</li>
-              {% endfor %}
-            </ul>
-          {% endif %}
           <input type="text" name="username" required placeholder="Username">
         </div>
 
@@ -33,7 +26,13 @@
           <input type="password" name="password" id="password" required placeholder="Password">
           <img id="togglePassword" src="{% static 'admin/image/eye-close.png' %}" alt="Mostrar senha" />
         </div>
-
+        {% if messages %}
+            <ul class="messages">
+              {% for message in messages %}
+                <li class="message {{ message.tags }}">{{ message }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
         <button type="submit" class="btn">Confirmar</button>
       </form>
     </div>
