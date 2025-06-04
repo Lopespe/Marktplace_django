@@ -2,7 +2,7 @@
 FROM python:3.11-slim
 
 # Define o diretório de trabalho dentro do container
-WORKDIR /code
+WORKDIR /app
 
 # Instala dependências do sistema
 RUN apt-get update && apt-get install -y \
