@@ -1,0 +1,3 @@
+volumes:
+  - ./app:/code
+  - ./staticfiles:/code/staticfiles

@@ -7,5 +7,3 @@ env/
 venv/
 .git/
 .gitignore
-staticfiles/
-media/

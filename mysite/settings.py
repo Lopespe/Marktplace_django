@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles', # Essencial para arquivos estáticos (CSS, JS, imagens)
+    'django.contrib.staticfiles', 
+    'whitenoise.runserver_nostatic',
 ]
 
 MIDDLEWARE = [
@@ -116,21 +117,22 @@ USE_TZ = True # Suporte a timezones.
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = 'static/' # URL base para servir arquivos estáticos (ex: seusite.com/static/css/style.css)
 
 # Diretórios adicionais onde o Django procurará por arquivos estáticos.
 # A sua configuração atual faz o Django procurar arquivos diretamente dentro de 'marketplace/static/'.
 # Por exemplo, se você tem 'marketplace/static/accounts/css/style.css',
 # no template você usaria {% static 'accounts/css/style.css' %}. Isso está funcional.
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'marketplace', 'static'),
-]
+
+
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage' # Comente esta linha
+STATICFILES_STORAGE = 'whitenoise.storage.StaticFilesStorage' # Use esta temporariamente
 
 # Caminho onde o comando `collectstatic` juntará todos os arquivos estáticos para deploy.
 # Não é usado diretamente pelo servidor de desenvolvimento para servir arquivos.
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / 'static']  # opcional para arquivos globais
+STATIC_ROOT = BASE_DIR / 'staticfiles' 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
