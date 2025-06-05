@@ -3,51 +3,53 @@
 <html lang="pt-br">
 
 <head>
-  <meta charset="UTF-8">
-  <title>Login - Vendedor UniMarket</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="{% static 'vendedor/css/login_vendedor.css' %}">
-  <link rel="stylesheet" href="{% static 'vendedor/css/message.css' %}" />
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Vendedor UniMarket</title>
+    <link rel="stylesheet" href="{% static 'vendedor/css/login_vendedor.css' %}">
+    <link rel="stylesheet" href="{% static 'vendedor/css/message.css' %}">
 </head>
 
 <body>
-  <a href="{% url 'marketplace:landing_page' %}" class="botao-voltar-login" title="Voltar para a Página Inicial">
-    &lt;
-  </a>
-  <div class="container-login-vendedor">
-    <div class="left-side-login-vendedor">
-      <form method="POST" action="{% url 'marketplace:vendedor_login' %}">
-        {% csrf_token %}
-        <h2 class="login-title">Login Vendedor</h2>
+    <a href="{% url 'marketplace:landing_page' %}" class="botao-voltar-login" title="Voltar para a Página Inicial" aria-label="Voltar para a Página Inicial">
+        &lt;
+    </a>
 
-        <div class="input-group">
-          {% if messages %}
-            <ul class="messages">
-              {% for message in messages %}
-                <li class="message {{ message.tags }}">{{ message }}</li>
-              {% endfor %}
-            </ul>
-          {% endif %}
-          <input type="text" name="username" required placeholder="Seu Email de Vendedor">
+    <main class="container-login-vendedor">
+        <div class="left-side-login-vendedor">
+            <form method="POST" action="{% url 'marketplace:vendedor_login' %}">
+                {% csrf_token %}
+                <h2 class="login-title">Login Vendedor</h2>
+
+                {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                    <li class="message {{ message.tags }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+
+                <div class="input-group">
+                    <label for="username" class="sr-only">Seu Email de Vendedor</label> <input type="text" id="username" name="username" required placeholder="Seu Email de Vendedor" aria-label="Email de Vendedor">
+                </div>
+
+                <div class="input-group">
+                    <label for="passwordVendedor" class="sr-only">Sua Senha</label> <input type="password" name="password" id="passwordVendedor" required placeholder="Sua Senha" aria-label="Senha">
+                </div>
+
+                <button type="submit" class="btn-login">Entrar</button>
+            </form>
+            <div class="register-link">
+                <p>Não tem uma conta de vendedor? <a href="{% url 'marketplace:vendedor_cadastro' %}">Cadastre-se aqui</a></p>
+            </div>
         </div>
 
-        <div class="input-group">
-          <input type="password" name="password" id="passwordVendedor" required placeholder="Sua Senha">
+        <div class="right-side-login-vendedor">
+            <span class="welcome-text">
+                Acesse<br>seu Painel<br>de Vendas!
+            </span>
         </div>
-
-        <button type="submit" class="btn-login">Entrar</button>
-      </form>
-      <div class="register-link">
-        <p>Não tem uma conta de vendedor? <a href="{% url 'marketplace:vendedor_cadastro' %}">Cadastre-se aqui</a></p>
-      </div>
-    </div>
-    <div class="right-side-login-vendedor">
-      <span class="welcome-text">
-        Acesse<br>seu Painel<br>de Vendas!
-      </span>
-    </div>
-  </div>
+    </main>
 </body>
 
 </html>
