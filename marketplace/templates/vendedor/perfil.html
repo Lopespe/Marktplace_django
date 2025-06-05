@@ -8,7 +8,7 @@
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h2>{{ titulo_pagina|default:"Meu Perfil" }}</h2>
         <a href="{% url 'marketplace:editar_perfil_vendedor' %}" class="btn btn-primary">
-            <i class="fas fa-edit"></i> Editar Perfil
+            <i class="fas fa-edit" aria-hidden="true"></i> Editar Perfil
         </a>
     </div>
     <hr>
@@ -17,51 +17,79 @@
         {% for message in messages %}
             <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
                 {{ message }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button> {# "Close" traduzido para "Fechar" no aria-label #}
             </div>
         {% endfor %}
     {% endif %}
 
-    <div class="card mb-4">
+    <section class="card mb-4"> {# Uso de <section> para agrupar conteúdo temático #}
         <div class="card-header">
             Informações da Conta
         </div>
         <div class="card-body">
             {% if user_profile %}
-                <p><strong>Nome de Usuário (Login):</strong> {{ user_profile.username }}</p>
-                <p><strong>Nome:</strong> {{ user_profile.first_name|default:"Não informado" }}</p>
-                <p><strong>Sobrenome:</strong> {{ user_profile.last_name|default:"Não informado" }}</p>
-                <p><strong>Email:</strong> {{ user_profile.email|default:"Não informado" }}</p>
+                <dl class="row"> {# Lista de Definição para semântica de chave-valor #}
+                    <dt class="col-sm-4 col-md-3">Nome de Usuário (Login):</dt>
+                    <dd class="col-sm-8 col-md-9">{{ user_profile.username }}</dd>
+
+                    <dt class="col-sm-4 col-md-3">Nome:</dt>
+                    <dd class="col-sm-8 col-md-9">{{ user_profile.first_name|default:"Não informado" }}</dd>
+
+                    <dt class="col-sm-4 col-md-3">Sobrenome:</dt>
+                    <dd class="col-sm-8 col-md-9">{{ user_profile.last_name|default:"Não informado" }}</dd>
+
+                    <dt class="col-sm-4 col-md-3">Email:</dt>
+                    <dd class="col-sm-8 col-md-9">{{ user_profile.email|default:"Não informado" }}</dd>
+                </dl>
             {% else %}
                 <p class="text-muted">Informações da conta não disponíveis.</p>
             {% endif %}
         </div>
-    </div>
+    </section>
 
-    <div class="card">
+    <section class="card"> {# Uso de <section> para agrupar conteúdo temático #}
         <div class="card-header">
             Informações Adicionais do Vendedor
         </div>
         <div class="card-body">
             {% if perfil %}
-                <p><strong>Idade:</strong> {{ perfil.idade|default:"Não informado" }}</p>
-                <p><strong>CPF:</strong> {{ perfil.cpf|default:"Não informado" }}</p>
-                <p><strong>Curso:</strong> {{ perfil.curso|default:"Não informado" }}</p>
-                <p><strong>RA:</strong> {{ perfil.ra|default:"Não informado" }}</p>
-                
-                {# Adicione aqui se tiver nome_negocio, telefone, endereco no PerfilVendedor e quiser exibi-los #}
-                {# <p><strong>Nome do Negócio:</strong> {{ perfil.nome_negocio|default:"Não informado" }}</p> #}
-                {# <p><strong>Telefone:</strong> {{ perfil.telefone|default:"Não informado" }}</p> #}
-                {# <p><strong>Endereço:</strong> {{ perfil.endereco|default:"Não informado"|linebreaksbr }}</p> #}
+                <dl class="row">
+                    <dt class="col-sm-4 col-md-3">Idade:</dt>
+                    <dd class="col-sm-8 col-md-9">{{ perfil.idade|default:"Não informado" }}</dd>
+
+                    <dt class="col-sm-4 col-md-3">CPF:</dt>
+                    <dd class="col-sm-8 col-md-9">{{ perfil.cpf|default:"Não informado" }}</dd>
+
+                    <dt class="col-sm-4 col-md-3">Curso:</dt>
+                    <dd class="col-sm-8 col-md-9">{{ perfil.curso|default:"Não informado" }}</dd>
+
+                    <dt class="col-sm-4 col-md-3">RA (Registro Acadêmico):</dt> {# Esclarecendo RA #}
+                    <dd class="col-sm-8 col-md-9">{{ perfil.ra|default:"Não informado" }}</dd>
+                    
+                    {# Adicione aqui se tiver nome_negocio, telefone, endereco no PerfilVendedor e quiser exibi-los #}
+                    {# 
+                    <dt class="col-sm-4 col-md-3">Nome do Negócio:</dt>
+                    <dd class="col-sm-8 col-md-9">{{ perfil.nome_negocio|default:"Não informado" }}</dd>
+                    
+                    <dt class="col-sm-4 col-md-3">Telefone:</dt>
+                    <dd class="col-sm-8 col-md-9">{{ perfil.telefone|default:"Não informado" }}</dd>
+                    
+                    <dt class="col-sm-4 col-md-3">Endereço:</dt>
+                    <dd class="col-sm-8 col-md-9">{{ perfil.endereco|default:"Não informado"|linebreaksbr }}</dd> 
+                    #}
+                </dl>
             {% else %}
-                <p class="alert alert-info">Informações adicionais do vendedor não encontradas. <a href="{% url 'marketplace:editar_perfil_vendedor' %}">Complete seu perfil aqui</a>.</p>
+                <div class="alert alert-info" role="alert"> {# Adicionado role="alert" para melhor semântica #}
+                    Informações adicionais do vendedor não encontradas. 
+                    <a href="{% url 'marketplace:editar_perfil_vendedor' %}" class="alert-link">Complete seu perfil aqui</a>.
+                </div>
             {% endif %}
         </div>
-    </div>
+    </section>
 
     <div class="mt-4">
         <a href="{% url 'marketplace:vendedor_dashboard' %}" class="btn btn-outline-secondary">
-            <i class="fas fa-arrow-left"></i> Voltar ao Dashboard
+            <i class="fas fa-arrow-left" aria-hidden="true"></i> Voltar ao Dashboard
         </a>
     </div>
 </div>
