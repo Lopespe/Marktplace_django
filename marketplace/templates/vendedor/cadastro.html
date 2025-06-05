@@ -3,78 +3,134 @@
 <html lang="pt-br">
 
 <head>
-  <meta charset="UTF-8">
-  <title>Cadastro - Vendedor UniMarket</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="{% static 'vendedor/css/cadastro_vendedor.css' %}">
+    <meta charset="UTF-8">
+    <title>Cadastro - Vendedor UniMarket</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'vendedor/css/cadastro_vendedor.css' %}">
+    <style>
+        .sr-only { /* Classe para esconder visualmente, mas manter para leitores de tela */
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0,0,0,0);
+            white-space: nowrap;
+            border: 0;
+        }
+        .form-errors.non-field-errors ul, /* Estilizando erros do Django */
+        .field-errors ul.errorlist {
+            list-style-type: none;
+            padding-left: 0;
+            margin-top: 0.25em;
+            margin-bottom: 0.5em;
+            color: #dc3545; /* Cor de erro típica (vermelho) */
+            font-size: 0.875em;
+        }
+        .field-errors ul.errorlist li {
+            margin-bottom: 0.25em;
+        }
+        .input-group .help-text { /* Estilizando texto de ajuda */
+            font-size: 0.8em;
+            color: #6c757d; /* Cinza suave */
+            display: block;
+            margin-top: 0.25em;
+        }
+    </style>
 </head>
 
 <body>
-  <a href="{% url 'marketplace:landing_page' %}" class="botao-voltar-cadastro" title="Voltar para a Página Inicial">
-    &lt; </a>
-  <div class="container-cadastro-vendedor">
-    <div class="form-container-vendedor">
-      <form method="POST" action="{% url 'marketplace:vendedor_cadastro' %}">
-        {% csrf_token %}
-        <h2>Crie sua Conta de Vendedor</h2>
+    <a href="{% url 'marketplace:landing_page' %}" class="botao-voltar-cadastro" title="Voltar para a Página Inicial" aria-label="Voltar para a Página Inicial">
+        &lt;
+    </a>
 
-        {% if messages %}
-        <ul class="messages">
-          {% for message in messages %}
-          <li class="{{ message.tags }}">{{ message }}</li>
-          {% endfor %}
-        </ul>
-        {% endif %}
+    <main class="container-cadastro-vendedor">
+        <section class="form-container-vendedor">
+            <form method="POST" action="{% url 'marketplace:vendedor_cadastro' %}">
+                {% csrf_token %}
+                <h2>Crie sua Conta de Vendedor</h2>
 
-        {% if form.non_field_errors %}
-        <ul class="form-errors">
-          {% for error in form.non_field_errors %}
-          <li>{{ error }}</li>
-          {% endfor %}
-        </ul>
-        {% endif %}
+                {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                    <li class="{{ message.tags }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
 
-        <div class="input-group">
-          {{ form.nome }}
-          {{ form.nome.errors }}
-        </div>
-        <div class="input-group">
-          {{ form.idade }}
-          {{ form.idade.errors }}
-        </div>
-        <div class="input-group">
-          {{ form.cpf }}
-          {{ form.cpf.errors }}
-        </div>
-        <div class="input-group">
-          {{ form.curso }}
-          {{ form.curso.errors }}
-        </div>
-        <div class="input-group">
-          {{ form.ra }}
-          {{ form.ra.errors }}
-        </div>
-        <div class="input-group">
-          {{ form.email }}
-          {{ form.email.errors }}
-        </div>
-        <div class="input-group">
-          {{ form.senha }}
-          {{ form.senha.errors }}
-        </div>
-        <div class="input-group">
-          {{ form.confirmar_senha }}
-          {{ form.confirmar_senha.errors }}
-        </div>
+                {% if form.non_field_errors %}
+                <div class="form-errors non-field-errors">
+                    {{ form.non_field_errors }} {# Django renderiza isso como <ul class="errorlist">...</ul> #}
+                </div>
+                {% endif %}
 
-        <button type="submit">Cadastrar como Vendedor</button>
-      </form>
-      <p>Já tem uma conta? <a href="{% url 'marketplace:vendedor_login' %}">Faça Login</a></p>
-    </div>
-    <div class="decorative-side-vendedor">
-      <span>Venda<br>Seus<br>Produtos<br>na Uni!</span>
-    </div>
-  </div>
+                {# Renderizando cada campo do formulário explicitamente com label, help_text e errors #}
+                <div class="input-group">
+                    {{ form.nome.label_tag }}
+                    {{ form.nome }}
+                    {% if form.nome.help_text %}<small class="help-text">{{ form.nome.help_text }}</small>{% endif %}
+                    {% if form.nome.errors %}<div class="field-errors">{{ form.nome.errors }}</div>{% endif %}
+                </div>
+
+                <div class="input-group">
+                    {{ form.idade.label_tag }}
+                    {{ form.idade }}
+                    {% if form.idade.help_text %}<small class="help-text">{{ form.idade.help_text }}</small>{% endif %}
+                    {% if form.idade.errors %}<div class="field-errors">{{ form.idade.errors }}</div>{% endif %}
+                </div>
+
+                <div class="input-group">
+                    {{ form.cpf.label_tag }}
+                    {{ form.cpf }}
+                    {% if form.cpf.help_text %}<small class="help-text">{{ form.cpf.help_text }}</small>{% endif %}
+                    {% if form.cpf.errors %}<div class="field-errors">{{ form.cpf.errors }}</div>{% endif %}
+                </div>
+
+                <div class="input-group">
+                    {{ form.curso.label_tag }}
+                    {{ form.curso }}
+                    {% if form.curso.help_text %}<small class="help-text">{{ form.curso.help_text }}</small>{% endif %}
+                    {% if form.curso.errors %}<div class="field-errors">{{ form.curso.errors }}</div>{% endif %}
+                </div>
+
+                <div class="input-group">
+                    {{ form.ra.label_tag }}
+                    {{ form.ra }}
+                    {% if form.ra.help_text %}<small class="help-text">{{ form.ra.help_text }}</small>{% endif %}
+                    {% if form.ra.errors %}<div class="field-errors">{{ form.ra.errors }}</div>{% endif %}
+                </div>
+
+                <div class="input-group">
+                    {{ form.email.label_tag }}
+                    {{ form.email }}
+                    {% if form.email.help_text %}<small class="help-text">{{ form.email.help_text }}</small>{% endif %}
+                    {% if form.email.errors %}<div class="field-errors">{{ form.email.errors }}</div>{% endif %}
+                </div>
+
+                <div class="input-group">
+                    {{ form.senha.label_tag }}
+                    {{ form.senha }}
+                    {% if form.senha.help_text %}<small class="help-text">{{ form.senha.help_text }}</small>{% endif %}
+                    {% if form.senha.errors %}<div class="field-errors">{{ form.senha.errors }}</div>{% endif %}
+                </div>
+
+                <div class="input-group">
+                    {{ form.confirmar_senha.label_tag }}
+                    {{ form.confirmar_senha }}
+                    {% if form.confirmar_senha.help_text %}<small class="help-text">{{ form.confirmar_senha.help_text }}</small>{% endif %}
+                    {% if form.confirmar_senha.errors %}<div class="field-errors">{{ form.confirmar_senha.errors }}</div>{% endif %}
+                </div>
+
+                <button type="submit">Cadastrar como Vendedor</button>
+            </form>
+            <p class="login-link">Já tem uma conta? <a href="{% url 'marketplace:vendedor_login' %}">Faça Login</a></p>
+        </section>
+
+        <aside class="decorative-side-vendedor">
+            <span>Venda<br>Seus<br>Produtos<br>na Uni!</span>
+        </aside>
+    </main>
 </body>
 
 </html>
